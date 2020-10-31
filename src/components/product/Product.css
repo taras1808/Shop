@@ -1,0 +1,27 @@
+
+
+
+.product-block {
+    position: relative;
+    overflow: hidden;
+    max-width: 200px;
+    padding: 15px;
+    border-right: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+}
+
+.block > img {
+    max-width: 200px;
+    max-height: 300px;
+    display: block;
+    margin: auto;
+}
+
+.block > h4 {
+    text-align: center;
+}
+
+.block > p {
+    text-align: center;
+}
+
