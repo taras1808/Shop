@@ -14,7 +14,7 @@
 }
 
 #search-field {
-    width: 400px;
+    width: 350px;
     padding: 10px 40px;
     outline: none;
     font-size: 18px;
@@ -34,8 +34,13 @@
     font-size: 20px;
     color: #000;
     border: none;
+    transition: background-color .1s;
 }
 
 #search-button:hover {
     background-color: #CCC;
+}
+
+#search-button:active {
+    background-color: #BBB;
 }

@@ -1,0 +1,37 @@
+
+
+#navbar {
+    height: 50px;
+}
+
+#navbar-list {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+#navbar-list > li {
+    list-style: none;
+}
+
+#navbar-list > li:before {
+    content: '>';
+    font-style: normal;
+    font-weight: 500;
+    text-decoration: inherit;
+    padding: 0 5px;
+}
+
+#navbar-list > li:first-child:before {
+    content: '';
+}
+
+#navbar-list > li > a {
+    text-decoration: none;
+    color: #000;
+    transition: color .1s;
+}
+
+#navbar-list > li > a:hover {
+    color: rgb(79, 120, 255);
+}

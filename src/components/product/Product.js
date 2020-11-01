@@ -8,12 +8,10 @@ class Product extends React.Component {
 
         return (
             <div className="product-block">
-                <div className="block">
-                    <img src={item.url} alt="" />
-                    <h4>{item.name}</h4>
-                    <p><s>{item.old_price}</s></p>
-                    <p>{item.price}</p>
-                </div>
+                <img src={item.url} alt="" />
+                <h4>{item.name}</h4>
+                <p><s>{item.old_price}</s></p>
+                <p>{item.price}</p>
             </div>
         );
     }
