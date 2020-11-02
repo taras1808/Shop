@@ -4,33 +4,37 @@
 
 }
 
-
 .filter-header {
     background-color: #DDD;
+    transition: background-color .1s;
     cursor: pointer;
+}
+
+.filter-header:hover {
+    background-color: #CCC;
 }
 
 .filter-header > p {
     padding: 10px;
 }
 
-.filter-block > ul > li {
+.filter-block ul > li {
     display: flex;
     list-style: none;
 }
 
-.filter-block > ul > li:hover {
-    background-color: #EAEAEA;
+.filter-block ul > li:hover {
+    background-color: #E7E7E7;
 }
 
-.filter-block > ul > li > label {
+.filter-block ul > li > label {
     width: 100%;
     padding: 10px;
     cursor: pointer;
     position: relative;
 }
 
-.filter-block > ul > li > label:before {
+.filter-block ul > li > label:before {
     content: "";
     display: block;
     float: left;
@@ -44,7 +48,7 @@
     background-color: #fff;
 }
 
-.filter-block > ul > li > input[type="checkbox"]:checked + label:before {
+.filter-block ul > li > input[type="checkbox"]:checked + label:before {
     background-image: url("data:image/svg+xml;utf8,<svg width='14' height='12' viewBox='0 0 14 12' xmlns='http://www.w3.org/2000/svg'><path d='M4.10351 8.89548L1.45582 6.09578L0 7.6352L4.13584 12L14 1.56934L12.5159 0L4.10351 8.89548Z' fill='rgb(255, 255, 255)' /></svg>");
     background-position: 50%;
     background-repeat: no-repeat;
@@ -53,7 +57,7 @@
     border-color: #00a046;
 }
 
-.filter-block > ul > li > input[type="checkbox"] {
+.filter-block ul > li > input[type="checkbox"] {
     position: absolute;
     height: 0;
     border: 0;

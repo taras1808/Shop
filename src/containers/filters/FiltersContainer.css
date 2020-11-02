@@ -2,5 +2,6 @@
 
 #filters-block {
     width: 300px;
-
+    position: sticky;
+    top: 0;
 }

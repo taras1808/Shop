@@ -1,4 +1,4 @@
-import { Slider } from '@material-ui/core';
+import { Slider, Collapse } from '@material-ui/core';
 import React from 'react';
 import './Filter.css';
 
@@ -12,11 +12,13 @@ export class Filter extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { value: [0, 100] }
+        this.state = { value: [0, 100], collapsed: false }
         
     }
 
     render() {
+
+
 
         switch (this.props.type) {
             case FilterType.SELECT:
@@ -40,11 +42,11 @@ export class Filter extends React.Component {
                     <>
                         <div className="slider-info">
                             <input type="text" value={this.state.value[0]} onChange={(e) => {
-                                this.setState({ value: [e.target.value, this.state.value[1]] })
+                                this.setState({ ...this.state, value: [e.target.value, this.state.value[1]] })
                             }} />
 
                             <input type="text" value={this.state.value[1]} onChange={(e) => {
-                                this.setState({ value: [this.state.value[0], e.target.value] })
+                                this.setState({ ...this.state, value: [this.state.value[0], e.target.value] })
                             }} />
 
                             <button>OK</button>
@@ -53,11 +55,9 @@ export class Filter extends React.Component {
                             <Slider
                                 value={this.state.value}
                                 onChange={(_, value) => {
-                                    this.setState({ value: value })
+                                    this.setState({ ...this.state, value: value })
                                 }}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"
-                                getAriaValueText={() => {}}
+                                aria-labelledby="track-false-slider"
                             />
                         </div>
                     </>
@@ -70,13 +70,17 @@ export class Filter extends React.Component {
         return (
             <div className="filter-block">
 
-                <div className="filter-header">
+                <div className="filter-header" onClick={() => {
+                     this.setState({ ...this.state, collapsed: !this.state.collapsed })
+                }}>
                     <p>
                         { this.props.header }
                     </p>
                 </div>
 
-                { this.content }
+                <Collapse className="collapse" in={!this.state.collapsed}>
+                    { this.content }
+                </Collapse>
 
             </div>
         );

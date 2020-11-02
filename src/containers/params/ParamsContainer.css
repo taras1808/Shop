@@ -1,0 +1,14 @@
+
+
+
+#params-container {
+    height: 75px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+#sort {
+    width: 300px;
+}
+
