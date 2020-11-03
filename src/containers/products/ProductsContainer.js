@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './ProductsContainer.css';
 import Product from '../../components/product/Product.js';
 import TempProduct from '../../components/product/temp/TempProduct.js';

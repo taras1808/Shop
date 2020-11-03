@@ -9,20 +9,18 @@ function NavBar () {
 
     let url = ""
 
-    console.log(match)
-
     return (
         <div id="navbar">
             <ul id="navbar-list">
                 <li><Link to="/">Home page</Link></li>
                 {
                     match ? Object.keys(match.params).map((key, index) => {
-                        if (!match.params[key]) return
+                        if (!match.params[key]) return null
 
                         url += "/" + match.params[key]
 
                         let content = match.params[key]
-                        if (pathname != url) {
+                        if (pathname !== url) {
                             content = <Link to={url}>{content}</Link>
                         }
 

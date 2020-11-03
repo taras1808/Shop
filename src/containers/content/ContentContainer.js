@@ -5,25 +5,31 @@ import FiltersContainer from '../filters/FiltersContainer.js'
 import ParamsContainer from '../params/ParamsContainer.js'
 import ProductContentContainer from '../product/ProductContentContainer.js'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import CategoriesContainer from '../categories/CategoriesContainer'
 
 
-function ContentContainer (props) {
+function ContentContainer ({ search }) {
 	return (
 		<div className="container">
 			<Router >
 				<Switch>
-					<NavBar />
+					<Route path="/:categoryId">
+						<NavBar />
+					</Route>
 				</Switch>
 				<Switch>
-					<Route path="/:productId">
+					<Route path="/:categoryId/:productId">
 						<ProductContentContainer />
 					</Route>
-					<Route path="/">
+					<Route path="/:categoryId">
 						<ParamsContainer />
 						<div className="flex">
 							<FiltersContainer />
-							<ProductsContainer search={props.search} />
+							<ProductsContainer search={search} />
 						</div>
+					</Route>
+					<Route path="/">
+						<CategoriesContainer />
 					</Route>
         		</Switch>
 			</Router>
