@@ -2,7 +2,7 @@ import './ContentContainer.css'
 import ProductsContainer from '../products/ProductsContainer.js'
 import NavBar from '../../components/navbar/NavBar'
 import FiltersContainer from '../filters/FiltersContainer.js'
-import ParamsContainer from '../params/ParamsContainer.js'
+import SortContainer from '../sort/SortContainer.js'
 import ProductContainer from '../product/ProductContainer.js'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import CategoriesContainer from '../categories/CategoriesContainer'
@@ -22,7 +22,7 @@ function ContentContainer ({ search }) {
 						<ProductContainer />
 					</Route>
 					<Route path="/:categoryId">
-						<ParamsContainer />
+						<SortContainer />
 						<div className="flex">
 							<FiltersContainer />
 							<ProductsContainer />
