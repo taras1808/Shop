@@ -22,12 +22,21 @@
     margin: auto;
 }
 
-.product-block > h4 {
+.product-block h4 {
     text-align: center;
-    padding: 15px 0;
+    margin: 15px 0;
 }
 
-.product-block > p {
+.product-block a {
+    color: #000;
+    text-decoration: none;
+}
+
+.product-block a:hover {
+    text-decoration: underline;
+}
+
+.product-block p {
     text-align: center;
     padding: 5px 0;
 }

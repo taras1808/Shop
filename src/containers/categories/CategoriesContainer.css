@@ -1,0 +1,28 @@
+
+
+.categories {
+    margin-top: 100px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+.category-block {
+    width: 220px;
+    min-height: 200px;
+    margin: 10px;
+    text-align: center;
+}
+
+.category-block > img {
+    max-width: 100%;
+    max-height: 150px;
+}
+
+.category-block > h3 {
+    padding: 10px;
+}

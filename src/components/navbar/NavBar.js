@@ -1,20 +1,35 @@
-import React from 'react';
-import './NavBar.css';
+import React from 'react'
+import './NavBar.css'
+import { Link, useRouteMatch, useLocation } from "react-router-dom"
 
-class NavBar extends React.Component {
-    render() {
+function NavBar () {
 
-        return (
-            <div id="navbar">
-                <ul id="navbar-list">
-                    <li><a href="/">Home page</a></li>
-                    <li><a href="/">Oils</a></li>
-                    <li><a href="/">Engine oils</a></li>
-                    <li>Engine oils OW30</li>
-                </ul>
-            </div>
-        );
-    }
+    let match = useRouteMatch("/:categoryId?/:productId?")
+    let { pathname } = useLocation()
+
+    let url = ""
+
+    return (
+        <div id="navbar">
+            <ul id="navbar-list">
+                <li><Link to="/">Home page</Link></li>
+                {
+                    match ? Object.keys(match.params).map((key, index) => {
+                        if (!match.params[key]) return null
+
+                        url += "/" + match.params[key]
+
+                        let content = match.params[key]
+                        if (pathname !== url) {
+                            content = <Link to={url}>{content}</Link>
+                        }
+
+                        return (<li key={index}>{content}</li>)
+                    }) : null
+                }
+            </ul>
+        </div>
+    );
 }
 
 export default NavBar;
