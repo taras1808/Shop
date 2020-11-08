@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 import './NavBar.css'
 import { Link, useRouteMatch, useLocation } from "react-router-dom"
 
@@ -7,6 +7,37 @@ function NavBar () {
     let match = useRouteMatch("/:categoryId?/:productId?")
     let { pathname } = useLocation()
 
+    const [category, setCategory] = useState(null)
+    const [product, setProduct] = useState(null)
+
+    let arr = [category, product]
+
+    useEffect(() => {
+        
+        fetch("http://192.168.0.108:7777/api/category/" +  match.params.categoryId)
+            .then(res => res.json())
+            .then(
+                (result) => { setCategory(result) },
+                (error) => { setCategory(null) }
+            )
+
+    }, [match.params.categoryId])
+
+    useEffect(() => {
+        if (!match.params.productId) {
+            setProduct(null)
+            return
+        }
+
+        fetch("http://192.168.0.108:7777/api/product/" +  match.params.productId)
+            .then(res => res.json())
+            .then(
+                (result) => { setProduct(result) },
+                (error) => { setProduct(null) }
+            )
+
+    }, [match.params.productId])
+    
     let url = ""
 
     return (
@@ -14,18 +45,18 @@ function NavBar () {
             <ul id="navbar-list">
                 <li><Link to="/">Home page</Link></li>
                 {
-                    match ? Object.keys(match.params).map((key, index) => {
-                        if (!match.params[key]) return null
+                    arr.map((item, index) => {
+                        if (!item) return null
 
-                        url += "/" + match.params[key]
+                        url += "/" + item.id
 
-                        let content = match.params[key]
+                        let content = item.name
                         if (pathname !== url) {
                             content = <Link to={url}>{content}</Link>
                         }
 
                         return (<li key={index}>{content}</li>)
-                    }) : null
+                    })
                 }
             </ul>
         </div>
