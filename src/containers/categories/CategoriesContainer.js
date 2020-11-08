@@ -10,7 +10,7 @@ function CategoriesContainer (props) {
 
     useEffect(() => {
 		setIsLoaded(false)
-		fetch("http://192.168.0.108:7777/categories")
+		fetch("http://192.168.0.108:7777/api/category")
 			.then(res => res.json())
 			.then(
 				(result) => {
@@ -37,10 +37,16 @@ function CategoriesContainer (props) {
         ))
 	} else {
 		content = items.map((item, index) => (
-            <div key={index} className="category-block">
-                <img src={item.url} alt="" />
-                <Link to={`/${item.id}`}><h3>{item.name}</h3></Link>
-            </div>
+			<div key={index} className="category-block">
+				<Link className="category-link" to={`/${item.id}`}>
+					<div className="block-image">
+							<img src={item.image} alt="" />
+					</div>
+				</Link>
+				<Link className="category-link" to={`/${item.id}`}>
+					<h3>{item.name}</h3>
+				</Link>
+			</div>
         ))
 	}
     

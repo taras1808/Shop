@@ -1,25 +1,46 @@
+import { useState, useEffect } from 'react'
 import './ProductContentContainer.css';
 import { useParams } from "react-router-dom";
 
 function ProductContentContainer () {
 
     let { productId } = useParams();
+    const [product, setProduct] = useState({})
+
+    useEffect(() => {
+        if (!productId) {
+            setProduct({})
+            return
+        }
+
+        const abortCtrl = new AbortController();
+        const opts = { signal: abortCtrl.signal };
+
+        fetch("http://192.168.0.108:7777/api/product/" +  productId, opts)
+            .then(res => res.json())
+            .then(
+                (result) => setProduct(result),
+                (error) => { if (error.name !== 'AbortError') setProduct({}) }
+            )
+
+        return () => abortCtrl.abort();
+    }, [productId])
 
 	return (
 		<div id="product-content-block">
 
-            <h1>Castrol EDGE OIL { productId }</h1>
+            <h1>{ product.name }</h1>
 
 
             <div className="flex">
                 <div>
                     <div className="image-block">
-                        <img className="image" src="/product.jpg" alt="" />
+                        <img className="image" src={ product.image } alt="" />
                     </div>
                 </div>
                 <div>
-                    <p className="old-price-label"><s>69.99 $</s></p>
-                    <p className="price-label">49.99 $</p>
+                    <p className="old-price-label"><s>99999 $</s></p>
+                    <p className="price-label">{ product.price } $</p>
 
                     <div className="buy-button">
                         Buy Now
