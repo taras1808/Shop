@@ -15,24 +15,24 @@
     background-color: #F7F7F7;
 }
 
-.product-block > img {
+.product-link > img {
     max-width: 200px;
     max-height: 300px;
     display: block;
     margin: auto;
 }
 
-.product-block h4 {
+.product-link > h4 {
     text-align: center;
     margin: 15px 0;
 }
 
-.product-block a {
+.product-link {
     color: #000;
     text-decoration: none;
 }
 
-.product-block a:hover {
+.product-link:hover {
     text-decoration: underline;
 }
 

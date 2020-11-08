@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import './ProductContentContainer.css';
+import './ProductContainer.css';
 import { useParams } from "react-router-dom";
 
-function ProductContentContainer () {
+function ProductContainer () {
 
     let { productId } = useParams();
     const [product, setProduct] = useState({})
@@ -56,4 +56,4 @@ function ProductContentContainer () {
 	)
 }
 
-export default ProductContentContainer;
+export default ProductContainer;
