@@ -6,6 +6,7 @@ import SortContainer from '../sort/SortContainer.js'
 import ProductContainer from '../product/ProductContainer.js'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import CategoriesContainer from '../categories/CategoriesContainer'
+import AdminContainer from '../admin/AdminContainer'
 
 
 function ContentContainer ({ search }) {
@@ -13,11 +14,15 @@ function ContentContainer ({ search }) {
 		<div className="container">
 			<Router >
 				<Switch>
+					<Route path="/admin"></Route>
 					<Route path="/:categoryId">
 						<NavBar />
 					</Route>
 				</Switch>
 				<Switch>
+					<Route path="/admin">
+						<AdminContainer />
+					</Route>
 					<Route path="/:categoryId/:productId">
 						<ProductContainer />
 					</Route>

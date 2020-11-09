@@ -1,6 +1,17 @@
 import Select from 'react-select'
 import './SortContainer.css';
 
+const customStyles = {
+    option: (provided) => ({
+        ...provided,
+        cursor: 'pointer'
+    }),
+    control: (provided) => ({
+        ...provided,
+        cursor: 'pointer'
+    })
+}
+
 const options = [
     { value: '0', label: 'Date, new to old' },
     { value: '1', label: 'Date, old to new' },
@@ -14,7 +25,7 @@ function SortContainer () {
 
 	return (
 		<div id="params-container">
-            <Select id="sort" options={options} defaultValue={options[0]}/>
+            <Select styles={customStyles}  id="sort" options={options} defaultValue={options[0]}/>
 		</div>
 	)
 }
