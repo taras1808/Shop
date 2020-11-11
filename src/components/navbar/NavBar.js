@@ -14,7 +14,7 @@ function NavBar () {
 
     useEffect(() => {
         
-        fetch("http://192.168.0.108:7777/api/category/" +  match.params.categoryId)
+        fetch("http://192.168.0.108:7777/api/categories/" +  match.params.categoryId)
             .then(res => res.json())
             .then(
                 (result) => { setCategory(result) },
@@ -29,7 +29,7 @@ function NavBar () {
             return
         }
 
-        fetch("http://192.168.0.108:7777/api/product/" +  match.params.productId)
+        fetch("http://192.168.0.108:7777/api/products/" +  match.params.productId)
             .then(res => res.json())
             .then(
                 (result) => { setProduct(result) },

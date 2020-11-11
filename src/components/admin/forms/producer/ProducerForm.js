@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './ProducentForm.css';
+import './ProducerForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 
@@ -11,7 +11,7 @@ export default function ProducentForm() {
     const [category, setCategory] = useState([])
 
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/category")
+        fetch("http://192.168.0.108:7777/api/categories")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -23,7 +23,7 @@ export default function ProducentForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        fetch("http://192.168.0.108:7777/api/producent", {
+        fetch("http://192.168.0.108:7777/api/producers", {
             method: 'POST',
             body: JSON.stringify({ name, category }),
             headers: {

@@ -16,7 +16,7 @@ function ProductContainer () {
         const abortCtrl = new AbortController();
         const opts = { signal: abortCtrl.signal };
 
-        fetch("http://192.168.0.108:7777/api/product/" +  productId, opts)
+        fetch("http://192.168.0.108:7777/api/products/" +  productId, opts)
             .then(res => res.json())
             .then(
                 (result) => setProduct(result),

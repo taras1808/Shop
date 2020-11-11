@@ -7,9 +7,14 @@ import ProductContainer from '../product/ProductContainer.js'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import CategoriesContainer from '../categories/CategoriesContainer'
 import AdminContainer from '../admin/AdminContainer'
+import { useState } from 'react';
 
 
 function ContentContainer ({ search }) {
+
+	const [producers, setProducers] = useState([])
+	const [priceRange, setPriceRange] = useState([])
+
 	return (
 		<div className="container">
 			<Router >
@@ -29,8 +34,22 @@ function ContentContainer ({ search }) {
 					<Route path="/:categoryId">
 						<SortContainer />
 						<div className="flex">
-							<FiltersContainer />
-							<ProductsContainer />
+							<FiltersContainer 
+								items={{
+									selectedProducers : {
+										value: producers,
+										setProducers: (e) => setProducers(e), 
+									}, 
+									selectedPriceRange: {
+										value: priceRange,
+										setPriceRange: (e) => setPriceRange(e)
+									}
+								}}
+							/>
+							<ProductsContainer 
+								producers={producers}
+								priceRange={priceRange}
+							/>
 						</div>
 					</Route>
 					<Route path="/">
