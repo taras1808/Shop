@@ -1,0 +1,38 @@
+.admin-panel {
+    padding: 15px;
+}
+
+.admin-panel-back {
+    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+    padding: 10px 0;
+    display: inline-block;
+    transition: color .1s;
+}
+
+.admin-panel-back:hover {
+    color: #4f78ff;
+}
+
+.admin-panel-controls {
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.admin-panel-controls > a {
+    text-decoration: none;
+    color: #000;
+}
+
+.admin-panel-control {
+    padding: 30px;
+    margin: 5px;
+    background-color: #EEE;
+}
+
+.admin-panel-control:hover {
+    background-color: #CCC;
+}

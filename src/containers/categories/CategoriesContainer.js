@@ -51,7 +51,7 @@ function CategoriesContainer (props) {
 	}
     
 	return (
-		<div className="flex categories">
+		<div className="categories">
             { content }
         </div>
 	)

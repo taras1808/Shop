@@ -1,0 +1,40 @@
+
+.form-add-producent {
+    margin: auto;
+    margin-bottom: 100px;
+}
+
+.form-add-producent > h2 {
+    padding: 15px 0;
+}
+
+.form-add-producent > label {
+    display: block;
+    padding: 5px 0;
+}
+
+.form-add-producent > input[type="text"], .form-add-producent > .submit {
+    box-sizing: border-box;
+    width: 100%;
+    display: block;
+    padding: 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    margin-bottom: 10px;
+}
+
+.form-add-producent > .submit {
+    background-color: #EEE;
+    cursor: pointer;
+    transition: background-color .1s;
+    margin-top: 50px;
+}
+
+.form-add-producent > .submit:hover {
+    background-color: #DDD;
+}
+
+.form-add-producent > .submit:active {
+    background-color: #CCC;
+}

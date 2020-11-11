@@ -2,10 +2,11 @@ import './ContentContainer.css'
 import ProductsContainer from '../products/ProductsContainer.js'
 import NavBar from '../../components/navbar/NavBar'
 import FiltersContainer from '../filters/FiltersContainer.js'
-import ParamsContainer from '../params/ParamsContainer.js'
-import ProductContentContainer from '../product/ProductContentContainer.js'
+import SortContainer from '../sort/SortContainer.js'
+import ProductContainer from '../product/ProductContainer.js'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import CategoriesContainer from '../categories/CategoriesContainer'
+import AdminContainer from '../admin/AdminContainer'
 
 
 function ContentContainer ({ search }) {
@@ -13,19 +14,23 @@ function ContentContainer ({ search }) {
 		<div className="container">
 			<Router >
 				<Switch>
+					<Route path="/admin"></Route>
 					<Route path="/:categoryId">
 						<NavBar />
 					</Route>
 				</Switch>
 				<Switch>
+					<Route path="/admin">
+						<AdminContainer />
+					</Route>
 					<Route path="/:categoryId/:productId">
-						<ProductContentContainer />
+						<ProductContainer />
 					</Route>
 					<Route path="/:categoryId">
-						<ParamsContainer />
+						<SortContainer />
 						<div className="flex">
 							<FiltersContainer />
-							<ProductsContainer search={search} />
+							<ProductsContainer />
 						</div>
 					</Route>
 					<Route path="/">

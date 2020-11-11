@@ -9,8 +9,10 @@ class Product extends React.Component {
 
         return (
             <div className="product-block">
-                <img src={item.image} alt="" />
-                <Link to={`${this.props.match.url}/${item.id}`}>
+                <Link className="product-link" to={`${this.props.match.url}/${item.id}`}>
+                    <img src={item.image} alt="" />
+                </Link>
+                <Link className="product-link" to={`${this.props.match.url}/${item.id}`}>
                     <h4>{item.name}</h4>
                 </Link>
                 <p><s>{item.old_price}</s></p>
