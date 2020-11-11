@@ -10,7 +10,7 @@ import AdminContainer from '../admin/AdminContainer'
 import { useState } from 'react';
 
 
-function ContentContainer ({ search }) {
+export default function ContentContainer ({ search }) {
 
 	const [producers, setProducers] = useState([])
 	const [priceRange, setPriceRange] = useState([])
@@ -60,5 +60,3 @@ function ContentContainer ({ search }) {
 		</div>
 	)
 }
-
-export default ContentContainer;
