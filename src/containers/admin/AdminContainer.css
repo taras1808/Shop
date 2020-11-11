@@ -1,48 +1,38 @@
-
-
-.container {
-    max-width: 1200px;
-    margin: auto;
+.admin-panel {
+    padding: 15px;
 }
 
-h2 {
-    padding: 15px 0;
+.admin-panel-back {
+    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+    padding: 10px 0;
+    display: inline-block;
+    transition: color .1s;
 }
 
-label {
-    display: block;
-    padding: 5px 0;
+.admin-panel-back:hover {
+    color: #4f78ff;
 }
 
-.input-field {
-    box-sizing: border-box;
-    width: 300px;
-    display: block;
-    padding: 7px;
-    font-size: 17px;
-    border-radius: 5px;
-    border: 1px solid #CCC;
-    margin-bottom: 10px;
+.admin-panel-controls {
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.submit {
-    text-align: center;
+.admin-panel-controls > a {
+    text-decoration: none;
+    color: #000;
+}
+
+.admin-panel-control {
+    padding: 30px;
+    margin: 5px;
     background-color: #EEE;
-    box-sizing: border-box;
-    width: 300px;
-    display: block;
-    padding: 7px;
-    font-size: 17px;
-    border-radius: 5px;
-    border: 1px solid #CCC;
-    cursor: pointer;
-    transition: background-color .1s;
 }
 
-.submit:hover {
-    background-color: #DDD;
-}
-
-.submit:active {
+.admin-panel-control:hover {
     background-color: #CCC;
 }

@@ -1,121 +1,40 @@
-import { useState, useEffect } from 'react';
 import './AdminContainer.css'
-import Select from 'react-select'
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
+import ProductForm from '../../components/admin/forms/product/ProductForm';
+import ProducentForm from '../../components/admin/forms/producent/ProducentForm';
 
-const customStyles = {
-    option: (provided) => ({
-        ...provided,
-        cursor: 'pointer'
-    }),
-    control: (provided) => ({
-        ...provided,
-		cursor: 'pointer',
-		marginBottom: 10
-    })
-}
-
-function AdminContainer () {
-
-	const [optionsCategories, setOptionsCategories] = useState([])
-	const [optionsProducents, setOptionsProducents] = useState([])
-
-	const [name, setName] = useState("")
-	const [price, setPrice] = useState("")
-	const [image, setImage] = useState("")
-	const [category, setCategory] = useState(null)
-	const [producent, setProducent] = useState(null)
-
-	useEffect(() => {
-		fetch("http://192.168.0.108:7777/api/category")
-			.then(res => res.json())
-			.then(
-				(result) => {
-					setOptionsCategories(result.map(e => { return { value: e.id, label: e.name }}));
-				},
-				(error) => {}
-			)
-
-	}, [])
-
-	useEffect(() => {
-		fetch("http://192.168.0.108:7777/api/category/" + category + "/producents")
-			.then(res => res.json())
-			.then(
-				(result) => {
-					setOptionsProducents(result.map(e => { return { value: e.id, label: e.name }}));
-				},
-				(error) => {}
-			)
-	}, [category])
-
-	const send = (e) => {
-		e.preventDefault()
-
-		const formData = new FormData()
-		formData.append('file', image)
-		formData.append('category', category)
-		formData.append('producent', producent)
-		formData.append('price', price)
-		formData.append('name', name)
-
-		fetch("http://192.168.0.108:7777/api/product", {
-			method: 'POST',
-			body: formData
-		}).then(_ => e.target.reset())
-	}
-
-	const sendProducent = (e) => {
-		e.preventDefault()
-		fetch("http://192.168.0.108:7777/api/producent", {
-			method: 'POST',
-			body: JSON.stringify({ name, category }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(_ => e.target.reset())
-	}
-
+export default function AdminContainer () {
+	let match = useRouteMatch();
 	return (
-		<div className="container">
-
-			<form method="POST" onSubmit={send} action="" encType="multipart/form-data">
-				<h2>Add a product</h2>
-
-				<label>Kategoria:</label>
-				<Select styles={customStyles} id="sort" options={optionsCategories} onChange={e => setCategory(e.value)}/>
-
-				<label>Producent:</label>
-				<Select styles={customStyles} id="sort" options={optionsProducents} value={optionsProducents.filter(e => e.value === producent)} onChange={e => setProducent(e.value)}/>
-
-				<label>Nazwa</label>
-				<input className="input-field" type="text" onChange={e => setName(e.target.value)}/>
-
-				<label>Cena</label>
-				<input className="input-field" type="text" onChange={e => setPrice(e.target.value)}/>
-
-				<label>Image</label>
-				<input className="input-field" type="file" onChange={e => setImage(e.target.files[0])}/>
-
-				<button className="submit">Add</button>
-
-			</form>
-
-			{/* <form method="POST" onSubmit={sendProducent} action="">
-				<h2>Add a producent</h2>
-
-				<label>Nazwa</label>
-				<input className="input-field" type="text" onChange={e => setName(e.target.value)}/>
-
-				<label>Kategorii:</label>
-				<Select isMulti styles={customStyles} id="sort" options={optionsCategories} onChange={e => setCategory(e.map(e => e.value))}/>
-
-
-				<button className="submit">Add</button>
-
-			</form> */}
-			
+		<div className="admin-panel">
+			<Switch>
+				<Route exact path={match.path}></Route>
+				<Route path={match.path}>
+					<Link className="admin-panel-back" to={match.path}>Back</Link>
+				</Route>
+			</Switch>
+			<Switch>
+				<Route exact path={match.path}>
+					<div className="admin-panel-controls">
+						<Link to={`${match.path}/product`}>
+							<div className="admin-panel-control">
+								<h2>New product</h2>
+							</div>
+						</Link>
+						<Link to={`${match.path}/producent`}>
+							<div className="admin-panel-control">
+								<h2>New producent</h2>
+							</div>
+						</Link>
+					</div>
+				</Route>
+				<Route path={`${match.path}/product`}>
+					<ProductForm />
+				</Route>
+				<Route path={`${match.path}/producent`}>
+					<ProducentForm />
+				</Route>
+			</Switch>
 		</div>
 	)
 }
-
-export default AdminContainer;
