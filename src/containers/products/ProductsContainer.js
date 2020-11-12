@@ -4,7 +4,7 @@ import Product from '../../components/product/Product.js';
 import TempProduct from '../../components/product/temp/TempProduct.js';
 import { useParams } from "react-router-dom"
 
-function ProductsContainer ({producers, priceRange}) {
+function ProductsContainer ({producers, priceRange, orderBy}) {
 
 	let { categoryId } = useParams()
 	
@@ -14,7 +14,14 @@ function ProductsContainer ({producers, priceRange}) {
 
 	useEffect(() => {
 		setIsLoaded(false)
-		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/products?producers=" + producers + "&price=" + priceRange)
+
+		let arr = ["?orderBy=" + orderBy]
+		if (producers.length > 0) 
+			arr.push("producers=" + producers)
+		if (priceRange.length === 2) 
+			arr.push("&price=" + priceRange.join('-'))
+
+		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/products" + arr.join('&'))
 			.then(res => res.json())
 			.then(
 				(result) => {
@@ -27,8 +34,7 @@ function ProductsContainer ({producers, priceRange}) {
 					setError(error)
 				}
 			)
-	}, [categoryId, producers, priceRange])
-
+	}, [categoryId, producers, priceRange, orderBy])
   
 
 	let content

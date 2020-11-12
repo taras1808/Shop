@@ -93,7 +93,7 @@ export default function ProductForm() {
             {
                 image ? (
                     <>
-                        <img src={URL.createObjectURL(image)} />
+                        <img src={URL.createObjectURL(image) } alt=""/>
                     </>
                 ) : (
                     <label className="select-image">

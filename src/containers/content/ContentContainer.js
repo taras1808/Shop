@@ -14,6 +14,7 @@ export default function ContentContainer ({ search }) {
 
 	const [producers, setProducers] = useState([])
 	const [priceRange, setPriceRange] = useState([])
+	const [orderBy, setOrderBy] = useState(0)
 
 	return (
 		<div className="container">
@@ -32,7 +33,7 @@ export default function ContentContainer ({ search }) {
 						<ProductContainer />
 					</Route>
 					<Route path="/:categoryId">
-						<SortContainer />
+						<SortContainer orderBy={orderBy} setOrderBy={setOrderBy}/>
 						<div className="flex">
 							<FiltersContainer 
 								items={{
@@ -49,6 +50,7 @@ export default function ContentContainer ({ search }) {
 							<ProductsContainer 
 								producers={producers}
 								priceRange={priceRange}
+								orderBy={orderBy}
 							/>
 						</div>
 					</Route>

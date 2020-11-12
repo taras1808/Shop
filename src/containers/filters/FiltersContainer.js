@@ -17,22 +17,27 @@ function FiltersContainer ({items: {selectedProducers, selectedPriceRange}}) {
     const [priceRange, setPriceRange] = useState({ min: 0, max: 0})
 
     useEffect(() => {
-        selectedProducers.setProducers([])
+		if (selectedProducers.value.length !== 0) 
+			selectedProducers.setProducers([])
 		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/producers")
 			.then(res => res.json())
 			.then((result) => setProducers(result), (error) => {})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryId])
     
     useEffect(() => {
-		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/prices?producers=" + selectedProducers.value)
+		let arr = []
+		if (selectedProducers.value.length > 0) 
+			arr.push('producers=' + selectedProducers.value)
+
+		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/prices?" + arr.join('&'))
 			.then(res => res.json())
 			.then((result) => {
 					setPriceRange(result)
-					selectedPriceRange.setPriceRange([
-						Math.floor(parseFloat(result.min)), 
-						Math.ceil(parseFloat(result.max))
-					])
+					if (selectedPriceRange.value.length !== 0) 
+						selectedPriceRange.setPriceRange([])
 				}, (error) => {})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId, selectedProducers.value])
 
     return (

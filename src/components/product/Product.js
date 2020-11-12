@@ -17,7 +17,7 @@ class Product extends React.Component {
                 <Link title={item.name} className="product-link" to={`${this.props.match.url}/${item.id}`}>
                     <h4>{item.name}</h4>
                 </Link>
-                <p><s>{ item.price * 1.5 }</s></p>
+                <p><s>{ Math.round(item.price * 1.5) }</s></p>
                 <p className="price">{item.price}</p>
             </div>
         );

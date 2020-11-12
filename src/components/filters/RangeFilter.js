@@ -5,7 +5,7 @@ import './Filter.css';
 export default function Filter({header, priceRange, selectedRange, setSelectedRange}) {
 
     const [collapsed, setCollapsed] = useState(false)
-    const [value, setValue] = useState([])
+    const [value, setValue] = useState(['', ''])
 
     useEffect(() => {
         if (priceRange) 
