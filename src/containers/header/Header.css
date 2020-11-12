@@ -27,8 +27,10 @@
 }
 
 #search-button {
+    text-decoration: none;
     padding: 0 25px;
-    display: block;
+    display: flex;
+    align-items: center;
     background-color: #DDD;
     cursor: pointer;
     font-size: 20px;

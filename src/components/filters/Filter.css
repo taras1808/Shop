@@ -27,6 +27,7 @@
 .filter-block ul > li > span {
     display: block;
     width: 18px;
+    min-width: 18px;
     height: 18px;
     margin-right: 10px;
 
