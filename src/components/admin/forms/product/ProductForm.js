@@ -6,16 +6,16 @@ import { SelectStyles } from '../../../styles/CustomStyle'
 export default function ProductForm() {
 
     const [optionsCategories, setOptionsCategories] = useState([])
-    const [optionsProducents, setOptionsProducents] = useState([])
+    const [optionsProducers, setOptionsProducers] = useState([])
 
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [image, setImage] = useState("")
     const [category, setCategory] = useState(null)
-    const [producent, setProducent] = useState(null)
+    const [producer, setProducer] = useState(null)
 
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/category")
+        fetch("http://192.168.0.108:7777/api/categories")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -28,12 +28,12 @@ export default function ProductForm() {
 
     useEffect(() => {
         if (!category) return
-        setProducent("")
-        fetch("http://192.168.0.108:7777/api/category/" + category + "/producents")
+        setProducer("")
+        fetch("http://192.168.0.108:7777/api/categories/" + category + "/producers")
             .then(res => res.json())
             .then(
                 (result) => {
-                    setOptionsProducents(result.map(e => { return { value: e.id, label: e.name }}));
+                    setOptionsProducers(result.map(e => { return { value: e.id, label: e.name }}));
                 },
                 (error) => {}
             )
@@ -45,14 +45,17 @@ export default function ProductForm() {
         const formData = new FormData()
         formData.append('file', image)
         formData.append('category', category)
-        formData.append('producent', producent)
+        formData.append('producer', producer)
         formData.append('price', price)
         formData.append('name', name)
 
-        fetch("http://192.168.0.108:7777/api/product", {
+        fetch("http://192.168.0.108:7777/api/products", {
             method: 'POST',
             body: formData
-        }).then(_ => e.target.reset())
+        }).then(data => {
+            console.log(data.json())
+            e.target.reset()
+        })
     }
     
     return (
@@ -69,9 +72,9 @@ export default function ProductForm() {
 
             <label>Producent:</label>
             <Select styles={SelectStyles} 
-                options={optionsProducents} 
-                value={optionsProducents.filter(e => e.value === producent)} 
-                onChange={e => setProducent(e.value)}/>
+                options={optionsProducers} 
+                value={optionsProducers.filter(e => e.value === producer)} 
+                onChange={e => setProducer(e.value)}/>
 
             <label>Nazwa</label>
             <input type="text" 
@@ -90,7 +93,7 @@ export default function ProductForm() {
             {
                 image ? (
                     <>
-                        <img src={URL.createObjectURL(image)} />
+                        <img src={URL.createObjectURL(image) } alt=""/>
                     </>
                 ) : (
                     <label className="select-image">

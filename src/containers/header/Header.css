@@ -14,7 +14,7 @@
 }
 
 #search-field {
-    width: 350px;
+    max-width: 350px;
     padding: 10px 40px;
     outline: none;
     font-size: 18px;

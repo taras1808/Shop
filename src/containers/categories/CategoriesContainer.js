@@ -10,7 +10,7 @@ function CategoriesContainer (props) {
 
     useEffect(() => {
 		setIsLoaded(false)
-		fetch("http://192.168.0.108:7777/api/category")
+		fetch("http://192.168.0.108:7777/api/categories")
 			.then(res => res.json())
 			.then(
 				(result) => {

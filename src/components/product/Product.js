@@ -10,13 +10,15 @@ class Product extends React.Component {
         return (
             <div className="product-block">
                 <Link className="product-link" to={`${this.props.match.url}/${item.id}`}>
-                    <img src={item.image} alt="" />
+                    <div className="block-image">
+                            <img src={item.image} alt="" />
+                    </div>
                 </Link>
-                <Link className="product-link" to={`${this.props.match.url}/${item.id}`}>
+                <Link title={item.name} className="product-link" to={`${this.props.match.url}/${item.id}`}>
                     <h4>{item.name}</h4>
                 </Link>
-                <p><s>{item.old_price}</s></p>
-                <p>{item.price}</p>
+                <p><s>{ Math.round(item.price * 1.5) }</s></p>
+                <p className="price">{item.price}</p>
             </div>
         );
     }

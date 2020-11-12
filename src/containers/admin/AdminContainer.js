@@ -1,7 +1,7 @@
 import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 import ProductForm from '../../components/admin/forms/product/ProductForm';
-import ProducentForm from '../../components/admin/forms/producent/ProducentForm';
+import ProducerForm from '../../components/admin/forms/producer/ProducerForm';
 
 export default function AdminContainer () {
 	let match = useRouteMatch();
@@ -32,7 +32,7 @@ export default function AdminContainer () {
 					<ProductForm />
 				</Route>
 				<Route path={`${match.path}/producent`}>
-					<ProducentForm />
+					<ProducerForm />
 				</Route>
 			</Switch>
 		</div>
