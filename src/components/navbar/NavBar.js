@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from 'react'
 import './NavBar.css'
-import { Link, useRouteMatch, useLocation } from "react-router-dom"
+import { Link, useRouteMatch, useLocation } from 'react-router-dom'
 
 function NavBar () {
 
-    let match = useRouteMatch("/:categoryId?/:productId?")
+    let match = useRouteMatch('/:categoryId?/:productId?')
     let { pathname } = useLocation()
 
     const [category, setCategory] = useState(null)
@@ -13,6 +13,11 @@ function NavBar () {
     let arr = [category, product]
 
     useEffect(() => {
+
+        if (!match.params.categoryId || match.params.categoryId === 'search') {
+            setCategory(null)
+            return
+        }
         
         fetch("http://192.168.0.108:7777/api/categories/" +  match.params.categoryId)
             .then(res => res.json())

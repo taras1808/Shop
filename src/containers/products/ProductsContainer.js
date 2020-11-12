@@ -2,40 +2,8 @@ import { useState, useEffect } from 'react';
 import './ProductsContainer.css';
 import Product from '../../components/product/Product.js';
 import TempProduct from '../../components/product/temp/TempProduct.js';
-import { useParams } from "react-router-dom"
 
-function ProductsContainer ({producers, priceRange, orderBy}) {
-
-	let { categoryId } = useParams()
-	
-	const [error, setError] = useState(null)
-	const [isLoaded, setIsLoaded] = useState(false)
-	const [items, setItems] = useState([])
-
-	useEffect(() => {
-		setIsLoaded(false)
-
-		let arr = ["?orderBy=" + orderBy]
-		if (producers.length > 0) 
-			arr.push("producers=" + producers)
-		if (priceRange.length === 2) 
-			arr.push("&price=" + priceRange.join('-'))
-
-		fetch("http://192.168.0.108:7777/api/categories/" +  categoryId + "/products" + arr.join('&'))
-			.then(res => res.json())
-			.then(
-				(result) => {
-					setIsLoaded(true)
-					setItems(result)
-					setError()
-				},
-				(error) => {
-					setIsLoaded(true)
-					setError(error)
-				}
-			)
-	}, [categoryId, producers, priceRange, orderBy])
-  
+function ProductsContainer ({items, isLoaded, error}) {
 
 	let content
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import { Link } from "react-router-dom"
 
 class Header extends React.Component {
 
@@ -14,8 +15,16 @@ class Header extends React.Component {
         return (
             <header id="header">
                 <div id="header-panel">
-                    <input id="search-field" type="text" value={this.state.value} placeholder="I`m looking for..." onChange={ event => this.setState({value: event.target.value}) }/>
-                    <button id="search-button" onClick={ () => this.props.setSearch(this.state.value) }>Search</button>
+                    <input id="search-field" 
+                        type="text" 
+                        value={this.state.value} 
+                        placeholder="I`m looking for..." 
+                        onChange={ event => this.setState({value: event.target.value}) }
+                    />
+                    <Link to="/search" 
+                        id="search-button" 
+                        onClick={ () => this.props.setSearch(this.state.value) }
+                    >Search</Link>
                 </div>
             </header>
         );
