@@ -8,3 +8,15 @@ export const SelectStyles = {
 		cursor: 'pointer'
     })
 }
+
+export const SelectStylesMarginBottom = {
+    option: (provided) => ({
+        ...provided,
+        cursor: 'pointer'
+    }),
+    control: (provided) => ({
+        ...provided,
+        cursor: 'pointer',
+        marginBottom: '10px'
+    })
+}

@@ -15,16 +15,29 @@ class Header extends React.Component {
         return (
             <header id="header">
                 <div id="header-panel">
-                    <input id="search-field" 
-                        type="text" 
-                        value={this.state.value} 
-                        placeholder="I`m looking for..." 
-                        onChange={ event => this.setState({value: event.target.value}) }
-                    />
-                    <Link to="/search" 
-                        id="search-button" 
+
+                    <Link to="/" 
+                        id="logo"
                         onClick={ () => this.props.setSearch(this.state.value) }
-                    >Search</Link>
+                    >Tankuj.pl</Link>
+
+                    <div id="header-search-panel">
+                        <input id="search-field" 
+                            type="text" 
+                            value={this.state.value} 
+                            placeholder="I`m looking for..." 
+                            onChange={ event => this.setState({value: event.target.value}) }
+                        />
+                        <Link to="/search" 
+                            id="search-button" 
+                            onClick={ () => this.props.setSearch(this.state.value) }
+                        >Search</Link>
+                    </div>
+
+                    <Link to="/admin" 
+                        id="admin"
+                        onClick={ () => this.props.setSearch(this.state.value) }
+                    >Admin</Link>
                 </div>
             </header>
         );

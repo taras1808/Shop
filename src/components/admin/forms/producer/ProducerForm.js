@@ -8,7 +8,7 @@ export default function ProducentForm() {
     const [optionsCategories, setOptionsCategories] = useState([])
 
     const [name, setName] = useState("")
-    const [category, setCategory] = useState([])
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         fetch("http://192.168.0.108:7777/api/categories")
@@ -25,15 +25,18 @@ export default function ProducentForm() {
         e.preventDefault()
         fetch("http://192.168.0.108:7777/api/producers", {
             method: 'POST',
-            body: JSON.stringify({ name, category }),
+            body: JSON.stringify({ name, categories }),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(_ => e.target.reset())
+        }).then(_ => {
+            alert("OK")
+            e.target.reset()
+        })
     }
     
     return (
-        <form className="form-add-producent" 
+        <form className="form-add-producer" 
             method="POST" 
             onSubmit={onSubmit} 
             action="">
@@ -41,16 +44,17 @@ export default function ProducentForm() {
             <h2>Add a producent</h2>
 
             <label>Nazwa</label>
-            <input className="input-field" 
+            <input className="input-field"
                 type="text" 
                 onChange={e => setName(e.target.value)}/>
 
             <label>Kategorii:</label>
             <Select isMulti 
                 styles={SelectStyles} 
-                options={optionsCategories} onChange={e => setCategory(e ? e.map(e => e.value) : [])}/>
+                options={optionsCategories} onChange={e => setCategories(e ? e.map(e => e.value) : [])}
+            />
 
-            <button className="submit">Save producent</button>
+            <button className="submit">Save producer</button>
         </form>
     );
     
