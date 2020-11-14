@@ -54,6 +54,7 @@ export default function ProductForm() {
             body: formData
         }).then(data => {
             alert("OK")
+            console.log(data)
             e.target.reset()
         })
     }

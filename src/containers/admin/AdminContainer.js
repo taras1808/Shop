@@ -4,6 +4,8 @@ import ProductForm from '../../components/admin/forms/product/ProductForm';
 import ProducerForm from '../../components/admin/forms/producer/ProducerForm';
 import UpdateProducerForm from '../../components/admin/forms/update-producer/UpdateProducerForm';
 import UpdateProductForm from '../../components/admin/forms/update-product/UpdateProductForm';
+import DeleteProductForm from '../../components/admin/forms/delete-product/DeleteProductForm';
+import DeleteProducerForm from '../../components/admin/forms/delete-producer/DeleteProducerForm';
 
 export default function AdminContainer () {
 	let match = useRouteMatch();
@@ -28,6 +30,11 @@ export default function AdminContainer () {
 								<h2>Update product</h2>
 							</div>
 						</Link>
+						<Link to={`${match.path}/product/delete`}>
+							<div className="admin-panel-control">
+								<h2>Delete product</h2>
+							</div>
+						</Link>
 						<Link to={`${match.path}/producer`}>
 							<div className="admin-panel-control">
 								<h2>New producer</h2>
@@ -38,13 +45,24 @@ export default function AdminContainer () {
 								<h2>Update producer</h2>
 							</div>
 						</Link>
+						<Link to={`${match.path}/producer/delete`}>
+							<div className="admin-panel-control">
+								<h2>Delete producer</h2>
+							</div>
+						</Link>
 					</div>
+				</Route>
+				<Route path={`${match.path}/product/delete`}>
+					<DeleteProductForm />
 				</Route>
 				<Route path={`${match.path}/product/update`}>
 					<UpdateProductForm />
 				</Route>
 				<Route path={`${match.path}/product`}>
 					<ProductForm />
+				</Route>
+				<Route path={`${match.path}/producer/delete`}>
+					<DeleteProducerForm />
 				</Route>
 				<Route path={`${match.path}/producer/update`}>
 					<UpdateProducerForm />
