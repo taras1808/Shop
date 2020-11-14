@@ -1,7 +1,7 @@
 import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
-import ProductForm from '../../components/admin/forms/product/ProductForm';
-import ProducerForm from '../../components/admin/forms/producer/ProducerForm';
+import AddProductForm from '../../components/admin/forms/add-product/AddProductForm';
+import AddProducerForm from '../../components/admin/forms/add-producer/AddProducerForm';
 import UpdateProducerForm from '../../components/admin/forms/update-producer/UpdateProducerForm';
 import UpdateProductForm from '../../components/admin/forms/update-product/UpdateProductForm';
 import DeleteProductForm from '../../components/admin/forms/delete-product/DeleteProductForm';
@@ -59,7 +59,7 @@ export default function AdminContainer () {
 					<UpdateProductForm />
 				</Route>
 				<Route path={`${match.path}/product`}>
-					<ProductForm />
+					<AddProductForm />
 				</Route>
 				<Route path={`${match.path}/producer/delete`}>
 					<DeleteProducerForm />
@@ -68,7 +68,7 @@ export default function AdminContainer () {
 					<UpdateProducerForm />
 				</Route>
 				<Route path={`${match.path}/producer`}>
-					<ProducerForm />
+					<AddProducerForm />
 				</Route>
 			</Switch>
 		</div>

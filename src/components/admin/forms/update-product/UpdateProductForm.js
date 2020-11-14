@@ -15,6 +15,7 @@ export default function UpdateProductForm() {
 
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
+    const [oldPrice, setOldPrice] = useState("")
 
     useEffect(() => {
         fetch("http://192.168.0.108:7777/api/products")
@@ -66,7 +67,7 @@ export default function UpdateProductForm() {
         e.preventDefault()
         fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, {
             method: 'PUT',
-            body: JSON.stringify({ name, price, category_id: selectedCategory.value, producer_id: selectedProducer.value }),
+            body: JSON.stringify({ name, price, old_price: oldPrice != '' ? oldPrice : null, category_id: selectedCategory.value, producer_id: selectedProducer.value }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -86,7 +87,7 @@ export default function UpdateProductForm() {
             onSubmit={onSubmit} 
             action="">
 
-            <h2>Select a product</h2>
+            <h2>Update product</h2>
 
             <Select 
                 styles={SelectStylesMarginBottom} 
@@ -95,6 +96,7 @@ export default function UpdateProductForm() {
                 onChange={e => {
                     setName(e.label)
                     setPrice(e.price)
+                    setOldPrice(e.old_price ? e.old_price : '')
                     setSelectedProduct(e)
                 }}
             />
@@ -114,6 +116,12 @@ export default function UpdateProductForm() {
                             value={price}
                             onChange={e => setPrice(e.target.value)}/>
 
+                        <label>Old price</label>
+                        <input className="input-field" 
+                            type="text"
+                            value={oldPrice}
+                            onChange={e => setOldPrice(e.target.value)}/>
+
                         <label>Kategoria:</label>
                         <Select 
                             styles={SelectStylesMarginBottom} 
@@ -128,7 +136,7 @@ export default function UpdateProductForm() {
                             options={optionsProducers} onChange={e => setSelectedProducer(e)}
                         />
 
-                        <button className="submit">Update producer</button>
+                        <button className="submit">Update product</button>
                     </>
                 ) : null
             }

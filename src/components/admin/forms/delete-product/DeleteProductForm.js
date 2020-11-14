@@ -54,7 +54,7 @@ export default function DeleteProductForm() {
             onSubmit={onSubmit} 
             action="">
 
-            <h2>Select a product</h2>
+            <h2>Delete product</h2>
 
             <Select 
                 styles={SelectStylesMarginBottom} 

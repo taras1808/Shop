@@ -66,7 +66,7 @@ export default function UpdateProducerForm() {
             onSubmit={onSubmit} 
             action="">
 
-            <h2>Select a producer</h2>
+            <h2>Update producer</h2>
 
             <Select 
                 styles={SelectStylesMarginBottom} 

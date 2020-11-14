@@ -44,6 +44,15 @@
     background-color: #00a046;
     background-size: 10px 8px;
     border-color: #00a046;
+}
+
+.filter-block ul > li.disabled {
+    opacity: 0.5;;
+}
+
+.filter-block ul > li > p > span {
+    font-size: 13px;
+    color: #777;
 } 
 
 .slider-info {

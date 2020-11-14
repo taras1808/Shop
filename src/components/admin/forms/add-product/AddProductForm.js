@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import './ProductForm.css';
+import './AddProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 
-export default function ProductForm() {
+export default function AddProductForm() {
 
     const [optionsCategories, setOptionsCategories] = useState([])
     const [optionsProducers, setOptionsProducers] = useState([])
 
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
+    const [oldPrice, setOldPrice] = useState("")
     const [image, setImage] = useState("")
     const [category, setCategory] = useState(null)
     const [producer, setProducer] = useState(null)
@@ -47,6 +48,7 @@ export default function ProductForm() {
         formData.append('category', category)
         formData.append('producer', producer)
         formData.append('price', price)
+        formData.append('old_price', oldPrice)
         formData.append('name', name)
 
         fetch("http://192.168.0.108:7777/api/products", {
@@ -64,7 +66,7 @@ export default function ProductForm() {
             method="POST" 
             onSubmit={onSubmit} action="" 
             encType="multipart/form-data">
-            <h2>Add a product</h2>
+            <h2>New product</h2>
 
             <label>Kategoria:</label>
             <Select styles={SelectStyles} 
@@ -86,6 +88,10 @@ export default function ProductForm() {
             <label>Cena</label>
             <input type="text" 
                 onChange={e => setPrice(e.target.value)}/>
+
+            <label>Old price</label>
+            <input type="text"
+                onChange={e => setOldPrice(e.target.value)}/>
 
             <label>Image</label>
 

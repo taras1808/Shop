@@ -22,8 +22,8 @@ class Product extends React.Component {
                 >
                     <h4>{item.name}</h4>
                 </Link>
-                <p><s>{ Math.round(item.price * 1.5) }</s></p>
-                <p className="price">{item.price}</p>
+                <p className="old-price"><s>{ item.old_price ? item.old_price : ''}</s></p>
+                <p className={item.old_price ? "price old" : "price"}>{item.price}</p>
             </div>
         );
     }

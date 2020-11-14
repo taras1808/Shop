@@ -8,11 +8,14 @@ export default function Filter({header, priceRange, selectedRange, setSelectedRa
     const [value, setValue] = useState(['', ''])
 
     useEffect(() => {
-        if (priceRange) 
+        if (priceRange.min && priceRange.max) {
+            const min = Math.floor(parseFloat(priceRange.min))
+            const max = Math.ceil(parseFloat(priceRange.max))
             setValue([
-                Math.floor(parseFloat(priceRange.min)), 
-                Math.ceil(parseFloat(priceRange.max))
+                selectedRange.length === 0 || min > selectedRange[0] ? min : selectedRange[0],
+                selectedRange.length === 0 || max < selectedRange[1] ? max : selectedRange[1]
             ])
+        }
     }, [priceRange])
 
     return (
@@ -32,10 +35,10 @@ export default function Filter({header, priceRange, selectedRange, setSelectedRa
                 </div>
                 <div className="slider-block">
                     <Slider
-                        value={priceRange.min === priceRange.max ? [0, 100] : value}
+                        value={priceRange.min === priceRange.max ? [0, 1] :value}
                         disabled={priceRange.min === priceRange.max}
                         min={priceRange.min === priceRange.max ? 0 : Math.floor(parseFloat(priceRange.min))}
-                        max={priceRange.min === priceRange.max ? 100 : Math.ceil(parseFloat(priceRange.max))}
+                        max={priceRange.min === priceRange.max ? 1 : Math.ceil(parseFloat(priceRange.max))}
                         onChange={(_, value) => setValue(value)}
                         aria-labelledby="track-false-slider"
                     />
