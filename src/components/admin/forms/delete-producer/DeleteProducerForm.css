@@ -13,6 +13,13 @@
     padding: 5px 0;
 }
 
+.form-add-producer > img {
+    max-width: 300px;
+    max-height: 500px;
+    margin: auto;
+    display: block;
+}
+
 .form-add-producer > input[type="text"], .form-add-producer > .submit {
     box-sizing: border-box;
     width: 100%;
@@ -38,3 +45,4 @@
 .form-add-producer > .submit:active {
     background-color: #CCC;
 }
+

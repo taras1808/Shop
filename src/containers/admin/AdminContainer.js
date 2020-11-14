@@ -2,6 +2,10 @@ import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 import ProductForm from '../../components/admin/forms/product/ProductForm';
 import ProducerForm from '../../components/admin/forms/producer/ProducerForm';
+import UpdateProducerForm from '../../components/admin/forms/update-producer/UpdateProducerForm';
+import UpdateProductForm from '../../components/admin/forms/update-product/UpdateProductForm';
+import DeleteProductForm from '../../components/admin/forms/delete-product/DeleteProductForm';
+import DeleteProducerForm from '../../components/admin/forms/delete-producer/DeleteProducerForm';
 
 export default function AdminContainer () {
 	let match = useRouteMatch();
@@ -21,17 +25,49 @@ export default function AdminContainer () {
 								<h2>New product</h2>
 							</div>
 						</Link>
-						<Link to={`${match.path}/producent`}>
+						<Link to={`${match.path}/product/update`}>
 							<div className="admin-panel-control">
-								<h2>New producent</h2>
+								<h2>Update product</h2>
+							</div>
+						</Link>
+						<Link to={`${match.path}/product/delete`}>
+							<div className="admin-panel-control">
+								<h2>Delete product</h2>
+							</div>
+						</Link>
+						<Link to={`${match.path}/producer`}>
+							<div className="admin-panel-control">
+								<h2>New producer</h2>
+							</div>
+						</Link>
+						<Link to={`${match.path}/producer/update`}>
+							<div className="admin-panel-control">
+								<h2>Update producer</h2>
+							</div>
+						</Link>
+						<Link to={`${match.path}/producer/delete`}>
+							<div className="admin-panel-control">
+								<h2>Delete producer</h2>
 							</div>
 						</Link>
 					</div>
 				</Route>
+				<Route path={`${match.path}/product/delete`}>
+					<DeleteProductForm />
+				</Route>
+				<Route path={`${match.path}/product/update`}>
+					<UpdateProductForm />
+				</Route>
 				<Route path={`${match.path}/product`}>
 					<ProductForm />
 				</Route>
-				<Route path={`${match.path}/producent`}>
+				<Route path={`${match.path}/producer/delete`}>
+					<DeleteProducerForm />
+				</Route>
+				<Route path={`${match.path}/producer/update`}>
+					<UpdateProducerForm />
+				</Route>
+				<Route path={`${match.path}/producer`}>
 					<ProducerForm />
 				</Route>
 			</Switch>

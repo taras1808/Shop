@@ -53,7 +53,8 @@ export default function ProductForm() {
             method: 'POST',
             body: formData
         }).then(data => {
-            console.log(data.json())
+            alert("OK")
+            console.log(data)
             e.target.reset()
         })
     }
@@ -68,13 +69,15 @@ export default function ProductForm() {
             <label>Kategoria:</label>
             <Select styles={SelectStyles} 
                 options={optionsCategories} 
-                onChange={e => setCategory(e.value)}/>
+                onChange={e => setCategory(e.value)}
+            />
 
             <label>Producent:</label>
             <Select styles={SelectStyles} 
                 options={optionsProducers} 
                 value={optionsProducers.filter(e => e.value === producer)} 
-                onChange={e => setProducer(e.value)}/>
+                onChange={e => setProducer(e.value)}
+            />
 
             <label>Nazwa</label>
             <input type="text" 
