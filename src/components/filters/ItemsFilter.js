@@ -11,18 +11,21 @@ export default function Filter({header, items, selectedItems, setSelectedItems})
             </div>
             <Collapse className="collapse" in={!collapsed}>
                 <ul>
-                    { items.map((item, index) => (
-                        <li key={index} 
-                            onClick={_ => {
-                                if (selectedItems.includes(item.id))
-                                    setSelectedItems(selectedItems.filter(e => e !== item.id)) 
-                                else
-                                    setSelectedItems([...selectedItems, item.id]) 
-                            }}>
-                            <span className={selectedItems.includes(item.id) ? "checked" : null}></span>
-                            <p>{ item.name }</p>
-                        </li>
-                    )) }
+                    { 
+                        items.map((item, index) => (
+                            <li className={item.disabled && !selectedItems.includes(item) ? "disabled" : null} key={index} 
+                                onClick={_ => {
+                                    if (item.disabled && !selectedItems.includes(item)) return
+                                    if (selectedItems.includes(item))
+                                        setSelectedItems(selectedItems.filter(e => e.id !== item.id)) 
+                                    else
+                                        setSelectedItems([...selectedItems, item]) 
+                                }}>
+                                <span className={selectedItems.includes(item) ? "checked" : null}></span>
+                                <p>{ item.name } <span>({ item.count })</span></p>
+                            </li>
+                        )) 
+                    }
                 </ul>
             </Collapse>
 

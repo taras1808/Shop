@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import './ProducerForm.css';
+import './AddProducerForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 
-export default function ProducentForm() {
+export default function AddProducerForm() {
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -16,8 +16,7 @@ export default function ProducentForm() {
             .then(
                 (result) => {
                     setOptionsCategories(result.map(e => { return { value: e.id, label: e.name }}));
-                },
-                (error) => {}
+                }, (error) => {}
             )
     }, [])
 
@@ -41,7 +40,7 @@ export default function ProducentForm() {
             onSubmit={onSubmit} 
             action="">
 
-            <h2>Add a producent</h2>
+            <h2>New producer</h2>
 
             <label>Nazwa</label>
             <input className="input-field"

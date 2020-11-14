@@ -48,10 +48,18 @@
     color: #777;
 }
 
+.product-block > p.old-price {
+    height: 18px;
+}
+
 .product-block > p.price {
-    color: red;
+    color: #000;
     font-size: 20px;
     margin-bottom: 0;
+}
+
+.product-block > p.price.old {
+    color: red;
 }
 
 .product-block.temp {

@@ -52,7 +52,7 @@ export default function DeleteProducerForm() {
             onSubmit={onSubmit} 
             action="">
 
-            <h2>Select a producer</h2>
+            <h2>Delete producer</h2>
 
             <Select 
                 styles={SelectStylesMarginBottom} 
