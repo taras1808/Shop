@@ -47,7 +47,7 @@ export default function SearchContainer () {
 				}
 			}, (error) => {})
 
-	}, [historySearch])
+	}, [historySearch, selectedPriceRange])
 
 	useEffect(() => {
 		if (!historyProducers) {
