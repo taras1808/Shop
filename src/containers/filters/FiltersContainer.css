@@ -1,3 +1,11 @@
 #filters-block {
-    width: 300px;
+    min-width: 280px;
+}
+
+@media all and (max-width: 800px) {
+
+    #filters-block  {
+        width: 100%
+    }
+
 }

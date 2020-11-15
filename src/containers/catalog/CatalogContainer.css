@@ -1,4 +1,13 @@
 
 .flex {
     display: flex;
+    margin-bottom: 100px;
+}
+
+@media all and (max-width: 800px) {
+
+    .flex {
+        flex-direction: column;
+    }
+
 }

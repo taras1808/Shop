@@ -2,6 +2,7 @@
 
 .categories {
     margin-top: 100px;
+    margin-bottom: 100px;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;

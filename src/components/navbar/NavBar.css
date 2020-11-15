@@ -35,3 +35,9 @@
 #navbar-list > li > a:hover {
     color: #4f78ff;
 }
+
+@media all and (max-width: 800px) {
+    #navbar-list > li:nth-child(n+3) {
+        display: none;
+    }
+}

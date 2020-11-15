@@ -17,6 +17,7 @@
 
 .admin-panel-controls {
     margin-top: 100px;
+    margin-bottom: 100px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -35,4 +36,18 @@
 
 .admin-panel-control:hover {
     background-color: #CCC;
+}
+
+@media all and (max-width: 500px) {
+
+    .admin-panel-controls {
+        flex-direction: column;
+    }
+
+    .admin-panel-control {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 5px 0;
+    }
+
 }
