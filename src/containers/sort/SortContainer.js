@@ -26,6 +26,7 @@ function SortContainer ({orderBy, setOrderBy}) {
 	return (
 		<div id="params-container">
             <Select id="sort"
+                isSearchable={false}
                 styles={customStyles}  
                 options={options} 
                 defaultValue={options[orderBy]} 

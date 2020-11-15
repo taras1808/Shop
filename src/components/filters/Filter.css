@@ -110,3 +110,15 @@
 .MuiSlider-valueLabel {
     left: calc(-50% - -4px) !important;
 }
+
+@media all and (max-width: 800px) {
+
+    .filter-header {
+        padding: 20px;
+    }
+    
+    .filter-block ul > li {
+        padding: 20px;
+    }
+
+}

@@ -16,9 +16,9 @@ export default function ContentContainer ({ search }) {
 				<Route path="/search">
 					<NavBar />
 				</Route>
-				<Route path="/:categoryId">
+				{/* <Route path="/:categoryId">
 					<NavBar />
-				</Route>
+				</Route> */}
 			</Switch>
 			<Switch>
 				<Route path="/admin">
@@ -27,10 +27,10 @@ export default function ContentContainer ({ search }) {
 				<Route path="/search">
 					<SearchContainer search={search}/>
 				</Route>
-				<Route path="/:categoryId/:productId">
+				{/* <Route path="/:categoryId/:productId">
 					<ProductContainer />
-				</Route>
-				<Route path="/:categoryId">
+				</Route> */}
+				<Route path="/:categoryId/">
 					<CatalogContainer />
 				</Route>
 				<Route path="/">
