@@ -15,7 +15,7 @@ export default function CatalogContainer () {
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [items, setItems] = useState([])
 
-	let match = useRouteMatch('/:categoryId/:parameters?')
+	let match = useRouteMatch('/catalog/:categoryId/:parameters?')
 
 	let parameters = match.params.parameters ? 
 		new Map(match.params.parameters.split(';').map(e => e.split('=')))
@@ -36,7 +36,7 @@ export default function CatalogContainer () {
 		if (selectedPriceRange.length === 2) 
 			query.push('?price=' + selectedPriceRange.join('-'))
 
-		fetch('http://192.168.0.108:7777/api/categories/' +  categoryId + '/producers' + query)
+		fetch('http://192.168.0.108:7777/api/categories/' +  categoryId + '/producers' + query.join('&'))
 			.then(res => res.json())
 			.then((result) => {
 				result = result.filter(e => e.hasProducts !== '0')
@@ -45,31 +45,7 @@ export default function CatalogContainer () {
 				})
 				setProducers(result)
 				if (producers.length === 0) {
-					let pricesMin
-					let pricesMax
-
-					if (selectedProducers.length > 0) {
-						pricesMin = result.filter(e => selectedProducers.includes(e.id)).map(({min}) => parseInt(min))
-						pricesMax = result.filter(e => selectedProducers.includes(e.id)).map(({max}) => parseInt(max))
-					} else {
-						pricesMin = result.map(({min}) => parseInt(min))
-						pricesMax = result.map(({max}) => parseInt(max))
-					}
-
-					pricesMin = Math.min(...pricesMin)
-					pricesMax = Math.max(...pricesMax)
-
-					if (selectedPriceRange.length === 0) {
-						setPriceRange({
-							max: pricesMax,
-							min: pricesMin
-						})
-					} else {
-						setPriceRange({
-							max: selectedPriceRange[1] > pricesMax ? selectedPriceRange[1] : pricesMax,
-							min: selectedPriceRange[0] < pricesMin ? selectedPriceRange[0] : pricesMin
-						})
-					}
+					setPriceRangeFunc(result, selectedProducers, selectedPriceRange, setPriceRange)
 				}
 			}, (error) => {})
 	}, [categoryId, selectedPriceRange])
@@ -96,41 +72,13 @@ export default function CatalogContainer () {
 
 		if (producers.length === 0) return
 
-
-		let pricesMin
-		let pricesMax
-
-		if (selectedProducers.length > 0) {
-			pricesMin = producers.filter(e => selectedProducers.includes(e.id)).map(({min}) => parseInt(min))
-			pricesMax = producers.filter(e => selectedProducers.includes(e.id)).map(({max}) => parseInt(max))
-		} else {
-			pricesMin = producers.map(({min}) => parseInt(min))
-			pricesMax = producers.map(({max}) => parseInt(max))
-		}
-
-		pricesMin = Math.min(...pricesMin)
-		pricesMax = Math.max(...pricesMax)
-
-		console.log({pricesMin, pricesMax})
-
-		if (selectedPriceRange.length === 0) {
-			setPriceRange({
-				max: pricesMax,
-				min: pricesMin
-			})
-		} else {
-			setPriceRange({
-				max: selectedPriceRange[1] > pricesMax ? selectedPriceRange[1] : pricesMax,
-				min: selectedPriceRange[0] < pricesMin ? selectedPriceRange[0] : pricesMin
-			})
-		}
+		setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange)
 
 		let parameters = match.params.parameters ? 
         	new Map(match.params.parameters.split(';').map(e => e.split('=')))
 			: new Map()
 
 		if (selectedPriceRange.join('-') === parameters.get('price')) return
-	 if (selectedPriceRange.length === 0) return
 
 		parameters.set('price', selectedPriceRange.join('-'))
 
@@ -141,7 +89,7 @@ export default function CatalogContainer () {
 
 		parameters = parameters !== '' ? parameters + '/' : ''
 
-		history.push(`/${match.params.categoryId}/${parameters}`)
+		history.push(`/catalog/${match.params.categoryId}/${parameters}`)
 
 	}, [selectedPriceRange])
 	
@@ -149,39 +97,13 @@ export default function CatalogContainer () {
 
 		if (producers.length === 0) return
 
-
-		let pricesMin
-		let pricesMax
-
-		if (selectedProducers.length > 0) {
-			pricesMin = producers.filter(e => selectedProducers.includes(e.id)).map(({min}) => parseInt(min))
-			pricesMax = producers.filter(e => selectedProducers.includes(e.id)).map(({max}) => parseInt(max))
-		} else {
-			pricesMin = producers.map(({min}) => parseInt(min))
-			pricesMax = producers.map(({max}) => parseInt(max))
-		}
-
-		pricesMin = Math.min(...pricesMin)
-		pricesMax = Math.max(...pricesMax)
-
-		if (selectedPriceRange.length === 0) {
-			setPriceRange({
-				max: pricesMax,
-				min: pricesMin
-			})
-		} else {
-			setPriceRange({
-				max: selectedPriceRange[1] > pricesMax ? selectedPriceRange[1] : pricesMax,
-				min: selectedPriceRange[0] < pricesMin ? selectedPriceRange[0] : pricesMin
-			})
-		}
+		setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange)
 
 		let parameters = match.params.parameters ? 
         	new Map(match.params.parameters.split(';').map(e => e.split('=')))
 			: new Map()
 
 		if (selectedProducers.join(',') === historyProducers) return
-		if (selectedProducers.length === 0) return
 
 		parameters.set('producers', selectedProducers)
 
@@ -192,9 +114,7 @@ export default function CatalogContainer () {
 
 		parameters = parameters !== '' ? parameters + '/' : ''
 
-		console.log(`/${match.params.categoryId}/${parameters}`)
-
-		history.push(`/${match.params.categoryId}/${parameters}`)
+		history.push(`/catalog/${match.params.categoryId}/${parameters}`)
 
     }, [selectedProducers])
 
@@ -248,4 +168,33 @@ export default function CatalogContainer () {
 			</div>
         </>
 	)
+}
+
+function setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange) {
+
+	let pricesMin
+	let pricesMax
+
+	if (selectedProducers.length > 0) {
+		pricesMin = producers.filter(e => selectedProducers.includes(e.id)).map(({min}) => parseInt(min))
+		pricesMax = producers.filter(e => selectedProducers.includes(e.id)).map(({max}) => parseInt(max))
+	} else {
+		pricesMin = producers.map(({min}) => parseInt(min))
+		pricesMax = producers.map(({max}) => parseInt(max))
+	}
+
+	pricesMin = Math.min(...pricesMin)
+	pricesMax = Math.max(...pricesMax)
+
+	if (selectedPriceRange.length === 0) {
+		setPriceRange({
+			max: pricesMax,
+			min: pricesMin
+		})
+	} else {
+		setPriceRange({
+			max: selectedPriceRange[1] > pricesMax ? selectedPriceRange[1] : pricesMax,
+			min: selectedPriceRange[0] < pricesMin ? selectedPriceRange[0] : pricesMin
+		})
+	}
 }

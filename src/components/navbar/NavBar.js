@@ -4,59 +4,41 @@ import { Link, useRouteMatch, useLocation } from 'react-router-dom'
 
 function NavBar () {
 
-    let match = useRouteMatch('/:categoryId?/:productId?')
-    let { pathname } = useLocation()
+    let match = useRouteMatch('/(search|catalog|product)/:itemId?/')
 
-    const [category, setCategory] = useState(null)
-    const [product, setProduct] = useState(null)
-
-    let arr = [category, product]
+    const [item, setItem] = useState(null)
 
     useEffect(() => {
 
-        if (!match.params.categoryId || match.params.categoryId === 'search') {
-            setCategory(null)
+        if (!match.params.itemId || match) {
+            setItem(null)
             return
         }
         
-        fetch("http://192.168.0.108:7777/api/categories/" +  match.params.categoryId)
+        fetch("http://192.168.0.108:7777/api/categories/" +  match.params.itemId)
             .then(res => res.json())
             .then(
-                (result) => { setCategory(result) },
-                (error) => { setCategory(null) }
+                (result) => { setItem(result) },
+                (error) => { setItem(null) }
             )
 
-    }, [match.params.categoryId])
-
-    useEffect(() => {
-        if (!match.params.productId) {
-            setProduct(null)
-            return
-        }
-
-        fetch("http://192.168.0.108:7777/api/products/" +  match.params.productId)
-            .then(res => res.json())
-            .then(
-                (result) => { setProduct(result) },
-                (error) => { setProduct(null) }
-            )
-
-    }, [match.params.productId])
+    }, [match.params.itemId])
     
-    let url = ""
+    let url = `/${match.params[0]}/`
 
     return (
         <div id="navbar">
             <ul id="navbar-list">
                 <li><Link to="/">Home page</Link></li>
                 {
-                    arr.map((item, index) => {
+                    [item].map((item, index) => {
                         if (!item) return null
 
-                        url += "/" + item.id
+                        url += `${item.id}/`
 
                         let content = item.name
-                        if (pathname !== url) {
+
+                        if (!url.includes(match.url)) {
                             content = <Link to={url}>{content}</Link>
                         }
 

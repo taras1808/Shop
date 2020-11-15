@@ -8,29 +8,26 @@ import SearchContainer from '../search/SearchContainer'
 import CatalogContainer from '../catalog/CatalogContainer'
 
 
-export default function ContentContainer ({ search }) {
+export default function ContentContainer () {
 	return (
 		<div className="container">
 			<Switch>
-				<Route path="/admin"></Route>
-				<Route path="/search">
+				<Route path="/admin/"></Route>
+				<Route path="/(catalog|search|product)/">
 					<NavBar />
 				</Route>
-				{/* <Route path="/:categoryId">
-					<NavBar />
-				</Route> */}
 			</Switch>
 			<Switch>
-				<Route path="/admin">
+				<Route path="/admin/">
 					<AdminContainer />
 				</Route>
-				<Route path="/search">
-					<SearchContainer search={search}/>
+				<Route path="/search/:parameters">
+					<SearchContainer/>
 				</Route>
-				{/* <Route path="/:categoryId/:productId">
+				<Route path="/product/:productId">
 					<ProductContainer />
-				</Route> */}
-				<Route path="/:categoryId/">
+				</Route>
+				<Route path="/catalog/:categoryId/">
 					<CatalogContainer />
 				</Route>
 				<Route path="/">

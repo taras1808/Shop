@@ -7,12 +7,10 @@ import { BrowserRouter as Router} from "react-router-dom"
 
 function App() {
 
-	const [search, setSearch] = useState("");
-	
 	return (
 		<Router >
-			<Header setSearch={setSearch}/>
-			<ContentContainer search={search} />
+			<Header />
+			<ContentContainer />
 		</Router>
 	)
 	

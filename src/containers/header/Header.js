@@ -1,47 +1,50 @@
-import React from 'react';
+import { useState } from 'react';
 import './Header.css';
-import { Link } from "react-router-dom"
+import { Link, useRouteMatch, useHistory } from "react-router-dom"
 
-class Header extends React.Component {
+export default function Header() {
 
-    constructor(props) {
-        super(props)
-        this.state = { value: "" }
+    const history = useHistory();
+
+    const match = useRouteMatch('/search/:parameters')
+
+    let historySearch = ''
+
+    if (match) {
+
+        const parameters = match.params.parameters ? 
+		new Map(match.params.parameters.split(';').map(e => e.split('=')))
+		: new Map()
+
+        historySearch = parameters.get('q')
     }
 
-    
-    render() {
+    const [value, setValue] = useState(historySearch)
 
-        return (
-            <header id="header">
-                <div id="header-panel">
-
-                    <Link to="/" 
-                        id="logo"
-                        onClick={ () => this.props.setSearch(this.state.value) }
-                    >Tankuj.pl</Link>
-
-                    <div id="header-search-panel">
-                        <input id="search-field" 
-                            type="text" 
-                            value={this.state.value} 
-                            placeholder="I`m looking for..." 
-                            onChange={ event => this.setState({value: event.target.value}) }
-                        />
-                        <Link to="/search" 
-                            id="search-button" 
-                            onClick={ () => this.props.setSearch(this.state.value) }
-                        >Search</Link>
-                    </div>
-
-                    <Link to="/admin" 
-                        id="admin"
-                        onClick={ () => this.props.setSearch(this.state.value) }
-                    >Admin</Link>
-                </div>
-            </header>
-        );
+    const onSubmit = (e) => {
+        e.preventDefault()
+        history.push(`/search/q=${value}/`)
     }
+
+    return (
+        <header id="header">
+            <div id="header-panel">
+
+                <Link to="/" 
+                    id="logo">Tankuj.pl</Link>
+
+                <form id="header-search-panel" onSubmit={onSubmit}>
+                    <input id="search-field" 
+                        type="text" 
+                        value={value} 
+                        placeholder="I`m looking for..." 
+                        onChange={ event => setValue(event.target.value) }/>
+                    <button id="search-button">Search</button>
+                </form>
+
+                <Link to="/admin/" 
+                    id="admin">Admin</Link>
+            </div>
+        </header>
+    )
 }
-
-export default Header;

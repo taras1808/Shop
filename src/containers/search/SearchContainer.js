@@ -3,88 +3,128 @@ import FiltersContainer from '../filters/FiltersContainer.js'
 import SortContainer from '../sort/SortContainer.js'
 import ProductsContainer from '../products/ProductsContainer.js'
 import { useState, useEffect } from 'react';
+import { useParams, useRouteMatch, useHistory } from "react-router-dom"
 
-export default function SearchContainer ({ search }) {
+export default function SearchContainer () {
+
+	const history = useHistory();
+	
+	const { categoryId } = useParams()
 
     const [error, setError] = useState(null)
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [items, setItems] = useState([])
 
+	let match = useRouteMatch('/search/:parameters')
+
+	let parameters = match.params.parameters ? 
+		new Map(match.params.parameters.split(';').map(e => e.split('=')))
+		: new Map()
+
+	let historySearch = parameters.get('q')
+	let historyProducers = parameters.get('producers')
+	let historyPrice = parameters.get('price')
+
 	const [producers, setProducers] = useState([])
-	const [priceRange, setPriceRange] = useState({ min: 0, max: 0})
+	const [priceRange, setPriceRange] = useState({ min: null, max: null})
     const [orderBy, setOrderBy] = useState(0)
     
-    const [selectedProducers, setSelectedProducers] = useState([])
-    const [selectedPriceRange, setSelectedPriceRange] = useState([])
-	
-	useEffect(() => {
-		setSelectedProducers([])
-		setSelectedPriceRange([])
-		fetch('http://192.168.0.108:7777/api/search/producers?q=' + search)
-			.then(res => res.json())
-			.then((result) => {
-				result = result.filter(e => parseInt(e.count) !== 0)
-				const pricesMin = result.map(({min}) => min)
-				const pricesMax = result.map(({max}) => max)
-				setProducers(result)
-				setPriceRange({
-					max: Math.max(...pricesMax),
-					min: Math.min(...pricesMin)
-				})
-			}, (error) => {})
-    }, [search])
+    const [selectedProducers, setSelectedProducers] = useState(historyProducers ? historyProducers.split(',').map(e => parseInt(e)) : [])
+	const [selectedPriceRange, setSelectedPriceRange] = useState(historyPrice ? historyPrice.split('-').map(e => parseInt(e)) : [])
 
-    useEffect(() => {
-		if (selectedPriceRange.length < 2) return
-		let query = ['?q=' + search,'orderBy=' + orderBy]
-		if (selectedProducers.length > 0) 
-			query.push('producers=' + selectedProducers.map(e => e.id))
+	useEffect(() => {
+		let query = ['?q=' + historySearch]
 		if (selectedPriceRange.length === 2) 
 			query.push('price=' + selectedPriceRange.join('-'))
+
 		fetch('http://192.168.0.108:7777/api/search/producers' + query.join('&'))
 			.then(res => res.json())
 			.then((result) => {
-				console.log(result)
-				producers.forEach(e1 => {
-					const filtered = result.filter(e2 => e1.id === e2.id)
-					if (filtered.length === 0) {
-						e1.count = 0
-						e1.disabled = true
-					} else {
-						e1.count = filtered[0].count
-						e1.disabled = false
-					}
+				result.forEach(e => {
+					e.disabled = e.count === '0'
 				})
-				setProducers([...producers])
+				setProducers(result)
+				if (producers.length === 0) {
+					setPriceRangeFunc(result, selectedProducers, selectedPriceRange, setPriceRange)
+				}
 			}, (error) => {})
+
+	}, [historySearch])
+
+	useEffect(() => {
+		if (!historyProducers) {
+			setSelectedProducers([])
+			return
+		}
+		if (selectedProducers.join(',') !== historyProducers)
+			setSelectedProducers(historyProducers ? historyProducers.split(',').map(e => parseInt(e)) : []);
+	  }, [historyProducers]);
+
+	useEffect(() => {
+		if (!historyPrice) {
+			setSelectedPriceRange([])
+			return
+		}
+		if (selectedPriceRange.join('-') !== historyPrice)
+			setSelectedPriceRange(historyPrice ? historyPrice.split('-').map(e => parseInt(e)) : []);
+	}, [historyPrice]);
+
+    useEffect(() => {
+
+		if (producers.length === 0) return
+
+		setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange)
+
+		let parameters = match.params.parameters ? 
+        	new Map(match.params.parameters.split(';').map(e => e.split('=')))
+			: new Map()
+
+		if (selectedPriceRange.join('-') === parameters.get('price')) return
+
+		parameters.set('price', selectedPriceRange.join('-'))
+
+		parameters = Array.from(parameters)
+			.filter(e => e[1].length > 0)
+			.map(e => e.join('='))
+			.join(';')
+
+		parameters = parameters !== '' ? parameters + '/' : ''
+
+		history.push(`/search/${parameters}`)
+
 	}, [selectedPriceRange])
 	
 	useEffect(() => {
+
 		if (producers.length === 0) return
-		if (selectedProducers.length > 0) {
-			if (selectedPriceRange.length !== 0) return
-			const pricesMin = selectedProducers.map(({min}) => min)
-			const pricesMax = selectedProducers.map(({max}) => max)
-			setPriceRange({
-				max: Math.max(...pricesMax),
-				min: Math.min(...pricesMin)
-			})
-		} else {
-			const pricesMin = producers.map(({min}) => min)
-			const pricesMax = producers.map(({max}) => max)
-			setPriceRange({
-				max: Math.max(...pricesMax),
-				min: Math.min(...pricesMin)
-			})
-		}
-    }, [selectedProducers])
+
+		setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange)
+
+		let parameters = match.params.parameters ? 
+        	new Map(match.params.parameters.split(';').map(e => e.split('=')))
+			: new Map()
+
+		if (selectedProducers.join(',') === historyProducers) return
+
+		parameters.set('producers', selectedProducers)
+
+		parameters = Array.from(parameters)
+			.filter(e => e[1].length > 0)
+			.map(e => e.join('='))
+			.join(';')
+
+		parameters = parameters !== '' ? parameters + '/' : ''
+
+		history.push(`/search/${parameters}`)
+
+	}, [selectedProducers])
     
     useEffect(() => {
 		setIsLoaded(false)
 
-		let query = ["?q=" + search, "orderBy=" + orderBy]
+		let query = ["?q=" + historySearch, "orderBy=" + orderBy]
 		if (selectedProducers.length > 0) 
-			query.push("producers=" + selectedProducers.map(e => e.id))
+			query.push("producers=" + selectedProducers)
 		if (selectedPriceRange.length === 2) 
 			query.push("price=" + selectedPriceRange.join('-'))
 
@@ -101,7 +141,7 @@ export default function SearchContainer ({ search }) {
 					setError(error)
 				}
 			)
-    }, [search, selectedProducers, selectedPriceRange, orderBy])
+    }, [historySearch, selectedProducers, selectedPriceRange, orderBy])
     
 	return (
         <>
@@ -130,3 +170,33 @@ export default function SearchContainer ({ search }) {
         </>
 	)
 }
+
+function setPriceRangeFunc(producers, selectedProducers, selectedPriceRange, setPriceRange) {
+
+	let pricesMin
+	let pricesMax
+
+	if (selectedProducers.length > 0) {
+		pricesMin = producers.filter(e => selectedProducers.includes(e.id)).map(({min}) => parseInt(min))
+		pricesMax = producers.filter(e => selectedProducers.includes(e.id)).map(({max}) => parseInt(max))
+	} else {
+		pricesMin = producers.map(({min}) => parseInt(min))
+		pricesMax = producers.map(({max}) => parseInt(max))
+	}
+
+	pricesMin = Math.min(...pricesMin)
+	pricesMax = Math.max(...pricesMax)
+
+	if (selectedPriceRange.length === 0) {
+		setPriceRange({
+			max: pricesMax,
+			min: pricesMin
+		})
+	} else {
+		setPriceRange({
+			max: selectedPriceRange[1] > pricesMax ? selectedPriceRange[1] : pricesMax,
+			min: selectedPriceRange[0] < pricesMin ? selectedPriceRange[0] : pricesMin
+		})
+	}
+}
+

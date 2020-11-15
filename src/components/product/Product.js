@@ -10,7 +10,7 @@ class Product extends React.Component {
         return (
             <div className="product-block">
                 <Link className="product-link" 
-                    to={`${this.props.match.url.includes('search') ? item.category_id : this.props.match.url}/${item.id}/`}
+                    to={`/product/${item.id}/`}
                 >
                     <div className="block-image">
                             <img src={item.image} alt="" />
@@ -18,7 +18,7 @@ class Product extends React.Component {
                 </Link>
                 <Link title={item.name} 
                     className="product-link" 
-                    to={`${this.props.match.url.includes('search') ? item.category_id : this.props.match.url}/${item.id}/`}
+                    to={`/product/${item.id}/`}
                 >
                     <h4>{item.name}</h4>
                 </Link>
