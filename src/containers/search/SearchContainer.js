@@ -8,8 +8,6 @@ import { useParams, useRouteMatch, useHistory } from "react-router-dom"
 export default function SearchContainer () {
 
 	const history = useHistory();
-	
-	const { categoryId } = useParams()
 
     const [error, setError] = useState(null)
 	const [isLoaded, setIsLoaded] = useState(false)
@@ -84,7 +82,7 @@ export default function SearchContainer () {
 		parameters.set('price', selectedPriceRange.join('-'))
 
 		parameters = Array.from(parameters)
-			.filter(e => e[1].length > 0)
+			.filter(e => e[1].length > 0 || e[0] === 'q')
 			.map(e => e.join('='))
 			.join(';')
 
@@ -109,7 +107,7 @@ export default function SearchContainer () {
 		parameters.set('producers', selectedProducers)
 
 		parameters = Array.from(parameters)
-			.filter(e => e[1].length > 0)
+			.filter(e => e[1].length > 0 || e[0] === 'q')
 			.map(e => e.join('='))
 			.join(';')
 
