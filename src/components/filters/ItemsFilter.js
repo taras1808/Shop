@@ -1,53 +1,53 @@
 import { Collapse } from '@material-ui/core';
 import { useState } from 'react';
 import './Filter.css';
-// import { useRouteMatch, useHistory } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 
-export default function Filter({ header, items, selectedItems, setSelectedItems}) {
+
+export default function ItemsFilter({filter}) {
+
+    const history = useHistory();
+
+    const { categoryId, params } = useParams()
+
+    let parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
+
+    let array = parameters.get(filter.name) ? parameters.get(filter.name).split(',').map(e => parseInt(e)) : []
+
     const [collapsed, setCollapsed] = useState(false)
-
-    // const history = useHistory();
-    // let match = useRouteMatch('/:categoryId/:parameters?')
-
-    // let parameters = match.params.parameters ? 
-	// 	new Map(match.params.parameters.split(';').map(e => e.split('=')))
-	// 	: new Map()
-
-	// let historyProducers = parameters.get('producers') ? parameters.get('producers').split(',') : []
 
     return (
         <div className="filter-block">
             <div className="filter-header" onClick={() => setCollapsed(!collapsed)}>
-                { header }
+                { filter.title }
             </div>
             <Collapse className="collapse" in={!collapsed}>
                 <ul>
                     { 
-                        items.map((item, index) => (
-                            <li className={item.disabled && !selectedItems.includes(item.id) ? "disabled" : null} key={index} 
+                        filter.options.map((item, index) => (
+                            <li key={index} 
+                                className={item.products_quantity === '0' && !array.includes(item.id) ? "disabled" : null} 
                                 onClick={_ => {
 
-                                    if (item.disabled && !selectedItems.includes(item.id)) return
+                                    if (item.products_quantity === '0' && !array.includes(item.id)) return
 
-                                    if (selectedItems.includes(item.id)) {
-                                        // parameters.set('producers', selectedItems.filter(e => e !== `${item.id}`))
-                                        setSelectedItems(selectedItems.filter(e => e !== item.id)) 
+                                    if (array.includes(item.id)) {
+                                        array = array.filter(e => e !== item.id)
                                     } else {
-                                        setSelectedItems([...selectedItems, item.id])
-                                        // parameters.set('producers', [...selectedItems, item.id])
+                                        array = [...array, item.id]
                                     }
 
-                                    // parameters = Array.from(parameters)
-                                    //     .filter(e => e[1].length > 0)
-                                    //     .map(e => e.join('='))
-                                    //     .join(';')
+                                    parameters.set(filter.name, array)
 
-                                    // parameters = parameters !== '' ? parameters + '/' : ''
+                                    let params = Array.from(parameters)
+                                        .filter(e => e[1].length > 0)
+                                        .map(e => e.join('='))
+                                        .join(';')
 
-                                    // history.push(`/${match.params.categoryId}/${parameters}`)
+                                    history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
                                 }}>
-                                <span className={selectedItems.includes(item.id) ? "checked" : null}></span>
-                                <p>{ item.name } <span>({ item.count })</span></p>
+                                <span className={array.includes(item.id) ? "checked" : null}></span>
+                                <p>{ item.value } <span>({ item.products_quantity })</span></p>
                             </li>
                         )) 
                     }

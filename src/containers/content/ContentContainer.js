@@ -21,13 +21,13 @@ export default function ContentContainer () {
 				<Route path="/admin/">
 					<AdminContainer />
 				</Route>
-				<Route path="/search/:parameters">
+				<Route path="/search/:params?/">
 					<SearchContainer/>
 				</Route>
 				<Route path="/product/:productId">
 					<ProductContainer />
 				</Route>
-				<Route path="/catalog/:categoryId/">
+				<Route path="/catalog/:categoryId/:params?/">
 					<CatalogContainer />
 				</Route>
 				<Route path="/">
