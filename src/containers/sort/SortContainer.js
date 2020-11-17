@@ -1,5 +1,6 @@
 import Select from 'react-select'
 import './SortContainer.css';
+import { useParams, useHistory } from "react-router-dom"
 
 const customStyles = {
     option: (provided) => ({
@@ -21,7 +22,13 @@ const options = [
     { value: 5, label: 'Alphabetically, Z-A' }
 ]
 
-function SortContainer ({orderBy, setOrderBy}) {
+function SortContainer () {
+
+    const history = useHistory();
+
+    const { categoryId, params } = useParams()
+
+    let parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
 
 	return (
 		<div id="params-container">
@@ -29,8 +36,18 @@ function SortContainer ({orderBy, setOrderBy}) {
                 isSearchable={false}
                 styles={customStyles}  
                 options={options} 
-                defaultValue={options[orderBy]} 
-                onChange={e => setOrderBy(e.value)}
+                defaultValue={options[0]} 
+                onChange={e => {
+
+                    parameters.set('orderBy', `${e.value}`)
+
+                    let params = Array.from(parameters)
+                        .filter(e => e[1].length > 0)
+                        .map(e => e.join('='))
+                        .join(';')
+
+                    history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+                }}
             />
 		</div>
 	)

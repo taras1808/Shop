@@ -12,7 +12,7 @@ export default function RangeFilter({filter}) {
 
     let parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
 
-    let array = parameters.get(filter.name) ? parameters.get(filter.name).split('-').map(e => parseInt(e)) : ['', '']
+    let array = parameters.get(filter.name) ? parameters.get(filter.name).split('-').map(e => parseInt(e)) : null
 
     const [collapsed, setCollapsed] = useState(false)
 
@@ -21,11 +21,11 @@ export default function RangeFilter({filter}) {
 
     useEffect(() => {
         if (!filter) return
-        const min = Math.floor(parseFloat(array[0] === '' || filter.range.min < array[0] ? filter.range.min : array[0]))
-        const max = Math.ceil(parseFloat(array[1] === '' || filter.range.max > array[1] ? filter.range.max : array[1]))
+        const min = Math.floor(parseFloat(!array || filter.range.min < array[0] ? filter.range.min : array[0]))
+        const max = Math.ceil(parseFloat(!array || filter.range.max > array[1] ? filter.range.max : array[1]))
         setRange({min, max})
 
-        if (array[0] == [''])
+        if (!array)
             setValue([min, max])
     }, [filter])
 
@@ -38,30 +38,39 @@ export default function RangeFilter({filter}) {
 
             <Collapse className="collapse" in={!collapsed}>
                 <div className="slider-info">
-                    <input type="text" value={value[0]} onChange={(e) => setValue([e.target.value, value[1]])} />
 
-                    <input type="text" value={value[1]} onChange={(e) => setValue([value[0], e.target.value])} />
+                    { 
+                        value ? ( 
+                            <>
+                                <input type="text" value={value[0]} onChange={(e) => setValue([e.target.value, value[1]])} />
+                                <input type="text" value={value[1]} onChange={(e) => setValue([value[0], e.target.value])} />
+                                <button onClick={_ => {
+                                    parameters.set(filter.name, value.join('-'))
 
-                    <button onClick={_ => {
-                        parameters.set(filter.name, value.join('-'))
+                                    let params = Array.from(parameters)
+                                        .filter(e => e[1].length > 0)
+                                        .map(e => e.join('='))
+                                        .join(';')
 
-                        let params = Array.from(parameters)
-                            .filter(e => e[1].length > 0)
-                            .map(e => e.join('='))
-                            .join(';')
-
-                        history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
-                    }}>OK</button>
+                                    history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+                                }}>OK</button>
+                            </>
+                        ) : null 
+                    }
                 </div>
                 <div className="slider-block">
-                    <Slider
-                        value={range.min === range.max ? [0, 1] : value}
-                        disabled={range.min === range.max}
-                        min={range.min === range.max ? 0 : Math.floor(parseFloat(range.min))}
-                        max={range.min === range.max ? 1 : Math.ceil(parseFloat(range.max))}
-                        onChange={(_, value) => setValue(value)}
-                        aria-labelledby="track-false-slider"
-                    />
+                    { 
+                        value ? ( 
+                            <Slider
+                                value={range.min === range.max ? [0, 1] : value}
+                                disabled={range.min === range.max}
+                                min={range.min === range.max ? 0 : Math.floor(parseFloat(range.min))}
+                                max={range.min === range.max ? 1 : Math.ceil(parseFloat(range.max))}
+                                onChange={(_, value) => setValue(value)}
+                                aria-labelledby="track-false-slider"
+                            />
+                        ) : null
+                    }
                 </div>
             </Collapse>
 

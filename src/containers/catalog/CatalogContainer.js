@@ -17,8 +17,6 @@ export default function CatalogContainer () {
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [items, setItems] = useState([])
 
-	const [orderBy, setOrderBy] = useState(0)
-
 	useEffect(() => {
 		if (state !== params)
 			setState(params)
@@ -26,9 +24,9 @@ export default function CatalogContainer () {
 
 	useEffect(() => {
 
-		let query = []
-
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
+
+		let query = []
 
 		parameters.forEach((value, key) => {
 			if (value && value.length > 0)
@@ -53,9 +51,9 @@ export default function CatalogContainer () {
 
 		if (!filters) return
 
-		let query = []
-
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
+
+		let query = ['?orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')]
 
 		filters.map(filter => {
 			const data = parameters.get(filter.name)
@@ -64,9 +62,6 @@ export default function CatalogContainer () {
 		})
 
 		query = query.join('&')
-
-		if (query.length > 0)
-			query = '?' + query
 
 		fetch('http://192.168.0.108:7777/api/categories/' +  categoryId + '/products' + query)
 			.then(res => res.json())
@@ -86,7 +81,7 @@ export default function CatalogContainer () {
     
 	return (
 		<>
-			<SortContainer orderBy={orderBy} setOrderBy={setOrderBy}/>
+			<SortContainer />
 			<div className="flex">
 				<FiltersContainer filters={filters} />
 				<ProductsContainer 

@@ -16,8 +16,6 @@ export default function SearchContainer () {
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [items, setItems] = useState([])
 
-	const [orderBy, setOrderBy] = useState(0)
-
 	useEffect(() => {
 		if (state !== params)
 			setState(params)
@@ -42,7 +40,6 @@ export default function SearchContainer () {
 		fetch('http://192.168.0.108:7777/api/search/filters' + query)
 			.then(res => res.json())
 			.then((result) => {
-				console.log(result)
 				setFilters(result)
 			}, (error) => {})
 
@@ -55,7 +52,10 @@ export default function SearchContainer () {
 
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
 
-		let query = ['q=' + parameters.get('q')]
+		let query = [
+			'?q=' + (parameters.get('q') ? parameters.get('q') : ''), 
+			'orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')
+		]
 
 		filters.map(filter => {
 			const data = parameters.get(filter.name)
@@ -65,14 +65,10 @@ export default function SearchContainer () {
 
 		query = query.join('&')
 
-		if (query.length > 0)
-			query = '?' + query
-
 		fetch('http://192.168.0.108:7777/api/search/products' + query)
 			.then(res => res.json())
 			.then(
 				(result) => {
-					console.log(result)
 					setIsLoaded(true)
 					setItems(result)
 					setError()
@@ -86,7 +82,7 @@ export default function SearchContainer () {
 
 	return (
         <>
-			<SortContainer orderBy={orderBy} setOrderBy={setOrderBy}/>
+			<SortContainer />
 			<div className="flex">
 				<FiltersContainer filters={filters} />
 				<ProductsContainer 
