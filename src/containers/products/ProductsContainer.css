@@ -5,3 +5,11 @@
     justify-content: center;
     align-content: flex-start;
 }
+
+@media all and (max-width: 800px) {
+
+    .products-container {
+        width: 100%;
+    }
+
+}

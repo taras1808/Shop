@@ -38,12 +38,12 @@ function CategoriesContainer (props) {
 	} else {
 		content = items.map((item, index) => (
 			<div key={index} className="category-block">
-				<Link className="category-link" to={`/${item.id}`}>
+				<Link className="category-link" to={`/catalog/${item.id}/`}>
 					<div className="block-image">
 							<img src={item.image} alt="" />
 					</div>
 				</Link>
-				<Link className="category-link" to={`/${item.id}`}>
+				<Link className="category-link" to={`/catalog/${item.id}/`}>
 					<h3>{item.name}</h3>
 				</Link>
 			</div>

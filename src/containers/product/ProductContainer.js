@@ -31,19 +31,26 @@ function ProductContainer () {
 
             <h1>{ product.name }</h1>
 
+            <div className="product-content-block">
 
-            <div className="flex">
-                <div>
+                <div className="block">
                     <div className="image-block">
                         <img className="image" src={ product.image } alt="" />
                     </div>
                 </div>
-                <div>
-                    <p className="old-price-label"><s>99999 $</s></p>
-                    <p className="price-label">{ product.price } $</p>
+                <div className="block">
 
-                    <div className="buy-button">
-                        Buy Now
+                    <div className="buy-block">
+
+                        <div className="price-block">
+                            <p className="old-price-label"><s>{ product.old_price ? `${product.old_price} $` : '' }</s></p>
+                            <p className={ product.old_price ? 'old price-label' : 'price-label'}>{ product.price } $</p>
+                        </div>
+
+                        <div className="buy-button">
+                            Buy Now
+                        </div>
+
                     </div>
 
                     <p>
