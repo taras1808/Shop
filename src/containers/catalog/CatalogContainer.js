@@ -2,7 +2,7 @@ import './CatalogContainer.css'
 import { useState, useEffect } from 'react';
 import ProductsContainer from '../products/ProductsContainer.js'
 import FiltersContainer from '../filters/FiltersContainer.js'
-import SortContainer from '../sort/SortContainer.js'
+import ParamsContainer from '../params/ParamsContainer.js'
 import { useParams } from "react-router-dom"
 
 
@@ -23,6 +23,7 @@ export default function CatalogContainer () {
 	}, [params])
 
 	useEffect(() => {
+		setIsLoaded(false)
 
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
 
@@ -47,7 +48,6 @@ export default function CatalogContainer () {
 	}, [state])
 
     useEffect(() => {
-		setIsLoaded(false)
 
 		if (!filters) return
 
@@ -67,7 +67,6 @@ export default function CatalogContainer () {
 			.then(res => res.json())
 			.then(
 				(result) => {
-					console.log(result)
 					setIsLoaded(true)
 					setItems(result)
 					setError()
@@ -81,9 +80,9 @@ export default function CatalogContainer () {
     
 	return (
 		<>
-			<SortContainer />
+			<ParamsContainer filters={filters} />
 			<div className="flex">
-				<FiltersContainer filters={filters} />
+				<FiltersContainer isLoading={!isLoaded} filters={filters} />
 				<ProductsContainer 
 					items={items}
 					isLoaded={isLoaded}

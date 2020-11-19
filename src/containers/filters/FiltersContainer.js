@@ -8,10 +8,10 @@ export const FilterType = Object.freeze({
     SLIDER: 1
 });
 
-function FiltersContainer ({filters}) {
+function FiltersContainer ({isLoading, filters}) {
 
     return (
-        <div id="filters-block">
+        <div id="filters-block" className={isLoading ? "preload" : null}>
 
 			{
 				filters ? filters.map((filter, index) => {

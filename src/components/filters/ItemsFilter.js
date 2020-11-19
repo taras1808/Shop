@@ -10,7 +10,7 @@ export default function ItemsFilter({filter}) {
 
     const { categoryId, params } = useParams()
 
-    let parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
+    const parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
 
     let array = parameters.get(filter.name) ? parameters.get(filter.name).split(',').map(e => parseInt(e)) : []
 
