@@ -10,7 +10,7 @@ export default function RangeFilter({filter}) {
 
     const { categoryId, params } = useParams()
 
-    let parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
+    const parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
 
     let array = parameters.get(filter.name) ? parameters.get(filter.name).split('-').map(e => parseInt(e)) : null
 
@@ -27,6 +27,8 @@ export default function RangeFilter({filter}) {
 
         if (!array)
             setValue([min, max])
+        else
+            setValue([array[0], array[1]])
     }, [filter])
 
     return (

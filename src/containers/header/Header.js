@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Header.css';
 import { Link, useRouteMatch, useHistory } from "react-router-dom"
 
@@ -6,24 +6,31 @@ export default function Header() {
 
     const history = useHistory();
 
-    const match = useRouteMatch('/search/:parameters')
+    const match = useRouteMatch('/search/:parameters?/')
 
     let historySearch = ''
 
     if (match) {
-
         const parameters = match.params.parameters ? 
-		new Map(match.params.parameters.split(';').map(e => e.split('=')))
-		: new Map()
+            new Map(match.params.parameters.split(';').map(e => e.split('=')))
+            : new Map()
 
         historySearch = parameters.get('q')
+
+        if (!historySearch) history.push(`/`)
     }
 
     const [value, setValue] = useState(historySearch)
 
+    useEffect(() => {
+        if (historySearch !== value || !match)
+            setValue(historySearch)
+    }, [match ? match.params.parameters : null])
+
     const onSubmit = (e) => {
         e.preventDefault()
-        history.push(`/search/q=${value}/`)
+        if (value)
+            history.push(`/search/q=${value.trim()}/`)
     }
 
     return (
