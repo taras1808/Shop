@@ -57,7 +57,7 @@ function NavBar () {
                             return null
                         }
 
-                        return (<li key={index}>{content}</li>)
+                        return (<li key={index}><div className="arrow-block"><span className="arrow"></span></div>{content}</li>)
                     })
                 }
             </ul>
@@ -72,6 +72,7 @@ function NavBar () {
                     <h1> { '«' + parameters.get('q') + '»' } </h1>
                 ) : null
             }
+
         </div>
     );
 }
