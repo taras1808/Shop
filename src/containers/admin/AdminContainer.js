@@ -1,8 +1,8 @@
 import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
-import AddProductForm from '../../components/admin/forms/add-product/AddProductForm';
-import UpdateProductForm from '../../components/admin/forms/update-product/UpdateProductForm';
-import DeleteProductForm from '../../components/admin/forms/delete-product/DeleteProductForm';
+import AddProductForm from '../../components/admin/forms/AddProductForm';
+import EditProductForm from '../../components/admin/forms/EditProductForm';
+import DeleteProductForm from '../../components/admin/forms/DeleteProductForm';
 
 export default function AdminContainer () {
 	let match = useRouteMatch();
@@ -17,30 +17,30 @@ export default function AdminContainer () {
 			<Switch>
 				<Route exact path={match.path}>
 					<div className="admin-panel-controls">
-						<Link to={`${match.path}/product`}>
+						<Link to={`${match.path}product/add`}>
 							<div className="admin-panel-control">
 								<h2>New product</h2>
 							</div>
 						</Link>
-						<Link to={`${match.path}/product/update`}>
+						<Link to={`${match.path}product/edit`}>
 							<div className="admin-panel-control">
 								<h2>Update product</h2>
 							</div>
 						</Link>
-						<Link to={`${match.path}/product/delete`}>
+						<Link to={`${match.path}product/delete`}>
 							<div className="admin-panel-control">
 								<h2>Delete product</h2>
 							</div>
 						</Link>
 					</div>
 				</Route>
-				<Route path={`${match.path}/product/delete`}>
+				<Route path={`${match.path}product/delete`}>
 					<DeleteProductForm />
 				</Route>
-				<Route path={`${match.path}/product/update`}>
-					<UpdateProductForm />
+				<Route path={`${match.path}product/edit`}>
+					<EditProductForm />
 				</Route>
-				<Route path={`${match.path}/product`}>
+				<Route path={`${match.path}product/add`}>
 					<AddProductForm />
 				</Route>
 			</Switch>

@@ -12,37 +12,35 @@
 
 #navbar-list > li {
     list-style: none;
+    display: flex;
 }
 
-#navbar-list > li:before {
-    content: '>';
-    font-style: normal;
-    font-weight: 500;
-    text-decoration: inherit;
+#navbar-list > li > div.arrow-block {
     padding: 0 5px;
+    display: flex;
+    align-items: center;
 }
 
-#navbar-list > li:first-child:before {
-    content: '';
-    padding: 0;
+div.arrow-block > span.arrow {
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+    transform: translateX(-25%) rotate(45deg);
+    width: 5px;
+    height: 5px;
+    display: inline-block;
 }
 
 #navbar-list > li > a {
     text-decoration: none;
-    color: #000;
+    color: #4f78ff;
     transition: color .1s;
 }
 
 #navbar-list > li > a:hover {
-    color: #4f78ff;
+    color: #3e66e9;
+    text-decoration: underline;
 }
 
 #navbar > h1 {
     margin-top: 20px;
-}
-
-@media all and (max-width: 800px) {
-    #navbar-list > li:nth-child(n+3) {
-        display: none;
-    }
 }

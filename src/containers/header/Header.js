@@ -37,8 +37,7 @@ export default function Header() {
         <header id="header">
             <div id="header-panel">
 
-                <Link to="/" 
-                    id="logo">Tankuj.pl</Link>
+                <Link to="/" id="logo">Tankuj.pl</Link>
 
                 <form id="header-search-panel" onSubmit={onSubmit}>
                     <input id="search-field" 
@@ -49,8 +48,7 @@ export default function Header() {
                     <button id="search-button">Search</button>
                 </form>
 
-                <Link to="/admin/" 
-                    id="admin">Admin</Link>
+                <Link to="/admin/" id="admin">Admin</Link>
             </div>
         </header>
     )

@@ -1,3 +1,5 @@
+import { red } from "@material-ui/core/colors"
+
 export const SelectStyles = {
     option: (provided) => ({
         ...provided,
@@ -9,7 +11,7 @@ export const SelectStyles = {
     })
 }
 
-export const SelectStylesMarginBottom = {
+export const ErrorSelectStyles = {
     option: (provided) => ({
         ...provided,
         cursor: 'pointer'
@@ -17,6 +19,6 @@ export const SelectStylesMarginBottom = {
     control: (provided) => ({
         ...provided,
         cursor: 'pointer',
-        marginBottom: '10px'
+        borderColor: red
     })
 }
