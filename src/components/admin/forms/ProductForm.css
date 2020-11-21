@@ -1,0 +1,66 @@
+
+.product-form {
+    margin: auto;
+    margin-bottom: 100px;
+}
+
+.product-form > h2 {
+    padding: 15px 0;
+}
+
+.product-form > p, .product-form > div > p {
+    padding: 15px 0 10px;
+    line-height: 20px;
+}
+
+.product-form > p > span.close {
+    float: right;
+    cursor: pointer;
+    color: red;
+}
+
+.product-form > input[type="text"], 
+.product-form > label.select-image, 
+.product-form > .submit {
+    box-sizing: border-box;
+    width: 100%;
+    display: block;
+    padding: 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+}
+
+.product-form > label.select-image,
+.product-form > .submit {
+    background-color: #EEE;
+    cursor: pointer;
+    transition: background-color .1s;
+    text-align: center;
+}
+
+.product-form > label.select-image:hover,
+.product-form > .submit:hover {
+    background-color: #DDD;
+}
+
+.product-form > label.select-image:active,
+.product-form > .submit:active {
+    background-color: #CCC;
+}
+
+.product-form > label.select-image > input[type="file"] {
+    opacity: 0;
+    display: none;
+}
+
+.product-form > img {
+    max-width: 300px;
+    max-height: 500px;
+    margin: auto;
+    display: block;
+}
+
+.product-form > .submit {
+    margin: 50px 0;
+}

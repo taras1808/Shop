@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './DeleteProductForm.css';
+import './ProductForm.css';
 import Select from 'react-select'
-import { SelectStylesMarginBottom, SelectStyles } from '../../../styles/CustomStyle'
+import { SelectStyles } from '../../styles/CustomStyle'
 
 export default function DeleteProductForm() {
 
@@ -47,13 +47,12 @@ export default function DeleteProductForm() {
     }
     
     return (
-        <form className="form-add-producer" 
-            onSubmit={onSubmit} >
+        <div className="product-form">
 
             <h2>Delete product</h2>
 
             <Select 
-                styles={SelectStylesMarginBottom} 
+                styles={SelectStyles} 
                 options={optionsProducts}
                 value={selectedProduct}
                 onChange={e => setSelectedProduct(e) }
@@ -62,19 +61,20 @@ export default function DeleteProductForm() {
             {
                 selectedProduct ? (
                     <>
-                        <label>Nazwa: {selectedProduct.name}</label>
+                        <p>Nazwa: {selectedProduct.name}</p>
 
-                        <label>Cena: {selectedProduct.price}</label>
+                        <p>Cena: {selectedProduct.price}</p>
 
-                        <label>Kategoria: {category ? category.name : null}</label>
+                        <p>Kategoria: {category ? category.name : null}</p>
 
-                        <img src={selectedProduct.image} alt=""/>
+                        <p>Image:</p>
+                        { selectedProduct.image ? (<img src={selectedProduct.image} alt=""/>) : null }
 
-                        <button className="submit">Delete product</button>
+                        <button className="submit" onClick={onSubmit}>Delete product</button>
                     </>
                 ) : null
             }
-        </form>
+        </div>
     );
     
 }

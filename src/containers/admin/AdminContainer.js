@@ -1,8 +1,8 @@
 import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
-import AddProductForm from '../../components/admin/forms/add-product/AddProductForm';
-import EditProductForm from '../../components/admin/forms/edit-product/EditProductForm';
-import DeleteProductForm from '../../components/admin/forms/delete-product/DeleteProductForm';
+import AddProductForm from '../../components/admin/forms/AddProductForm';
+import EditProductForm from '../../components/admin/forms/EditProductForm';
+import DeleteProductForm from '../../components/admin/forms/DeleteProductForm';
 
 export default function AdminContainer () {
 	let match = useRouteMatch();
