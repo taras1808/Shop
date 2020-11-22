@@ -1,16 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import './ProductContainer.css'
-import { useParams } from "react-router-dom"
-import ReactImageMagnify from 'react-image-magnify'
-import ImageGallery from 'react-image-gallery'
-import "react-image-gallery/styles/css/image-gallery.css"
+import { useParams } from 'react-router-dom'
 
 function ProductContainer () {
 
     let { productId } = useParams();
     const [product, setProduct] = useState({})
-    const [isFullscreen, setIsFullscreen] = useState(false)
-    const galleryRef = useRef(null);
 
     useEffect(() => {
         if (!productId) {
@@ -43,28 +38,6 @@ function ProductContainer () {
                 <div className="block">
                     <div className="image-block">
 
-                    <ImageGallery ref={galleryRef} items={
-                            product.images ? product.images.map(e => ({
-                                original: e.image,
-                                thumbnail: e.image
-                            })) : []
-                        } 
-                        thumbnailPosition='left'
-                        showPlayButton={false}
-                        showFullscreenButton={false}
-                        useBrowserFullscreen={false}
-                        disableKeyDown={true}
-                        lazyLoad={true}
-                        showIndex={false}
-                        showNav={false}
-                        onClick={() => {
-                            if (isFullscreen) {
-                                galleryRef.current.fullScreen()
-                            } else {
-                                galleryRef.current.exitFullScreen()
-                            }
-                            setIsFullscreen(!isFullscreen)
-                        }} />
                     </div>
                 </div>
                 <div className="block">
