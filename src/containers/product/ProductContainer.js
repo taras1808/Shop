@@ -1,11 +1,16 @@
-import { useState, useEffect } from 'react'
-import './ProductContainer.css';
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react'
+import './ProductContainer.css'
+import { useParams } from "react-router-dom"
+import ReactImageMagnify from 'react-image-magnify'
+import ImageGallery from 'react-image-gallery'
+import "react-image-gallery/styles/css/image-gallery.css"
 
 function ProductContainer () {
 
     let { productId } = useParams();
     const [product, setProduct] = useState({})
+    const [isFullscreen, setIsFullscreen] = useState(false)
+    const galleryRef = useRef(null);
 
     useEffect(() => {
         if (!productId) {
@@ -19,7 +24,9 @@ function ProductContainer () {
         fetch("http://192.168.0.108:7777/api/products/" +  productId, opts)
             .then(res => res.json())
             .then(
-                (result) => setProduct(result),
+                (result) => {
+                    console.log(result)
+                    setProduct(result)},
                 (error) => { if (error.name !== 'AbortError') setProduct({}) }
             )
 
@@ -35,7 +42,29 @@ function ProductContainer () {
 
                 <div className="block">
                     <div className="image-block">
-                        <img className="image" src={ product.image } alt="" />
+
+                    <ImageGallery ref={galleryRef} items={
+                            product.images ? product.images.map(e => ({
+                                original: e.image,
+                                thumbnail: e.image
+                            })) : []
+                        } 
+                        thumbnailPosition='left'
+                        showPlayButton={false}
+                        showFullscreenButton={false}
+                        useBrowserFullscreen={false}
+                        disableKeyDown={true}
+                        lazyLoad={true}
+                        showIndex={false}
+                        showNav={false}
+                        onClick={() => {
+                            if (isFullscreen) {
+                                galleryRef.current.fullScreen()
+                            } else {
+                                galleryRef.current.exitFullScreen()
+                            }
+                            setIsFullscreen(!isFullscreen)
+                        }} />
                     </div>
                 </div>
                 <div className="block">

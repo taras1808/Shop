@@ -8,12 +8,25 @@
     padding: 15px 0;
 }
 
-.product-form > p, .product-form > div > p {
+.product-form > a {
+    display: block;
+    margin: 20px 0;
+    text-decoration: none;
+    color: #4f78ff;
+}
+
+.product-form > a:hover{
+    color: #3e66e9;
+    text-decoration: underline;
+}
+
+.product-form p {
+    font-weight: bold;
     padding: 15px 0 10px;
     line-height: 20px;
 }
 
-.product-form > p > span.close {
+.product-form span.close {
     float: right;
     cursor: pointer;
     color: red;
@@ -54,13 +67,52 @@
     display: none;
 }
 
-.product-form > img {
-    max-width: 300px;
-    max-height: 500px;
-    margin: auto;
+.product-form > .submit {
+    margin: 50px 0;
+}
+
+
+
+
+
+
+
+
+
+.product-form > .images-section {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.product-form > .images-section > .image-section {
+    width: 350px;
+    margin: 5px;
+    padding: 0 10px;
+    border: 1px solid #DDD;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-form > .images-section > .image-section > span {
     display: block;
 }
 
-.product-form > .submit {
-    margin: 50px 0;
+.product-form > .images-section > .image-section > .image-block {
+    display: flex;
+    align-items: center;
+}
+
+.product-form > .images-section > .image-section > .image-block > img {
+    max-width: 100%;
+    max-height: 300px;
+    margin: 20px auto;
+    display: block;
+}
+
+@media all and (max-width: 700px) {
+    .product-form > .images-section > .image-section {
+        width: 100%;
+    }
 }

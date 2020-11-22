@@ -24,7 +24,7 @@ export default function AdminContainer () {
 						</Link>
 						<Link to={`${match.path}product/edit`}>
 							<div className="admin-panel-control">
-								<h2>Update product</h2>
+								<h2>Edit product</h2>
 							</div>
 						</Link>
 						<Link to={`${match.path}product/delete`}>

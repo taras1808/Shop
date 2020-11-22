@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import './ProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../styles/CustomStyle'
+import { Link } from "react-router-dom";
+
 
 export default function DeleteProductForm() {
 
@@ -61,14 +63,26 @@ export default function DeleteProductForm() {
             {
                 selectedProduct ? (
                     <>
-                        <p>Nazwa: {selectedProduct.name}</p>
+                        <Link target="_blank" to={`/product/${selectedProduct.id}/`}>Look at product</Link>
 
-                        <p>Cena: {selectedProduct.price}</p>
+                        <p>Nazwa:</p> <span>{selectedProduct.name}</span>
 
-                        <p>Kategoria: {category ? category.name : null}</p>
+                        <p>Cena:</p> <span>{selectedProduct.price}</span>
 
-                        <p>Image:</p>
-                        { selectedProduct.image ? (<img src={selectedProduct.image} alt=""/>) : null }
+                        <p>Kategoria:</p>  {category ? <span>{category.name}</span> : null}
+
+                        <p>Images</p>
+                        <div className="images-section">
+                            {
+                                selectedProduct.images.map((image, index) => (
+                                    <div key={index} className="image-section">
+                                        <div className="image-block">
+                                            <img src={image.image} alt=""/>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
 
                         <button className="submit" onClick={onSubmit}>Delete product</button>
                     </>

@@ -19,17 +19,16 @@
 }
 
 .image-block {
-    max-width: 500px;
     max-height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin: auto;
 }
 
-.image {
-    max-width: 100%;
-    max-height: 500px;
+.image-gallery-image, .image-gallery-thumbnail-image {
+    background-color: #FFF;
+}
+
+.image-gallery-image {
+    height: 400px;
 }
 
 .buy-block {
