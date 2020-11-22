@@ -12,7 +12,7 @@ export default function AddProductForm() {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [oldPrice, setOldPrice] = useState("")
-    const [image, setImage] = useState(null)
+    const [images, setImages] = useState([])
     const [category, setCategory] = useState(null)
 
     const [filters, setFilters] = useState([])
@@ -41,7 +41,7 @@ export default function AddProductForm() {
     const onSubmit = () => {
 
         const formData = new FormData()
-        if (image) formData.append('file', image)
+        images.forEach((image,  index) => formData.append('file_' + index, image))
         if (category) formData.append('category_id', category.id)
         formData.append('options', JSON.stringify(Array.from(productOptions)))
         formData.append('price', price)
@@ -99,33 +99,47 @@ export default function AddProductForm() {
 
             <div className="submit" onClick={onSubmit}>Save product</div>
 
-            <p>Image
+            <p>Image</p>
+
+            <label className="select-image">
+                Select image...
+                <input type="file"
+                    multiple 
+                    accept="image/png, image/jpeg" 
+                    onChange={e => {
+                        const array = [...images]
+                        Array.from(e.target.files).forEach(e => {
+                            if (!images.map(e => e.name).includes(e.name)) {
+                                array.push(e)
+                            }
+                        })
+                        setImages(array)
+                        e.target.value = ''
+                    }} />
+            </label>
+
+            <div className="images-section">
                 {
-                    image ? (
-                        <span className="close" onClick={() => setImage(null)}>Remove</span>
-                    ) : null
+                    images.map((image, index) => (
+                        <div key={index} className="image-section">
+
+                            <p>Name:
+                                <span className="close" onClick={() => {
+                                    setImages(images.filter(e => e !== image))
+                                }}>Remove</span>
+                            </p>
+                            <span>{image.name} </span>
+
+                            <p>Size:</p>
+                            <span>{(image.size / 1024).toFixed(2)} KB</span>
+
+                            <div className="image-block">
+                                <img src={URL.createObjectURL(image) } alt=""/>
+                            </div>
+                        </div>
+                    ))
                 }
-            </p>
-
-            
-            {
-                image ? (
-                    <>
-                        <p>Name: {image.name}</p>
-                        <p>Size: {(image.size / 1024).toFixed(2)} KB</p>
-                        <img src={URL.createObjectURL(image) } alt=""/>
-                    </>
-                ) : (
-                    <label className="select-image">
-                        Select image...
-                        <input type="file" 
-                            accept="image/png, image/jpeg" 
-                            onChange={e => setImage(e.target.files[0])} />
-                    </label>
-                )
-            }
-
-
+            </div>
         </div>
     );
 }

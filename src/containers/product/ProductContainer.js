@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import './ProductContainer.css';
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react'
+import './ProductContainer.css'
+import { useParams } from 'react-router-dom'
 
 function ProductContainer () {
 
@@ -19,7 +19,9 @@ function ProductContainer () {
         fetch("http://192.168.0.108:7777/api/products/" +  productId, opts)
             .then(res => res.json())
             .then(
-                (result) => setProduct(result),
+                (result) => {
+                    console.log(result)
+                    setProduct(result)},
                 (error) => { if (error.name !== 'AbortError') setProduct({}) }
             )
 
@@ -35,7 +37,7 @@ function ProductContainer () {
 
                 <div className="block">
                     <div className="image-block">
-                        <img className="image" src={ product.image } alt="" />
+
                     </div>
                 </div>
                 <div className="block">

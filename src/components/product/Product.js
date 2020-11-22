@@ -13,7 +13,7 @@ class Product extends React.Component {
                     to={`/product/${item.id}/`}
                 >
                     <div className="block-image">
-                            <img src={item.image} alt="" />
+                            <img src={item.images.length > 0 ? item.images[0].image : null} alt="" />
                     </div>
                 </Link>
                 <Link title={item.name} 

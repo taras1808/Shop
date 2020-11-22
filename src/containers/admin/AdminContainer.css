@@ -4,7 +4,7 @@
 
 .admin-panel-back {
     font-size: 20px;
-    color: #000;
+    color: #4f78ff;
     text-decoration: none;
     padding: 10px 0;
     display: inline-block;
@@ -12,7 +12,8 @@
 }
 
 .admin-panel-back:hover {
-    color: #4f78ff;
+    color: #3e66e9;
+    text-decoration: underline;
 }
 
 .admin-panel-controls {
