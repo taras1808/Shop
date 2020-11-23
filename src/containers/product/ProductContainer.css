@@ -18,17 +18,8 @@
     padding: 10px;
 }
 
-.image-block {
-    max-height: 500px;
-    margin: auto;
-}
-
-.image-gallery-image, .image-gallery-thumbnail-image {
-    background-color: #FFF;
-}
-
-.image-gallery-image {
-    height: 400px;
+.product-content-block > .block > .images-block {
+    height: 500px;
 }
 
 .buy-block {
