@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import './ProductContainer.css'
 import { useParams } from 'react-router-dom'
+import ImagesGallery from '../gallery/ImagesGallery';
 
-function ProductContainer () {
+
+export default function ProductContainer () {
 
     let { productId } = useParams();
     const [product, setProduct] = useState({})
 
     useEffect(() => {
+
+        window.scrollTo({ top: 0 })
+
         if (!productId) {
             setProduct({})
             return
@@ -36,7 +41,9 @@ function ProductContainer () {
             <div className="product-content-block">
 
                 <div className="block">
-                    <div className="image-block">
+                    <div className="images-block">
+
+                        <ImagesGallery images={product.images} />
 
                     </div>
                 </div>
@@ -64,5 +71,3 @@ function ProductContainer () {
         </div>
 	)
 }
-
-export default ProductContainer;

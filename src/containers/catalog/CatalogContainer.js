@@ -18,6 +18,10 @@ export default function CatalogContainer () {
 	const [items, setItems] = useState([])
 
 	useEffect(() => {
+		window.scrollTo({ top: 0 })
+	}, [])
+
+	useEffect(() => {
 		if (state !== params)
 			setState(params)
 	}, [params])
