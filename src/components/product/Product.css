@@ -1,6 +1,7 @@
 .product-block {
     overflow: hidden;
     width: 200px;
+    min-width: 200px;
     padding: 25px;
     height: 350px;
     border-right: 1px solid #EEE;

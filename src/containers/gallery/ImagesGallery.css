@@ -5,24 +5,26 @@
 }
 
 .images-gallery-thumbnails-block {
-    width: 100px;
+    width: 75px;
     height: 100%;
-    padding-right: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
+    padding-right: 20px;
+    overflow-y: auto;
     flex-shrink: 0;
-    position: relative;
 }
 
 .images-gallery-thumbnail {
-    width: 90px;
-    height: 90px;
+    width: 75px;
+    height: 75px;
     display: flex;
     border-radius: 10px;
     border: 1px solid #DDD;
     cursor: pointer;
     padding: 5px;
     box-sizing: border-box;
+}
+
+.images-gallery-thumbnail.active {
+    border-color: #00b850;
 }
 
 .images-gallery-thumbnail:hover {
