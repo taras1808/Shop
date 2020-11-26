@@ -6,7 +6,7 @@ export default function ImagesGallery ({ images }) {
 
     const [selectedImage, setSelectedImage] = useState(null)
 
-    const [offset, setOffset] = useState(0)
+    const ref = useRef()
 
     useEffect(() => {
         if (images) setSelectedImage(images[0])
@@ -15,21 +15,12 @@ export default function ImagesGallery ({ images }) {
     return (
         <div className="images-gallery-block">
 
-            <div className="images-gallery-thumbnails-block">
-
-                <div style={{transform: "translateY(" + (-offset) + "px)", transition: 'transform .3s'}}>
+            <div ref={ref} className="images-gallery-thumbnails-block">
 
                     {
                         images ? images.map((image, index) => (
-                            <div key={index} className="images-gallery-thumbnail" onClick={_ => {
+                            <div key={index} className={image === selectedImage ? "images-gallery-thumbnail active" : "images-gallery-thumbnail"} onClick={_ => {
                                 setSelectedImage(images[index])
-                                if (images.length <= 4) return
-                                if (index > 2 && index < images.length - 3)
-                                    setOffset(index * 95 - 205)
-                                if (index <= 2)
-                                    setOffset(index * 0)
-                                if (index >= images.length - 3)
-                                    setOffset((images.length - 3) * 95 - 220)
                             }}>
 
                                 <img src={image.image}></img>
@@ -38,7 +29,6 @@ export default function ImagesGallery ({ images }) {
                         )) : null
                     }
 
-                </div>
 
             </div>
 

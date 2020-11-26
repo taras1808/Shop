@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import './ProductContainer.css'
 import { useParams } from 'react-router-dom'
-import ImagesGallery from '../gallery/ImagesGallery';
+import ImagesGallery from '../gallery/ImagesGallery'
+import Product from '../../components/product/Product'
 
 
 export default function ProductContainer () {
@@ -21,12 +22,10 @@ export default function ProductContainer () {
         const abortCtrl = new AbortController();
         const opts = { signal: abortCtrl.signal };
 
-        fetch("http://192.168.0.108:7777/api/products/" +  productId, opts)
+        fetch('http://192.168.0.108:7777/api/products/' +  productId, opts)
             .then(res => res.json())
             .then(
-                (result) => {
-                    console.log(result)
-                    setProduct(result)},
+                (result) => setProduct(result),
                 (error) => { if (error.name !== 'AbortError') setProduct({}) }
             )
 
@@ -67,6 +66,52 @@ export default function ProductContainer () {
                     </p>
                 </div>
             </div>
+
+
+            <h2>Parametry <span>{ product.name }</span></h2>
+
+            {   
+                product.options ? (
+                    <ul className="product-params-block">
+                        {
+                            product.options.map(e => (
+                                <li>
+                                    <div><span>{ e.name }</span></div>
+                                    <div><span>{ e.value }</span></div>
+                                </li>
+                            ))
+                        }
+                        {
+                            product.options.map(e => (
+                                <li>
+                                    <div><span>{ e.name }</span></div>
+                                    <div><span>{ e.value }</span></div>
+                                </li>
+                            ))
+                        }
+                        {
+                            product.options.map(e => (
+                                <li>
+                                    <div><span>{ e.name }</span></div>
+                                    <div><span>{ e.value }</span></div>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                ) : null
+
+            }
+
+            <h2>Produkty z kategorii <span>{ product.category ? product.category.name : null }</span></h2>
+
+            <div className="products">
+                {
+                    product.items ? product.items.map((item, index) => 
+                        (<Product key={index} item={item} />)
+                    ) : null
+                }
+            </div>
+
 
         </div>
 	)
