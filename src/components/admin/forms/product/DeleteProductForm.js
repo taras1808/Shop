@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './ProductForm.css';
+import '../ProductForm.css';
 import Select from 'react-select'
-import { SelectStyles } from '../../styles/CustomStyle'
+import { SelectStyles } from '../../../styles/CustomStyle'
 import { Link } from "react-router-dom";
 
 

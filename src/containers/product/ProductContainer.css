@@ -70,11 +70,11 @@
     background-color: #00863a;
 }
 
-h2 {
+#product-content-block h2 {
     margin: 30px 0 15px;
 }
 
-h2 > span {
+#product-content-block h2 > span {
     color: #CCC;
 }
 

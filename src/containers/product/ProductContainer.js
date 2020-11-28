@@ -81,22 +81,6 @@ export default function ProductContainer () {
                                 </li>
                             ))
                         }
-                        {
-                            product.options.map(e => (
-                                <li>
-                                    <div><span>{ e.name }</span></div>
-                                    <div><span>{ e.value }</span></div>
-                                </li>
-                            ))
-                        }
-                        {
-                            product.options.map(e => (
-                                <li>
-                                    <div><span>{ e.name }</span></div>
-                                    <div><span>{ e.value }</span></div>
-                                </li>
-                            ))
-                        }
                     </ul>
                 ) : null
 

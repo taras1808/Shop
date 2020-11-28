@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './ProductForm.css';
+import '../ProductForm.css';
 import Select from 'react-select'
-import { SelectStyles } from '../../styles/CustomStyle'
+import { SelectStyles } from '../../../styles/CustomStyle'
 import { Link } from "react-router-dom";
 
 
@@ -38,8 +38,8 @@ export default function EditProductForm() {
 
     useEffect(() => {
         if (!selectedProduct) return
-        setFilters([])
         setProductOptions(new Map())
+        setFilters([])
         if (optionsCategories.length === 0)
             fetch("http://192.168.0.108:7777/api/categories")
                 .then(res => res.json())
@@ -59,8 +59,9 @@ export default function EditProductForm() {
             .then(res => res.json())
             .then(
                 (result) => {
-                    result.forEach(e => productOptions.set(e.filter_id, e.id))
-                    setProductOptions(productOptions)
+                    const options = new Map()
+                    result.forEach(e => options.set(e.filter_id, e.id))
+                    setProductOptions(options)
                     setFilters(filters)
                 }, (error) => {}
             )
