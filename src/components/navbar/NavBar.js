@@ -4,13 +4,11 @@ import { Link, useRouteMatch, useParams } from 'react-router-dom'
 
 function NavBar () {
 
-    const match = useRouteMatch('/(search|catalog|product)/:itemId?/')
+    const match = useRouteMatch('/(search|category|catalog|product)/:itemId?/')
 
     const parameters = match.params.itemId ? new Map(match.params.itemId.split(';').map(e => e.split('='))) : new Map()
 
     const [item, setItem] = useState([])
-
-    let url = ''
 
     useEffect(() => {
 
@@ -19,18 +17,36 @@ function NavBar () {
             return
         }
         
-        if (match.params[0] === 'catalog') {
+        if (match.params[0] === 'catalog' || match.params[0] === 'category') {
             fetch("http://192.168.0.108:7777/api/categories/" +  match.params.itemId)
                 .then(res => res.json())
                 .then(
-                    (result) => { setItem([result]) },
+                    (result) => { 
+                        const arr = []
+                        const getParent = (node) => {
+                            arr.push(node)
+                            if (node.parent)
+                                getParent(node.parent)
+                        }
+                        getParent(result)
+                        setItem(arr.reverse()) 
+                    },
                     (error) => { setItem([]) }
                 )
         } else {
             fetch("http://192.168.0.108:7777/api/products/" +  match.params.itemId)
                 .then(res => res.json())
                 .then(
-                    (result) => { setItem([result.category, result]) },
+                    (result) => { 
+                        const arr = []
+                        const getParent = (node) => {
+                            arr.push(node)
+                            if (node.parent)
+                                getParent(node.parent)
+                        }
+                        getParent(result.category)
+                        setItem(arr.reverse()) 
+                    },
                     (error) => { setItem([]) }
                 )
         }
@@ -47,12 +63,16 @@ function NavBar () {
                     item.map((e, index) => {
                         if (!e) return null
 
-                        url += `${e.id}/`
+                        let url = `${e.id}/`
 
                         let content = e.name
 
-                        if (index != item.length - 1) {
-                            content = <Link to={`/catalog/${url}`}>{content}</Link>
+                        if (index != item.length - 1 || match.params[0] === 'product') {
+
+                            if (index === item.length - 1)
+                                content = <Link to={`/catalog/${url}`}>{content}</Link>
+                            else
+                                content = <Link to={`/category/${url}`}>{content}</Link>
                         } else {
                             return null
                         }
@@ -62,7 +82,7 @@ function NavBar () {
                 }
             </ul>
             {
-                match.params[0] === 'catalog' ? (
+                match.params[0] === 'catalog' || match.params[0] === 'category' ? (
                     <h1> { item.length > 0 ? item[item.length - 1].name : null } </h1>
                 ) : null
             }

@@ -55,7 +55,7 @@ export default function AddProductForm() {
         .then(result => result.json())
         .then(
             (result) => alert("OK"),
-            (error) => alert("Product already exists")
+            (error) => alert(error)
         )
     }
 
@@ -64,7 +64,7 @@ export default function AddProductForm() {
             <h2>New product</h2>
 
             <p>Kategoria:</p>
-            <Select styles={SelectStyles} 
+            <Select styles={SelectStyles}
                 value={category}
                 options={optionsCategories} 
                 onChange={e => setCategory(e)} />
@@ -86,6 +86,7 @@ export default function AddProductForm() {
                         <div key={index}>
                             <p>{ filter.title }</p>
                             <Select styles={SelectStyles} 
+                                isClearable
                                 options={options}
                                 value={options.filter(e => e.value === productOptions.get(filter.id))}
                                 onChange={e => {

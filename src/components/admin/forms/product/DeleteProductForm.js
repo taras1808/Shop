@@ -37,15 +37,20 @@ export default function DeleteProductForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, {
-            method: 'DELETE'
-        }).then(result => result.json())
-            .then(result => {
-                alert("OK")
-                const arr = optionsProducts.filter(e => e.value !== selectedProduct.id)
-                setOptionsProducts(arr)
-                setSelectedProduct(null)
+        fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, 
+            { 
+                method: 'DELETE' 
             })
+            .then(result => result.json())
+            .then(
+                result => {
+                    alert("OK")
+                    const arr = optionsProducts.filter(e => e.value !== selectedProduct.id)
+                    setOptionsProducts(arr)
+                    setSelectedProduct(null)
+                },
+                error => alert(error)
+            )
     }
     
     return (
@@ -54,6 +59,7 @@ export default function DeleteProductForm() {
             <h2>Delete product</h2>
 
             <Select 
+                isClearable
                 styles={SelectStyles} 
                 options={optionsProducts}
                 value={selectedProduct}

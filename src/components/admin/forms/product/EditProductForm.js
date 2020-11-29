@@ -105,7 +105,7 @@ export default function EditProductForm() {
                     setImages([])
                     setOldImages(result.images)
                 },
-                (error) => alert("Product already exists")
+                (error) => alert(error)
             )
     }
     
@@ -155,6 +155,7 @@ export default function EditProductForm() {
 
                         <p>Kategoria:</p>
                         <Select 
+                            isClearable
                             styles={SelectStyles} 
                             value={selectedCategory}
                             options={optionsCategories} onChange={e => setSelectedCategory(e)} />
@@ -167,6 +168,7 @@ export default function EditProductForm() {
                                     <div key={index}>
                                         <p>{ filter.title }</p>
                                         <Select styles={SelectStyles} 
+                                            isClearable
                                             options={options}
                                             value={options.filter(e => e.value === productOptions.get(filter.id))}
                                             onChange={e => {

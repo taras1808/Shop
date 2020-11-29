@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import ProductsContainer from '../products/ProductsContainer.js'
 import FiltersContainer from '../filters/FiltersContainer.js'
 import ParamsContainer from '../params/ParamsContainer.js'
-import { useParams } from "react-router-dom"
+import { useParams } from 'react-router-dom'
 
 
 export default function CatalogContainer () {

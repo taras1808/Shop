@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
-import './CategoriesContainer.css'
+import './CategoryContainer.css'
 import { Link } from "react-router-dom"
+import { useParams } from 'react-router-dom'
 
-export default function CategoriesContainer() {
+
+export default function CategoryContainer () {
+
+	const { categoryId } = useParams()
 
     const [error, setError] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(false);
-	const [items, setItems] = useState([]);
+	const [item, setItem] = useState(null);
 
     useEffect(() => {
 		setIsLoaded(false)
-		fetch("http://192.168.0.108:7777/api/categories/roots")
+		fetch('http://192.168.0.108:7777/api/categories/' + categoryId + '/')
 			.then(res => res.json())
 			.then(
 				(result) => {
+					console.log(result)
+					setItem(result);
 					setIsLoaded(true);
-					setItems(result);
 					setError();
 				},
 				(error) => {
@@ -23,7 +28,7 @@ export default function CategoriesContainer() {
 					setError(error);
 				}
 			)
-    }, [])
+    }, [categoryId])
 
     let content
 
@@ -36,9 +41,9 @@ export default function CategoriesContainer() {
             </div>
         ))
 	} else {
-		content = items.map((item, index) => (
-
-			item.childrens.length > 0 ? (
+		console.log(item)
+		content = item.childrens.map((item, index) => (
+			(item.childrens ? item.childrens.length > 0 : false) ? (
 				<div key={index} className="category-block">
 					<Link className="category-link" to={`/category/${item.id}/`}>
 						<div className="block-image">
