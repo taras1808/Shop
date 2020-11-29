@@ -24,6 +24,7 @@ export default function CatalogContainer () {
 	useEffect(() => {
 		if (state !== params)
 			setState(params)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params])
 
 	useEffect(() => {
@@ -49,6 +50,7 @@ export default function CatalogContainer () {
 				setFilters(result)
 			}, (error) => {})
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state])
 
     useEffect(() => {
@@ -59,7 +61,7 @@ export default function CatalogContainer () {
 
 		let query = ['?orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')]
 
-		filters.map(filter => {
+		filters.forEach(filter => {
 			const data = parameters.get(filter.name)
 			if (data && data.length > 0)
 				query.push(filter.name + '=' + data)
@@ -80,6 +82,8 @@ export default function CatalogContainer () {
 					setError(error)
 				}
 			)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filters])
     
 	return (

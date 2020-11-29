@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import './ProductContainer.css'
 import { useParams } from 'react-router-dom'
 import ImagesGallery from '../gallery/ImagesGallery'
@@ -34,8 +34,6 @@ export default function ProductContainer () {
 
 	return (
 		<div id="product-content-block">
-
-            <h1>{ product.name }</h1>
 
             <div className="product-content-block">
 

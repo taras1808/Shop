@@ -58,19 +58,20 @@ export default function ParamsContainer ({ filters }) {
                                     }}>{ e.value }</div>
                                 ))
                             case FilterType.SLIDER:
-                                    return <div key={filter.name} className="param-block" onClick={_ => {
+                                return <div key={filter.name} className="param-block" onClick={_ => {
 
-                                        parameters.set(filter.name, '')
+                                    parameters.set(filter.name, '')
 
-                                        let params = Array.from(parameters)
-                                            .filter(e => e[1].length > 0)
-                                            .map(e => e.join('='))
-                                            .join(';')
+                                    let params = Array.from(parameters)
+                                        .filter(e => e[1].length > 0)
+                                        .map(e => e.join('='))
+                                        .join(';')
 
-                                        history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+                                    history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
 
-                                    }}>{ values }</div>
-                                break
+                                }}>{ values }</div>
+                            default:
+                                return null
                         }
                         
                     }) : null

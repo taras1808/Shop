@@ -19,11 +19,15 @@ export default function ImagesGallery ({ images }) {
 
                     {
                         images ? images.map((image, index) => (
-                            <div key={index} className={image === selectedImage ? "images-gallery-thumbnail active" : "images-gallery-thumbnail"} onClick={_ => {
-                                setSelectedImage(images[index])
-                            }}>
+                            <div key={index} 
+                                className={
+                                    image === selectedImage ? "images-gallery-thumbnail active" : "images-gallery-thumbnail"
+                                } 
+                                onClick={_ => {
+                                    setSelectedImage(images[index])
+                                }}>
 
-                                <img src={image.image}></img>
+                                <img src={image.image} alt=""></img>
             
                             </div>
                         )) : null
@@ -34,7 +38,7 @@ export default function ImagesGallery ({ images }) {
 
             <div className="images-gallery-image-block">
 
-                <img src={selectedImage ? selectedImage.image : null}></img>
+                <img src={selectedImage ? selectedImage.image : null} alt=""></img>
 
             </div>
             
