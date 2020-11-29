@@ -22,10 +22,14 @@ export default function Header() {
 
     const [value, setValue] = useState(historySearch)
 
+    const state = match ? match.params.parameters : null
+
     useEffect(() => {
         if (historySearch !== value || !match)
             setValue(historySearch)
-    }, [match ? match.params.parameters : null])
+            
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state])
 
     const onSubmit = (e) => {
         e.preventDefault()

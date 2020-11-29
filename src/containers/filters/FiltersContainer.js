@@ -8,7 +8,7 @@ export const FilterType = Object.freeze({
     SLIDER: 1
 });
 
-function FiltersContainer ({isLoading, filters}) {
+export default function FiltersContainer ({isLoading, filters}) {
 
     return (
         <div id="filters-block" className={isLoading ? "preload" : null}>
@@ -20,15 +20,11 @@ function FiltersContainer ({isLoading, filters}) {
 							return (<ItemsFilter key={index} filter={filter} />)
 						case FilterType.SLIDER:
 							return (<RangeFilter key={index} filter={filter} />)
-							break
 						default:
-							(<></>)
-							break
+							return null
 					}
 				}) : null
 			}
         </div>
     );
 }
-
-export default FiltersContainer;

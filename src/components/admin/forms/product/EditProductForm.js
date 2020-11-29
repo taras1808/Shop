@@ -19,50 +19,41 @@ export default function EditProductForm() {
 
     const [images, setImages] = useState([])
     const [oldImages, setOldImages] = useState([])
-
     const [filters, setFilters] = useState([])
-
 
     const [productOptions, setProductOptions] = useState(new Map())
 
-
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/products")
+
+        fetch('http://192.168.0.108:7777/api/products')
             .then(res => res.json())
             .then(
-                (result) => {
-                    setOptionsProducts(result.map(e => { return {...e, value: e.id, label: e.name }}));
-                }, (error) => {}
+                (result) => setOptionsProducts(
+                    result.map(e => ({...e, value: e.id, label: e.name }))
+                ),
+                (error) => {}
+            )
+
+        fetch('http://192.168.0.108:7777/api/categories')
+            .then(res => res.json())
+            .then(
+                (result) => setOptionsCategories(
+                    result.map(e => ({ value: e.id, label: e.name }))
+                ),
+                (error) => {}
             )
     }, [])
 
     useEffect(() => {
         if (!selectedProduct) return
-        setProductOptions(new Map())
         setFilters([])
-        if (optionsCategories.length === 0)
-            fetch("http://192.168.0.108:7777/api/categories")
-                .then(res => res.json())
-                .then(
-                    (result) => {
-                        setOptionsCategories(result.map(e => { return { value: e.id, label: e.name }}));
-                        setSelectedCategory(
-                            result.filter(e => e.id === selectedProduct.category_id)
-                                .map(e => { return { value: e.id, label: e.name }})[0]
-                        )
-                    }, (error) => {}
-                )
-        else
-            setSelectedCategory(optionsCategories.filter(e => e.value === selectedProduct.category_id)[0])
-
-        fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id + "/options")
+        fetch('http://192.168.0.108:7777/api/products/' + selectedProduct.id + '/options')
             .then(res => res.json())
             .then(
                 (result) => {
                     const options = new Map()
                     result.forEach(e => options.set(e.filter_id, e.id))
                     setProductOptions(options)
-                    setFilters(filters)
                 }, (error) => {}
             )
 
@@ -70,12 +61,12 @@ export default function EditProductForm() {
 
     useEffect(() => {
         if (!selectedCategory) return
-
         fetch('http://192.168.0.108:7777/api/filters/?categoryId=' + selectedCategory.value)
             .then(res => res.json())
-            .then((result) => {
-                setFilters(result)
-            }, (error) => {})
+            .then(
+                (result) => setFilters(result),
+                (error) => {}
+            )
 
     }, [selectedCategory])
 
@@ -109,8 +100,6 @@ export default function EditProductForm() {
             )
     }
     
-
-    console.log(oldImages)
     return (
         <div className="product-form">
 
@@ -123,12 +112,14 @@ export default function EditProductForm() {
                 onChange={e => {
                     setName(e.label)
                     setPrice(e.price)
-                    setOldPrice(e.old_price ? e.old_price : '')
+                    setOldPrice(e.old_price ?? '')
                     setOldImages(e.images)
                     setImages([])
+                    setSelectedCategory(
+                        optionsCategories.filter(item => item.value === e.category_id)[0]
+                    )
                     setSelectedProduct(e)
-                }}
-            />
+                }} />
 
             {
                 selectedProduct ? (
@@ -242,7 +233,6 @@ export default function EditProductForm() {
                                 ))
                             }
                         </div>
-
                         
                     </>
                 ) : null

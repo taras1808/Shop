@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import '../ProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { FilterType } from '../../../../containers/filters/FiltersContainer'
 
 
 export default function EditOptionForm() {

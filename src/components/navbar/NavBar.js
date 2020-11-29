@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import './NavBar.css'
-import { Link, useRouteMatch, useParams } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 function NavBar () {
 
@@ -17,7 +17,7 @@ function NavBar () {
             return
         }
         
-        if (match.params[0] === 'catalog' || match.params[0] === 'category') {
+        if (match.params[0] !== 'product') {
             fetch("http://192.168.0.108:7777/api/categories/" +  match.params.itemId)
                 .then(res => res.json())
                 .then(
@@ -25,8 +25,9 @@ function NavBar () {
                         const arr = []
                         const getParent = (node) => {
                             arr.push(node)
-                            if (node.parent)
+                            if (node.parent) {
                                 getParent(node.parent)
+                            }
                         }
                         getParent(result)
                         setItem(arr.reverse()) 
@@ -38,11 +39,12 @@ function NavBar () {
                 .then(res => res.json())
                 .then(
                     (result) => { 
-                        const arr = []
+                        const arr = [result]
                         const getParent = (node) => {
                             arr.push(node)
-                            if (node.parent)
+                            if (node.parent) {
                                 getParent(node.parent)
+                            }
                         }
                         getParent(result.category)
                         setItem(arr.reverse()) 
@@ -50,7 +52,7 @@ function NavBar () {
                     (error) => { setItem([]) }
                 )
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [match.params[0], match.params.itemId])
 
     
@@ -67,30 +69,36 @@ function NavBar () {
 
                         let content = e.name
 
-                        if (index != item.length - 1 || match.params[0] === 'product') {
+                        if (index !== item.length - 1) {
 
-                            if (index === item.length - 1)
+                            if (index === item.length - 2 && match.params[0] !== 'catalog')
                                 content = <Link to={`/catalog/${url}`}>{content}</Link>
                             else
                                 content = <Link to={`/category/${url}`}>{content}</Link>
+
                         } else {
                             return null
                         }
 
-                        return (<li key={index}><div className="arrow-block"><span className="arrow"></span></div>{content}</li>)
+                        return (
+                            <li key={index}>
+                                <div className="arrow-block">
+                                    <span className="arrow"></span>
+                                </div>
+                                
+                                {content}
+                            </li>
+                        )
                     })
                 }
             </ul>
-            {
-                match.params[0] === 'catalog' || match.params[0] === 'category' ? (
-                    <h1> { item.length > 0 ? item[item.length - 1].name : null } </h1>
-                ) : null
-            }
 
             {
-                match.params[0] === 'search' ? (
+                match.params[0] !== 'search' ? (
+                    <h1> { item.length > 0 ? item[item.length - 1].name : null } </h1>
+                ) : (
                     <h1> { '«' + parameters.get('q') + '»' } </h1>
-                ) : null
+                )
             }
 
         </div>

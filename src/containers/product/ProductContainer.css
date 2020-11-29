@@ -5,10 +5,6 @@
     margin-bottom: 100px;
 }
 
-#product-content-block > h1 {
-    margin: 0 0 20px;
-}
-
 .product-content-block {
     display: flex
 }

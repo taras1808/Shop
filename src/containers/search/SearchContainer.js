@@ -19,6 +19,8 @@ export default function SearchContainer () {
 	useEffect(() => {
 		if (state !== params)
 			setState(params)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params])
 
 	useEffect(() => {
@@ -40,9 +42,10 @@ export default function SearchContainer () {
 
 		fetch('http://192.168.0.108:7777/api/search/filters' + query)
 			.then(res => res.json())
-			.then((result) => {
-				setFilters(result)
-			}, (error) => {})
+			.then(
+				(result) => setFilters(result),
+				(error) => {}
+			)
 
 	}, [state])
 
@@ -57,7 +60,7 @@ export default function SearchContainer () {
 			'orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')
 		]
 
-		filters.map(filter => {
+		filters.forEach(filter => {
 			const data = parameters.get(filter.name)
 			if (data && data.length > 0)
 				query.push(filter.name + '=' + data)
@@ -78,6 +81,8 @@ export default function SearchContainer () {
 					setError(error)
 				}
 			)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filters])
 
 	return (

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import '../ProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { FilterType } from '../../../../containers/filters/FiltersContainer'
 
 
 export default function DeleteFilterForm() {
@@ -10,8 +9,6 @@ export default function DeleteFilterForm() {
     const [optionsFilters, setOptionsFilters] = useState([])
     const [optionsCategories, setOptionsCategories] = useState([])
 
-    const [name, setName] = useState("")
-    const [url, setURL] = useState("")
     const [categories, setCategories] = useState([])
 
     const [selectedFilter, setSelectedFilter] = useState(null)

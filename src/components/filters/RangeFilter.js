@@ -29,6 +29,8 @@ export default function RangeFilter({filter}) {
             setValue([min, max])
         else
             setValue([array[0], array[1]])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter])
 
     return (

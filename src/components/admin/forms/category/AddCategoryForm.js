@@ -9,15 +9,17 @@ export default function AddCategoryForm() {
     const [optionsCategories, setOptionsCategories] = useState([])
 
     const [name, setName] = useState("")
-    const [selectedCategory, setSelectedCategory] = useState(null)
-
     const [image, setImage] = useState(null)
+
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
         fetch("http://192.168.0.108:7777/api/categories")
             .then(res => res.json())
             .then(
-                (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
+                (result) => setOptionsCategories(
+                    result.map(e => ({ ...e, value: e.id, label: e.name }))
+                ),
                 (error) => {}
             )
     }, [])
