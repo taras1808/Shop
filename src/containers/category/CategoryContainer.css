@@ -1,0 +1,40 @@
+
+
+.categories {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+}
+
+.category-block {
+    width: 220px;
+    min-height: 200px;
+    margin: 10px;
+    text-align: center;
+}
+
+.category-link {
+    text-decoration: none;
+    color: #000;
+}
+
+.block-image {
+    height: 150px;
+}
+
+.block-image > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.category-link > h3 {
+    padding: 10px;
+}
+
+.category-link > h3:hover {
+    text-decoration: underline;
+    color: rgb(79, 120, 255);
+}

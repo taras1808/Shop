@@ -6,6 +6,7 @@ import CategoriesContainer from '../categories/CategoriesContainer'
 import AdminContainer from '../admin/AdminContainer'
 import SearchContainer from '../search/SearchContainer'
 import CatalogContainer from '../catalog/CatalogContainer'
+import CategoryContainer from '../category/CategoryContainer'
 
 
 export default function ContentContainer () {
@@ -13,7 +14,7 @@ export default function ContentContainer () {
 		<div className="container">
 			<Switch>
 				<Route path="/admin/"></Route>
-				<Route path="/(catalog|search|product)/">
+				<Route path="/(catalog|category|search|product)/">
 					<NavBar />
 				</Route>
 			</Switch>
@@ -29,6 +30,9 @@ export default function ContentContainer () {
 				</Route>
 				<Route path="/catalog/:categoryId/:params?/">
 					<CatalogContainer />
+				</Route>
+				<Route path="/category/:categoryId/">
+					<CategoryContainer />
 				</Route>
 				<Route path="/">
 					<CategoriesContainer />

@@ -49,6 +49,7 @@ export default function AddProductForm() {
 
             <p>Filter:</p>
             <Select styles={SelectStyles}
+                isClearable
                 value={filter}
                 options={optionsFilters} 
                 onChange={e => setFilter(e)} />

@@ -54,6 +54,7 @@ export default function AddFilterForm() {
 
             <p>Kategorii:</p>
             <Select styles={SelectStyles}
+                isClearable
                 isMulti
                 value={categories}
                 options={optionsCategories} 

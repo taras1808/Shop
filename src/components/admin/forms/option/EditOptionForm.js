@@ -72,6 +72,7 @@ export default function EditOptionForm() {
 
                         <p>Filter:</p>
                         <Select styles={SelectStyles}
+                            isClearable
                             value={filter}
                             options={optionsFilters} 
                             onChange={e => setFilter(e)} />
