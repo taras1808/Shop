@@ -12,6 +12,7 @@ export default function AddProductForm() {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [oldPrice, setOldPrice] = useState("")
+    const [productInfo, setProductInfo] = useState("")
     const [images, setImages] = useState([])
     const [category, setCategory] = useState(null)
 
@@ -47,6 +48,7 @@ export default function AddProductForm() {
         formData.append('price', price)
         if (oldPrice) formData.append('old_price', oldPrice)
         formData.append('name', name)
+        if (productInfo !== '') formData.append('info', productInfo)
 
         fetch("http://192.168.0.108:7777/api/products", {
             method: 'POST',
@@ -77,6 +79,9 @@ export default function AddProductForm() {
 
             <p>Old price</p>
             <input value={oldPrice} type="text" onChange={e => setOldPrice(e.target.value)} />
+
+            <p>Product information</p>
+            <textarea value={productInfo} onChange={e => setProductInfo(e.target.value)}/>
 
             {
                 filters.map((filter, index) => {

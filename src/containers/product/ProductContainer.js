@@ -60,7 +60,7 @@ export default function ProductContainer () {
                     </div>
 
                     <p>
-                    Nowy Castrol EDGE to jedyny olej na świecie opracowany w zaawansowanej technologii FST™. Fluid Strength Technology™ to dynamiczny system, który aktywnie wzmacnia olej i zapewnia mu zdolność ciągłego reagowania na potrzeby silnika i dostosowywania się do niego przy każdym stylu jazdy. Zastosowana technologia wydłuża trwałość układów katalitycznych zmniejszających emisję składników toksycznych spalin. Obok właściwości utrzymujących silnik w czystości, EDGE 5W-30 posiada system chroniący silnik przed zużyciem, który zapewnia ochronę nowoczesnych jednostek FSI, TDI i turbodoładowanych silników benzynowych.
+                        { product.info }
                     </p>
                 </div>
             </div>

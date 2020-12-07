@@ -38,7 +38,7 @@ export default function EditCategoryForm() {
 
     useEffect(() => {
         if (!category) return
-        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/roots`)
+        fetch(`http://192.168.0.108:7777/api/categories/${category.id}/roots`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -70,7 +70,7 @@ export default function EditCategoryForm() {
                 setCategoryName(name)
                 setOldImage(result.image)
             },
-            (error) => console.log(error)
+            (error) => alert(error)
         )
     }
 
@@ -86,7 +86,7 @@ export default function EditCategoryForm() {
                 ) : null
             }
 
-            <p>Childrens:</p>
+            <p>Childrens</p>
             <CategoriesTree/>
 
             <p>Name</p>

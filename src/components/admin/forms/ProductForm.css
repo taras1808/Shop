@@ -34,7 +34,8 @@
 
 .product-form > input[type="text"], 
 .product-form > label.select-image, 
-.product-form > .submit {
+.product-form > .submit,
+.product-form > textarea {
     box-sizing: border-box;
     width: 100%;
     display: block;
@@ -42,6 +43,11 @@
     font-size: 17px;
     border-radius: 5px;
     border: 1px solid #CCC;
+}
+
+.product-form > textarea {
+    height: 200px;
+    resize: none;
 }
 
 .product-form > label.select-image,

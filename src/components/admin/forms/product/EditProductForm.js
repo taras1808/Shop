@@ -16,6 +16,7 @@ export default function EditProductForm() {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [oldPrice, setOldPrice] = useState("")
+    const [productInfo, setProductInfo] = useState("")
 
     const [images, setImages] = useState([])
     const [oldImages, setOldImages] = useState([])
@@ -31,7 +32,7 @@ export default function EditProductForm() {
                 (result) => setOptionsProducts(
                     result.map(e => ({...e, value: e.id, label: e.name }))
                 ),
-                (error) => {}
+                (error) => alert(error)
             )
 
         fetch('http://192.168.0.108:7777/api/categories')
@@ -40,13 +41,12 @@ export default function EditProductForm() {
                 (result) => setOptionsCategories(
                     result.map(e => ({ value: e.id, label: e.name }))
                 ),
-                (error) => {}
+                (error) => alert(error)
             )
     }, [])
 
     useEffect(() => {
         if (!selectedProduct) return
-        setFilters([])
         fetch('http://192.168.0.108:7777/api/products/' + selectedProduct.id + '/options')
             .then(res => res.json())
             .then(
@@ -54,7 +54,8 @@ export default function EditProductForm() {
                     const options = new Map()
                     result.forEach(e => options.set(e.filter_id, e.id))
                     setProductOptions(options)
-                }, (error) => {}
+                }, 
+                (error) => alert(error)
             )
 
     }, [selectedProduct])
@@ -65,7 +66,7 @@ export default function EditProductForm() {
             .then(res => res.json())
             .then(
                 (result) => setFilters(result),
-                (error) => {}
+                (error) => alert(error)
             )
 
     }, [selectedCategory])
@@ -80,6 +81,7 @@ export default function EditProductForm() {
         if (oldPrice) formData.append('old_price', oldPrice)
         formData.append('images', JSON.stringify(oldImages))
         formData.append('name', name)
+        if (productInfo !== '') formData.append('info', productInfo)
 
         fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, {
             method: 'PUT',
@@ -112,6 +114,7 @@ export default function EditProductForm() {
                 onChange={e => {
                     setName(e.label)
                     setPrice(e.price)
+                    setProductInfo(e.info ?? '')
                     setOldPrice(e.old_price ?? '')
                     setOldImages(e.images)
                     setImages([])
@@ -143,6 +146,9 @@ export default function EditProductForm() {
                             type="text"
                             value={oldPrice}
                             onChange={e => setOldPrice(e.target.value)} />
+
+                        <p>Product information</p>
+                        <textarea value={productInfo} onChange={e => setProductInfo(e.target.value)}/>
 
                         <p>Kategoria:</p>
                         <Select 
