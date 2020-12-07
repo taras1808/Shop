@@ -10,6 +10,7 @@ import AddOptionForm from '../../components/admin/forms/option/AddOptionForm'
 import EditOptionForm from '../../components/admin/forms/option/EditOptionForm'
 import DeleteOptionForm from '../../components/admin/forms/option/DeleteOptionForm'
 import AddCategoryForm from '../../components/admin/forms/category/AddCategoryForm'
+import EditCategoriesForm from '../../components/admin/forms/category/EditCategoriesForm'
 import EditCategoryForm from '../../components/admin/forms/category/EditCategoryForm'
 import DeleteCategoryForm from '../../components/admin/forms/category/DeleteCategoryForm'
 
@@ -20,6 +21,9 @@ export default function AdminContainer () {
 		<div className="admin-panel">
 			<Switch>
 				<Route exact path={match.path}></Route>
+				<Route path={`${match.path}category/edit/*`}>
+					<Link className="admin-panel-back" to="/admin/category/edit">Back</Link>
+				</Route>
 				<Route path={match.path}>
 					<Link className="admin-panel-back" to={match.path}>Back</Link>
 				</Route>
@@ -89,7 +93,7 @@ export default function AdminContainer () {
 						</Link>
 						<Link to={`${match.path}category/edit`}>
 							<div className="admin-panel-control">
-								<h2>Edit category</h2>
+								<h2>Edit categories</h2>
 							</div>
 						</Link>
 						<Link to={`${match.path}category/delete`}>
@@ -136,8 +140,11 @@ export default function AdminContainer () {
 				<Route path={`${match.path}category/delete`}>
 					<DeleteCategoryForm />
 				</Route>
-				<Route path={`${match.path}category/edit`}>
+				<Route path={`${match.path}category/edit/:categoryId`}>
 					<EditCategoryForm />
+				</Route>
+				<Route path={`${match.path}category/edit`}>
+					<EditCategoriesForm />
 				</Route>
 				<Route path={`${match.path}category/add`}>
 					<AddCategoryForm />
