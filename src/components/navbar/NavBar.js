@@ -71,7 +71,7 @@ function NavBar () {
 
                         if (index !== item.length - 1) {
 
-                            if (index === item.length - 2 && match.params[0] !== 'catalog')
+                            if (index === item.length - 2 && match.params[0] === 'product')
                                 content = <Link to={`/catalog/${url}`}>{content}</Link>
                             else
                                 content = <Link to={`/category/${url}`}>{content}</Link>
