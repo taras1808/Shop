@@ -34,7 +34,8 @@
 
 .product-form > input[type="text"], 
 .product-form > label.select-image, 
-.product-form > .submit {
+.product-form .submit,
+.product-form > textarea {
     box-sizing: border-box;
     width: 100%;
     display: block;
@@ -44,8 +45,13 @@
     border: 1px solid #CCC;
 }
 
+.product-form > textarea {
+    height: 200px;
+    resize: none;
+}
+
 .product-form > label.select-image,
-.product-form > .submit {
+.product-form .submit {
     background-color: #EEE;
     cursor: pointer;
     transition: background-color .1s;
@@ -53,12 +59,12 @@
 }
 
 .product-form > label.select-image:hover,
-.product-form > .submit:hover {
+.product-form .submit:hover {
     background-color: #DDD;
 }
 
 .product-form > label.select-image:active,
-.product-form > .submit:active {
+.product-form .submit:active {
     background-color: #CCC;
 }
 
@@ -67,7 +73,7 @@
     display: none;
 }
 
-.product-form > .submit {
+.product-form .submit {
     margin: 50px 0;
 }
 

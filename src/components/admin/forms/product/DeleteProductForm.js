@@ -75,6 +75,8 @@ export default function DeleteProductForm() {
 
                         <p>Cena:</p> <span>{selectedProduct.price}</span>
 
+                        <p>Product information:</p> <span>{selectedProduct.info}</span>
+
                         <p>Kategoria:</p>  {category ? <span>{category.name}</span> : null}
 
                         <p>Images</p>

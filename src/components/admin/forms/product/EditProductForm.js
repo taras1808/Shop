@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 
 export default function EditProductForm() {
 
+    const [category, setCategory] = useState(null)
+
     const [optionsProducts, setOptionsProducts] = useState([])
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -16,6 +18,7 @@ export default function EditProductForm() {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [oldPrice, setOldPrice] = useState("")
+    const [productInfo, setProductInfo] = useState("")
 
     const [images, setImages] = useState([])
     const [oldImages, setOldImages] = useState([])
@@ -24,48 +27,49 @@ export default function EditProductForm() {
     const [productOptions, setProductOptions] = useState(new Map())
 
     useEffect(() => {
-
-        fetch('http://192.168.0.108:7777/api/products')
-            .then(res => res.json())
-            .then(
-                (result) => setOptionsProducts(
-                    result.map(e => ({...e, value: e.id, label: e.name }))
-                ),
-                (error) => {}
-            )
-
-        fetch('http://192.168.0.108:7777/api/categories')
+        fetch('http://192.168.0.108:7777/api/categories/')
             .then(res => res.json())
             .then(
                 (result) => setOptionsCategories(
                     result.map(e => ({ value: e.id, label: e.name }))
                 ),
-                (error) => {}
+                (error) => alert(error)
             )
     }, [])
 
     useEffect(() => {
+        fetch(`http://192.168.0.108:7777/api/products/${ category ? `?categoryId=${category.value}` : ''}`)
+            .then(res => res.json())
+            .then(
+                (result) => setOptionsProducts(
+                    result.map(e => ({...e, value: e.id, label: e.name }))
+                ),
+                (error) => alert(error)
+            )
+    }, [category])
+
+    useEffect(() => {
         if (!selectedProduct) return
-        setFilters([])
-        fetch('http://192.168.0.108:7777/api/products/' + selectedProduct.id + '/options')
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/options`)
             .then(res => res.json())
             .then(
                 (result) => {
                     const options = new Map()
                     result.forEach(e => options.set(e.filter_id, e.id))
                     setProductOptions(options)
-                }, (error) => {}
+                }, 
+                (error) => alert(error)
             )
 
     }, [selectedProduct])
 
     useEffect(() => {
         if (!selectedCategory) return
-        fetch('http://192.168.0.108:7777/api/filters/?categoryId=' + selectedCategory.value)
+        fetch(`http://192.168.0.108:7777/api/filters/?categoryId=${selectedCategory.value}`)
             .then(res => res.json())
             .then(
                 (result) => setFilters(result),
-                (error) => {}
+                (error) => alert(error)
             )
 
     }, [selectedCategory])
@@ -80,8 +84,9 @@ export default function EditProductForm() {
         if (oldPrice) formData.append('old_price', oldPrice)
         formData.append('images', JSON.stringify(oldImages))
         formData.append('name', name)
+        if (productInfo !== '') formData.append('info', productInfo)
 
-        fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, {
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}`, {
             method: 'PUT',
             body: formData
         })
@@ -91,10 +96,12 @@ export default function EditProductForm() {
                     alert("OK")
                     const arr = optionsProducts.filter(e => e.value !== result.id)
                     const updated = {...result, value: result.id, label: result.name }
-                    setOptionsProducts([...arr, updated])
-                    setSelectedProduct(updated)
                     setImages([])
                     setOldImages(result.images)
+                    setSelectedProduct(updated)
+                    if (updated.id === category.value) {
+                        setOptionsProducts([...arr, updated])
+                    }
                 },
                 (error) => alert(error)
             )
@@ -105,19 +112,31 @@ export default function EditProductForm() {
 
             <h2>Edit product</h2>
 
+            <p>Select category</p>
             <Select 
+                isClearable
+                styles={SelectStyles} 
+                value={category}
+                options={optionsCategories} onChange={e => setCategory(e)} />
+
+            <p>Select product</p>
+            <Select 
+                isClearable
                 styles={SelectStyles} 
                 options={optionsProducts}
                 value={selectedProduct}
                 onChange={e => {
-                    setName(e.label)
-                    setPrice(e.price)
-                    setOldPrice(e.old_price ?? '')
-                    setOldImages(e.images)
+                    if (e) {
+                        setName(e.label)
+                        setPrice(e.price)
+                        setProductInfo(e.info ?? '')
+                        setOldPrice(e.old_price ?? '')
+                        setOldImages(e.images)
+                        setSelectedCategory(
+                            optionsCategories.filter(item => item.value === e.category_id)[0] ?? null
+                        )
+                    }
                     setImages([])
-                    setSelectedCategory(
-                        optionsCategories.filter(item => item.value === e.category_id)[0]
-                    )
                     setSelectedProduct(e)
                 }} />
 
@@ -143,6 +162,9 @@ export default function EditProductForm() {
                             type="text"
                             value={oldPrice}
                             onChange={e => setOldPrice(e.target.value)} />
+
+                        <p>Product information</p>
+                        <textarea value={productInfo} onChange={e => setProductInfo(e.target.value)}/>
 
                         <p>Kategoria:</p>
                         <Select 

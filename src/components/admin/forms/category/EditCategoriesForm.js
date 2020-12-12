@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import '../ProductForm.css';
 import CategoriesTree from './tree/CategoriesTree'
 

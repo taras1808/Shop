@@ -10,7 +10,7 @@ export default function DeleteCategoryForm() {
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/categories")
+        fetch('http://192.168.0.108:7777/api/categories/')
             .then(res => res.json())
             .then(
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
@@ -20,13 +20,13 @@ export default function DeleteCategoryForm() {
 
     const onSubmit = () => {
 
-        fetch('http://192.168.0.108:7777/api/categories/' + selectedCategory.id + '', {
+        fetch(`http://192.168.0.108:7777/api/categories/${selectedCategory.id}/`, {
             method: 'DELETE'
         })
         .then(result => result.json())
         .then(
             (result) => {
-                alert("OK")
+                alert('OK')
                 const arr = optionsCategories.filter(e => e.value !== selectedCategory.id)
                 setOptionsCategories(arr)
                 setSelectedCategory(null)
@@ -49,6 +49,9 @@ export default function DeleteCategoryForm() {
                     <>
                         <p>Nazwa</p>
                         <span>{ selectedCategory.name }</span>
+
+                        <p>Root category</p>
+                        <span>{ (optionsCategories.filter(e => e.id === selectedCategory.parent_id)[0] ?? {}).name }</span>
 
                         <div className="submit" onClick={onSubmit}>Delete category</div>
 
