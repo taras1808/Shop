@@ -1,14 +1,20 @@
 import './AdminContainer.css'
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
+
 import AddProductForm from '../../components/admin/forms/product/AddProductForm'
 import EditProductForm from '../../components/admin/forms/product/EditProductForm'
 import DeleteProductForm from '../../components/admin/forms/product/DeleteProductForm'
+
 import AddFilterForm from '../../components/admin/forms/filter/AddFilterForm'
 import EditFilterForm from '../../components/admin/forms/filter/EditFilterForm'
+import EditFiltersForm from '../../components/admin/forms/filter/EditFiltersForm'
 import DeleteFilterForm from '../../components/admin/forms/filter/DeleteFilterForm'
+
 import AddOptionForm from '../../components/admin/forms/option/AddOptionForm'
+import EditOptionsForm from '../../components/admin/forms/option/EditOptionsForm'
 import EditOptionForm from '../../components/admin/forms/option/EditOptionForm'
 import DeleteOptionForm from '../../components/admin/forms/option/DeleteOptionForm'
+
 import AddCategoryForm from '../../components/admin/forms/category/AddCategoryForm'
 import EditCategoriesForm from '../../components/admin/forms/category/EditCategoriesForm'
 import EditCategoryForm from '../../components/admin/forms/category/EditCategoryForm'
@@ -23,6 +29,12 @@ export default function AdminContainer () {
 				<Route exact path={match.path}></Route>
 				<Route path={`${match.path}category/edit/*`}>
 					<Link className="admin-panel-back" to="/admin/category/edit">Back</Link>
+				</Route>
+				<Route path={`${match.path}filter/edit/*`}>
+					<Link className="admin-panel-back" to="/admin/filter/edit">Back</Link>
+				</Route>
+				<Route path={`${match.path}option/edit/*`}>
+					<Link className="admin-panel-back" to="/admin/option/edit">Back</Link>
 				</Route>
 				<Route path={match.path}>
 					<Link className="admin-panel-back" to={match.path}>Back</Link>
@@ -75,7 +87,7 @@ export default function AdminContainer () {
 						</Link>
 						<Link to={`${match.path}option/edit`}>
 							<div className="admin-panel-control">
-								<h2>Edit option</h2>
+								<h2>Edit options</h2>
 							</div>
 						</Link>
 						<Link to={`${match.path}option/delete`}>
@@ -119,8 +131,11 @@ export default function AdminContainer () {
 				<Route path={`${match.path}filter/delete`}>
 					<DeleteFilterForm />
 				</Route>
-				<Route path={`${match.path}filter/edit`}>
+				<Route path={`${match.path}filter/edit/:filterId`}>
 					<EditFilterForm />
+				</Route>
+				<Route path={`${match.path}filter/edit`}>
+					<EditFiltersForm />
 				</Route>
 				<Route path={`${match.path}filter/add`}>
 					<AddFilterForm />
@@ -129,8 +144,11 @@ export default function AdminContainer () {
 				<Route path={`${match.path}option/delete`}>
 					<DeleteOptionForm />
 				</Route>
-				<Route path={`${match.path}option/edit`}>
+				<Route path={`${match.path}option/edit/:optionId`}>
 					<EditOptionForm />
+				</Route>
+				<Route path={`${match.path}option/edit`}>
+					<EditOptionsForm />
 				</Route>
 				<Route path={`${match.path}option/add`}>
 					<AddOptionForm />

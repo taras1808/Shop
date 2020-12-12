@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 export default function EditCategoryForm() {
 
-    const { categoryId } = useParams();
+    const { categoryId } = useParams()
 
     const [optionsCategories, setOptionsCategories] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(null)

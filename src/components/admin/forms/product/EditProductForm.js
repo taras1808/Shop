@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 
 export default function EditProductForm() {
 
+    const [category, setCategory] = useState(null)
+
     const [optionsProducts, setOptionsProducts] = useState([])
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -25,17 +27,7 @@ export default function EditProductForm() {
     const [productOptions, setProductOptions] = useState(new Map())
 
     useEffect(() => {
-
-        fetch('http://192.168.0.108:7777/api/products')
-            .then(res => res.json())
-            .then(
-                (result) => setOptionsProducts(
-                    result.map(e => ({...e, value: e.id, label: e.name }))
-                ),
-                (error) => alert(error)
-            )
-
-        fetch('http://192.168.0.108:7777/api/categories')
+        fetch('http://192.168.0.108:7777/api/categories/')
             .then(res => res.json())
             .then(
                 (result) => setOptionsCategories(
@@ -46,8 +38,19 @@ export default function EditProductForm() {
     }, [])
 
     useEffect(() => {
+        fetch(`http://192.168.0.108:7777/api/products/${ category ? `?categoryId=${category.value}` : ''}`)
+            .then(res => res.json())
+            .then(
+                (result) => setOptionsProducts(
+                    result.map(e => ({...e, value: e.id, label: e.name }))
+                ),
+                (error) => alert(error)
+            )
+    }, [category])
+
+    useEffect(() => {
         if (!selectedProduct) return
-        fetch('http://192.168.0.108:7777/api/products/' + selectedProduct.id + '/options')
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/options`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -62,7 +65,7 @@ export default function EditProductForm() {
 
     useEffect(() => {
         if (!selectedCategory) return
-        fetch('http://192.168.0.108:7777/api/filters/?categoryId=' + selectedCategory.value)
+        fetch(`http://192.168.0.108:7777/api/filters/?categoryId=${selectedCategory.value}`)
             .then(res => res.json())
             .then(
                 (result) => setFilters(result),
@@ -83,7 +86,7 @@ export default function EditProductForm() {
         formData.append('name', name)
         if (productInfo !== '') formData.append('info', productInfo)
 
-        fetch("http://192.168.0.108:7777/api/products/" + selectedProduct.id, {
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}`, {
             method: 'PUT',
             body: formData
         })
@@ -93,10 +96,12 @@ export default function EditProductForm() {
                     alert("OK")
                     const arr = optionsProducts.filter(e => e.value !== result.id)
                     const updated = {...result, value: result.id, label: result.name }
-                    setOptionsProducts([...arr, updated])
-                    setSelectedProduct(updated)
                     setImages([])
                     setOldImages(result.images)
+                    setSelectedProduct(updated)
+                    if (updated.id === category.value) {
+                        setOptionsProducts([...arr, updated])
+                    }
                 },
                 (error) => alert(error)
             )
@@ -107,20 +112,31 @@ export default function EditProductForm() {
 
             <h2>Edit product</h2>
 
+            <p>Select category</p>
             <Select 
+                isClearable
+                styles={SelectStyles} 
+                value={category}
+                options={optionsCategories} onChange={e => setCategory(e)} />
+
+            <p>Select product</p>
+            <Select 
+                isClearable
                 styles={SelectStyles} 
                 options={optionsProducts}
                 value={selectedProduct}
                 onChange={e => {
-                    setName(e.label)
-                    setPrice(e.price)
-                    setProductInfo(e.info ?? '')
-                    setOldPrice(e.old_price ?? '')
-                    setOldImages(e.images)
+                    if (e) {
+                        setName(e.label)
+                        setPrice(e.price)
+                        setProductInfo(e.info ?? '')
+                        setOldPrice(e.old_price ?? '')
+                        setOldImages(e.images)
+                        setSelectedCategory(
+                            optionsCategories.filter(item => item.value === e.category_id)[0] ?? null
+                        )
+                    }
                     setImages([])
-                    setSelectedCategory(
-                        optionsCategories.filter(item => item.value === e.category_id)[0]
-                    )
                     setSelectedProduct(e)
                 }} />
 

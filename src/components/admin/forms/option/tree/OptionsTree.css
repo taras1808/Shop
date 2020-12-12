@@ -1,0 +1,69 @@
+.block-options-tree {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.parent-block {
+    width: 100%;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    transition: background-color .1s;
+    margin-bottom: 10px;
+    background-color: #FFF;
+    overflow: hidden;
+}
+
+.parent-block > h2 {
+    margin: 10px;
+}
+
+.options-tree {
+    min-width: 200px;
+    max-width: 500px;
+    border-radius: 15px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+.options-tree a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    margin: 10px;
+    padding: 10px;
+}
+
+.options-tree a:hover {
+    background-color: #EEE;
+}
+
+.options-tree a:active {
+    background-color: #DDD;
+}
+
+.options-tree-childrens-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.dragable-block {
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    transition: background-color .1s;
+    margin-bottom: 10px;
+    background-color: #FFF;
+    overflow: hidden;
+}
+
+.childrens-block {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid #DDD;
+    padding: 25px;
+    background-color: #f6f6f6;
+    box-shadow: inset 0px 0px 10px #DDD;
+    align-items: flex-start;
+}

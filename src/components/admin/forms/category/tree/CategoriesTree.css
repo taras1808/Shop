@@ -19,7 +19,7 @@
     overflow: hidden;
 }
 
-.parent-block {
+.category-tree .parent-block {
     margin: 10px;
 }
 
@@ -30,4 +30,5 @@
     padding: 25px;
     background-color: #f6f6f6;
     box-shadow: inset 0px 0px 10px #DDD;
+    align-items: flex-start;
 }

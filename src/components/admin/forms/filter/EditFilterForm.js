@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import '../ProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
+import { useParams } from 'react-router-dom'
 
 
 export default function EditFilterForm() {
 
-    const [optionsFilters, setOptionsFilters] = useState([])
+    const { filterId } = useParams()
+
     const [optionsCategories, setOptionsCategories] = useState([])
 
     const [name, setName] = useState("")
@@ -17,34 +19,34 @@ export default function EditFilterForm() {
 
     useEffect(() => {
 
-        fetch("http://192.168.0.108:7777/api/filters")
+        fetch(`http://192.168.0.108:7777/api/filters/${filterId}`)
             .then(res => res.json())
             .then(
                 (result) => {
-                    setOptionsFilters(result.map(e => {
-                        delete e['options']
-                        return { ...e, value: e.id, label: e.title }
-                    }))
+                    setName(result.title)
+                    setURL(result.name)
+                    setCategories(result.categories.map(e => ({ value: e.id, label: e.name })))
+                    setSelectedFilter(result)
                 },
-                (error) => {}
+                (error) => alert(error)
             )
 
-        fetch("http://192.168.0.108:7777/api/categories")
+        fetch('http://192.168.0.108:7777/api/categories/')
             .then(res => res.json())
             .then(
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
-                (error) => {}
+                (error) => alert(error)
             )
     }, [])
 
     const onSubmit = () => {
 
-        fetch('http://192.168.0.108:7777/api/filters/' + selectedFilter.id + '/', {
+        fetch(`http://192.168.0.108:7777/api/filters/${selectedFilter.id}/`, {
             method: 'PUT',
             body: JSON.stringify({
                 title: name,
                 name: url,
-                categories: categories ? categories.map(e => e.id) : []
+                categories: categories ? categories.map(e => e.value) : []
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -60,18 +62,6 @@ export default function EditFilterForm() {
     return (
         <div className="product-form">
             <h2>Edit filter</h2>
-
-            <Select 
-                styles={SelectStyles} 
-                options={optionsFilters}
-                value={selectedFilter}
-                onChange={e => {
-                    setName(e.title)
-                    setURL(e.name)
-                    setCategories(e.categories.map(e => ({ value: e.id, label: e.name })))
-                    setSelectedFilter(e)
-                }}
-            />
 
             {
                 selectedFilter ? (
