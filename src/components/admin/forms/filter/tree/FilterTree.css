@@ -3,7 +3,7 @@
     flex-wrap: wrap;
 }
 
-.parent-block {
+.block-filter-tree .parent-block {
     width: 100%;
     border: 1px solid #DDD;
     border-radius: 10px;
@@ -13,7 +13,7 @@
     overflow: hidden;
 }
 
-.parent-block > h2 {
+.block-filter-tree .parent-block > h2 {
     margin: 10px;
 }
 

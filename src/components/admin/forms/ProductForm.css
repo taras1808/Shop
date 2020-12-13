@@ -1,41 +1,41 @@
 
-.product-form {
+.admin-panel-form {
     margin: auto;
     margin-bottom: 100px;
 }
 
-.product-form > h2 {
+.admin-panel-form > h2 {
     padding: 15px 0;
 }
 
-.product-form > a {
+.admin-panel-form > a {
     display: block;
     margin: 20px 0;
     text-decoration: none;
     color: #4f78ff;
 }
 
-.product-form > a:hover{
+.admin-panel-form > a:hover{
     color: #3e66e9;
     text-decoration: underline;
 }
 
-.product-form p {
+.admin-panel-form p {
     font-weight: bold;
     padding: 15px 0 10px;
     line-height: 20px;
 }
 
-.product-form span.close {
+.admin-panel-form span.close {
     float: right;
     cursor: pointer;
     color: red;
 }
 
-.product-form > input[type="text"], 
-.product-form > label.select-image, 
-.product-form .submit,
-.product-form > textarea {
+.admin-panel-form > input[type="text"], 
+.admin-panel-form > label.select-image, 
+.admin-panel-form .submit,
+.admin-panel-form > textarea {
     box-sizing: border-box;
     width: 100%;
     display: block;
@@ -45,46 +45,69 @@
     border: 1px solid #CCC;
 }
 
-.product-form > textarea {
-    height: 200px;
-    resize: none;
-}
-
-.product-form > label.select-image,
-.product-form .submit {
-    background-color: #EEE;
+.admin-panel-form > label.select-image,
+.admin-panel-form .submit {
+    background-color: #F3F3F3;
     cursor: pointer;
     transition: background-color .1s;
     text-align: center;
 }
 
-.product-form > label.select-image:hover,
-.product-form .submit:hover {
-    background-color: #DDD;
+.admin-panel-form .submit {
+    margin: 50px 0;
+    border-color: rgb(146, 212, 146);
+    background-color: rgb(238, 255, 238);
+    color: green;
 }
 
-.product-form > label.select-image:active,
-.product-form .submit:active {
-    background-color: #CCC;
+.admin-panel-form .submit:hover {
+    background-color: rgb(210, 255, 210);
 }
 
-.product-form > label.select-image > input[type="file"] {
+.admin-panel-form .submit:active {
+    background-color:rgb(182, 255, 182);
+}
+
+.admin-panel-form .submit.delete {
+    border-color: rgb(224, 164, 164);
+    background-color: rgb(255, 234, 234);
+    color: rgb(201, 87, 87);
+}
+
+.admin-panel-form .submit.delete:hover {
+    background-color :rgb(255, 220, 220);
+}
+
+.admin-panel-form .submit.delete:active{
+    background-color: rgb(255, 206, 206);
+}
+
+.admin-panel-form > textarea {
+    height: 200px;
+    resize: none;
+}
+
+.admin-panel-form > label.select-image:hover {
+    background-color: #E7E7E7;
+}
+
+.admin-panel-form > label.select-image:active {
+    background-color: #E0E0E0;
+}
+
+.admin-panel-form > label.select-image > input[type="file"] {
     opacity: 0;
     display: none;
 }
 
-.product-form .submit {
-    margin: 50px 0;
-}
-
-.product-form > .images-section {
+.admin-panel-form > .images-section {
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
     justify-content: center;
 }
 
-.product-form > .images-section > .image-section {
+.admin-panel-form > .images-section > .image-section {
     width: 350px;
     margin: 5px;
     padding: 0 10px;
@@ -93,16 +116,16 @@
     flex-direction: column;
 }
 
-.product-form > .images-section > .image-section > span {
+.admin-panel-form > .images-section > .image-section > span {
     display: block;
 }
 
-.product-form > .images-section > .image-section > .image-block {
+.admin-panel-form > .images-section > .image-section > .image-block {
     display: flex;
     align-items: center;
 }
 
-.product-form > .images-section > .image-section > .image-block > img {
+.admin-panel-form > .images-section > .image-section > .image-block > img {
     max-width: 100%;
     max-height: 300px;
     margin: 20px auto;
@@ -110,7 +133,7 @@
 }
 
 @media all and (max-width: 700px) {
-    .product-form > .images-section > .image-section {
+    .admin-panel-form > .images-section > .image-section {
         width: 100%;
     }
 }

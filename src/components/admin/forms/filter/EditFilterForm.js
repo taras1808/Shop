@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import { useState, useEffect } from 'react'
+import '../ProductForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 
 export default function EditFilterForm() {
+
+    const history = useHistory()
 
     const { filterId } = useParams()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
+    const [filterName, setFilterName] = useState("")
     const [name, setName] = useState("")
     const [url, setURL] = useState("")
     const [categories, setCategories] = useState([])
@@ -23,6 +26,7 @@ export default function EditFilterForm() {
             .then(res => res.json())
             .then(
                 (result) => {
+                    setFilterName(result.title)
                     setName(result.title)
                     setURL(result.name)
                     setCategories(result.categories.map(e => ({ value: e.id, label: e.name })))
@@ -37,9 +41,9 @@ export default function EditFilterForm() {
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
                 (error) => alert(error)
             )
-    }, [])
+    }, [filterId])
 
-    const onSubmit = () => {
+    const onEdit = () => {
 
         fetch(`http://192.168.0.108:7777/api/filters/${selectedFilter.id}/`, {
             method: 'PUT',
@@ -54,14 +58,32 @@ export default function EditFilterForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+                setFilterName(result.title)
+            },
+            (error) => alert(error)
+        )
+    }
+
+    const onDelete = () => {
+
+        fetch('http://192.168.0.108:7777/api/filters/' + selectedFilter.id + '/', {
+            method: 'DELETE'
+        })
+        .then(result => result.json())
+        .then(
+            (result) => {
+                alert("OK")
+                history.push('/admin/filters/')
+            },
             (error) => alert(error)
         )
     }
 
     return (
-        <div className="product-form">
-            <h2>Edit filter</h2>
+        <div className="admin-panel-form">
+            <h2>Edit filter - { filterName }</h2>
 
             {
                 selectedFilter ? (
@@ -80,7 +102,9 @@ export default function EditFilterForm() {
                             options={optionsCategories} 
                             onChange={e => setCategories(e)} />
 
-                        <div className="submit" onClick={onSubmit}>Save filter</div>
+                        <div className="submit" onClick={onEdit}>Save</div>
+
+                        <div className="submit delete" onClick={onDelete}>Delete</div>
                     </>
                 ) : null
             }

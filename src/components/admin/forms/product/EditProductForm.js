@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import { useState, useEffect } from 'react'
+import '../ProductForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 
 export default function EditProductForm() {
@@ -50,7 +50,7 @@ export default function EditProductForm() {
 
     useEffect(() => {
         if (!selectedProduct) return
-        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/options`)
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/options/`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -74,7 +74,7 @@ export default function EditProductForm() {
 
     }, [selectedCategory])
 
-    const onSubmit = () => {
+    const onEdit = () => {
 
         const formData = new FormData()
         images.forEach((image,  index) => formData.append('file_' + index, image))
@@ -86,7 +86,7 @@ export default function EditProductForm() {
         formData.append('name', name)
         if (productInfo !== '') formData.append('info', productInfo)
 
-        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}`, {
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/`, {
             method: 'PUT',
             body: formData
         })
@@ -106,9 +106,26 @@ export default function EditProductForm() {
                 (error) => alert(error)
             )
     }
+
+    const onDelete = () => {
+        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/`, 
+            { 
+                method: 'DELETE' 
+            })
+            .then(result => result.json())
+            .then(
+                result => {
+                    alert("OK")
+                    const arr = optionsProducts.filter(e => e.value !== selectedProduct.id)
+                    setOptionsProducts(arr)
+                    setSelectedProduct(null)
+                },
+                error => alert(error)
+            )
+    }
     
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
 
             <h2>Edit product</h2>
 
@@ -193,12 +210,12 @@ export default function EditProductForm() {
                             })
                         }   
 
-                        <button className="submit" onClick={onSubmit}>Save product</button>
+                        <button className="submit" onClick={onEdit}>Save</button>
 
                         <p>New Images</p>
 
                         <label className="select-image">
-                            Select image...
+                            Select images...
                             <input type="file"
                                 value={null}
                                 multiple 
@@ -256,6 +273,8 @@ export default function EditProductForm() {
                             }
                         </div>
                         
+                        <button className="submit delete" onClick={onDelete}>Delete</button>
+
                     </>
                 ) : null
             }

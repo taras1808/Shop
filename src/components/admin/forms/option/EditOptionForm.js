@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import '../ProductForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 
 export default function EditOptionForm() {
+
+    const history = useHistory()
 
     const { optionId } = useParams()
 
@@ -13,6 +15,7 @@ export default function EditOptionForm() {
 
     const [optionsFilters, setOptionsFilters] = useState([])
 
+    const [optionValue, setOptionValue] = useState("")
     const [value, setValue] = useState("")
     const [filter, setFilter] = useState(null)
 
@@ -21,6 +24,7 @@ export default function EditOptionForm() {
             .then(res => res.json())
             .then(
                 (result) => {
+                    setOptionValue(result.value)
                     setValue(result.value)
                     setFilter(result.filter ? { value: result.filter.id, label: result.filter.title } : null)
                     setSelectedOption(result)
@@ -28,17 +32,17 @@ export default function EditOptionForm() {
                 (error) => alert(error)
             )
 
-        fetch("http://192.168.0.108:7777/api/filters")
+        fetch('http://192.168.0.108:7777/api/filters')
             .then(res => res.json())
             .then(
                 (result) => setOptionsFilters(result.map(e => ({ value: e.id, label: e.title }))),
                 (error) => alert(error)
             )
-    }, [])
+    }, [optionId])
 
-    const onSubmit = () => {
+    const onEdit = () => {
 
-        fetch('http://192.168.0.108:7777/api/options/' + selectedOption.id + '/', {
+        fetch(`http://192.168.0.108:7777/api/options/${selectedOption.id}/`, {
             method: 'PUT',
             body: JSON.stringify({
                 value,
@@ -50,14 +54,32 @@ export default function EditOptionForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+                setOptionValue(result.value)
+            },
+            (error) => alert(error)
+        )
+    }
+
+    const onDelete = () => {
+
+        fetch(`http://192.168.0.108:7777/api/options/${selectedOption.id}/`, {
+            method: 'DELETE'
+        })
+        .then(result => result.json())
+        .then(
+            (result) => {
+                alert("OK")
+                history.push('/admin/options/')
+            },
             (error) => alert(error)
         )
     }
 
     return (
-        <div className="product-form">
-            <h2>Edit option</h2>
+        <div className="admin-panel-form">
+            <h2>Edit option - { optionValue }</h2>
 
             {
                 selectedOption ? (
@@ -72,7 +94,9 @@ export default function EditOptionForm() {
                             options={optionsFilters} 
                             onChange={e => setFilter(e)} />
 
-                        <div className="submit" onClick={onSubmit}>Save option</div>
+                        <div className="submit" onClick={onEdit}>Save</div>
+
+                        <div className="submit delete" onClick={onDelete}>Delete</div>
                     </>
                 ) : null
             }

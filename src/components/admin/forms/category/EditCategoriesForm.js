@@ -5,7 +5,7 @@ import CategoriesTree from './tree/CategoriesTree'
 export default function EditCategoriesForm() {
 
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>Edit categories</h2>
             <CategoriesTree />
         </div>

@@ -40,7 +40,7 @@ export default function AddProductForm() {
     }
 
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>New option</h2>
 
             <p>Value</p>

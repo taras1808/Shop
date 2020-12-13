@@ -42,14 +42,14 @@ export default function AddFilterForm() {
     }
 
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>New filter</h2>
 
             <p>Nazwa</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
             <p>URL</p>
-            <input value={url} type="text" onChange={e => setURL(e.target.value)} />
+            <input value={url} type="text" onChange={e => setURL(e.target.value.toLowerCase())} />
 
             <p>Kategorii:</p>
             <Select styles={SelectStyles}

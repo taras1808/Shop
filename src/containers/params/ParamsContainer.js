@@ -1,18 +1,9 @@
 import Select from 'react-select'
-import './ParamsContainer.css';
-import { useParams, useHistory } from "react-router-dom"
+import './ParamsContainer.css'
+import { useParams, useHistory } from 'react-router-dom'
 import { FilterType } from '../filters/FiltersContainer'
+import { SelectStyles } from '../../components/styles/CustomStyle'
 
-const customStyles = {
-    option: (provided) => ({
-        ...provided,
-        cursor: 'pointer'
-    }),
-    control: (provided) => ({
-        ...provided,
-        cursor: 'pointer'
-    })
-}
 
 const options = [
     { value: 0, label: 'Date, new to old' },
@@ -25,7 +16,7 @@ const options = [
 
 export default function ParamsContainer ({ filters }) {
 
-    const history = useHistory();
+    const history = useHistory()
 
     const { categoryId, params } = useParams()
 
@@ -82,7 +73,7 @@ export default function ParamsContainer ({ filters }) {
 
             <Select id="sort"
                 isSearchable={false}
-                styles={customStyles}  
+                styles={SelectStyles}  
                 options={options} 
                 defaultValue={options[parameters.get('orderBy') ? parseInt(parameters.get('orderBy')) : 0]} 
                 onChange={e => {

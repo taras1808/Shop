@@ -43,7 +43,7 @@ export default function AddCategoryForm() {
     }
 
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>New category</h2>
 
             <p>Name</p>
