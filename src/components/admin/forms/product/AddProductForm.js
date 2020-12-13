@@ -25,18 +25,25 @@ export default function AddProductForm() {
             .then(res => res.json())
             .then(
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
-                (error) => {}
+                (error) => alert(error)
             )
     }, [])
 
     useEffect(() => {
-        if (!category) return
+        if (!category) {
+            setFilters([])
+            setProductOptions(new Map())
+            return
+        }
         fetch('http://192.168.0.108:7777/api/filters?categoryId=' + category.id)
 			.then(res => res.json())
-			.then((result) => {
-                setFilters(result.filter(e => e.type === FilterType.SELECT))
-                setProductOptions(new Map())
-			}, (error) => {})
+			.then(
+                (result) => {
+                    setFilters(result.filter(e => e.type === FilterType.SELECT))
+                    setProductOptions(new Map())
+                }, 
+                (error) => alert(error)
+            )
     }, [category])
 
     const onSubmit = () => {
@@ -62,11 +69,12 @@ export default function AddProductForm() {
     }
 
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>New product</h2>
 
             <p>Kategoria:</p>
             <Select styles={SelectStyles}
+                isClearable
                 value={category}
                 options={optionsCategories} 
                 onChange={e => setCategory(e)} />

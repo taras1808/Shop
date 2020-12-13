@@ -4,10 +4,13 @@ import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { useParams } from 'react-router-dom'
 import CategoriesTree from './tree/CategoriesTree'
-import { Link } from 'react-router-dom'
+import FiltersTree from './tree/FiltersTree'
+import { Link, useHistory } from 'react-router-dom'
 
 
 export default function EditCategoryForm() {
+
+    const history = useHistory()
 
     const { categoryId } = useParams()
 
@@ -50,7 +53,7 @@ export default function EditCategoryForm() {
             )
     }, [category])
 
-    const onSubmit = () => {
+    const onEdit = () => {
 
         const formData = new FormData()
         if (image) formData.append('file', image)
@@ -74,8 +77,23 @@ export default function EditCategoryForm() {
         )
     }
 
+    const onDelete = () => {
+
+        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/`, {
+            method: 'DELETE'
+        })
+        .then(result => result.json())
+        .then(
+            (result) => {
+                alert('OK')
+                history.push('/admin/categories/')
+            },
+            (error) => alert(error)
+        )
+    }
+
     return (
-        <div className="product-form">
+        <div className="admin-panel-form">
             <h2>Edit category - { categoryName }</h2>
 
             {
@@ -89,6 +107,9 @@ export default function EditCategoryForm() {
             <p>Childrens</p>
             <CategoriesTree/>
 
+            <p>Filters</p>
+            <FiltersTree />
+
             <p>Name</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
@@ -99,7 +120,7 @@ export default function EditCategoryForm() {
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e)} />
 
-            <div className="submit" onClick={onSubmit}>Save category</div>
+            <div className="submit" onClick={onEdit}>Save</div>
 
             <p>New Image</p>
 
@@ -156,6 +177,9 @@ export default function EditCategoryForm() {
                     </div>
                 ) : null
             }
+
+            <div className="submit delete" onClick={onDelete}>Delete</div>
+
         </div>
     );
 }

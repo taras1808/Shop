@@ -14,7 +14,7 @@ export default function CategoriesTree() {
                 (result) => {
                     const map = new Map()
                     result.forEach(e => {
-                        const categories = e.categories.map(e => e.name).join(', ')
+                        const categories = e.categories.map(e => e.name).join(' - ')
                         map.set(categories, [...map.get(categories) ?? [], e])
                     })
                     setTreeOptions(Array.from(map))
@@ -28,12 +28,12 @@ export default function CategoriesTree() {
         { 
             treeOptions.map(([ key, values ], index) => (
                 <div key={index} className="parent-block"> 
-                    <h2>{ key }</h2>
+                    { key ? <h2>{ key }</h2> : null }
                     <div className="childrens-block">
                         {
                             values.map((e, index) => (
                                 <div key={index} className="filter-tree">
-                                    <Link key={index} className="dragable-block" to={`/admin/filter/edit/${e.id}/`}>
+                                    <Link key={index} className="dragable-block" to={`/admin/filters/${e.id}/`}>
                                         {e.title}
                                     </Link>
                                 </div>
