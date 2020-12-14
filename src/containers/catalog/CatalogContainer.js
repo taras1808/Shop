@@ -22,8 +22,10 @@ export default function CatalogContainer () {
 	}, [])
 
 	useEffect(() => {
-		if (state !== params)
+		if (state !== params) {
+			// window.scrollTo({ top: 0 })
 			setState(params)
+		}
         // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params])
 
@@ -59,7 +61,10 @@ export default function CatalogContainer () {
 
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
 
-		let query = ['?orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')]
+		let query = [
+			`?orderBy=${parameters.get('orderBy') ? parameters.get('orderBy') : ''}`, 
+			`page=${parameters.get('page') ? parameters.get('page') : ''}`
+		]
 
 		filters.forEach(filter => {
 			const data = parameters.get(filter.name)
@@ -73,13 +78,13 @@ export default function CatalogContainer () {
 			.then(res => res.json())
 			.then(
 				(result) => {
-					setIsLoaded(true)
 					setItems(result)
 					setError()
+					setIsLoaded(true)
 				},
 				(error) => {
-					setIsLoaded(true)
 					setError(error)
+					setIsLoaded(true)
 				}
 			)
 
@@ -94,8 +99,7 @@ export default function CatalogContainer () {
 				<ProductsContainer 
 					items={items}
 					isLoaded={isLoaded}
-					error={error}
-				/>
+					error={error} />
 			</div>
         </>
 	)

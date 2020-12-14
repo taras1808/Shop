@@ -1,12 +1,12 @@
-import { Collapse } from '@material-ui/core';
-import { useState } from 'react';
-import './Filter.css';
-import { useParams, useHistory } from "react-router-dom"
+import { Collapse } from '@material-ui/core'
+import { useState } from 'react'
+import './Filter.css'
+import { useParams, useHistory } from'react-router-dom'
 
 
 export default function ItemsFilter({filter}) {
 
-    const history = useHistory();
+    const history = useHistory()
 
     const { categoryId, params } = useParams()
 
@@ -38,9 +38,10 @@ export default function ItemsFilter({filter}) {
                                     }
 
                                     parameters.set(filter.name, array)
+                                    parameters.set('page',  0)
 
                                     let params = Array.from(parameters)
-                                        .filter(e => e[1].length > 0)
+                                        .filter(e => `${e[1]}`.length > 0)
                                         .map(e => e.join('='))
                                         .join(';')
 

@@ -17,8 +17,14 @@ export default function SearchContainer () {
 	const [items, setItems] = useState([])
 
 	useEffect(() => {
-		if (state !== params)
+		window.scrollTo({ top: 0 })
+	}, [])
+
+	useEffect(() => {
+		if (state !== params){
+			// window.scrollTo({ top: 0 })
 			setState(params)
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params])
@@ -57,7 +63,8 @@ export default function SearchContainer () {
 
 		let query = [
 			'?q=' + (parameters.get('q') ? parameters.get('q') : ''), 
-			'orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : '')
+			'orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : ''),
+			'page=' + (parameters.get('page') ? parameters.get('page') : '')
 		]
 
 		filters.forEach(filter => {
@@ -72,13 +79,13 @@ export default function SearchContainer () {
 			.then(res => res.json())
 			.then(
 				(result) => {
-					setIsLoaded(true)
 					setItems(result)
 					setError()
+					setIsLoaded(true)
 				},
 				(error) => {
-					setIsLoaded(true)
 					setError(error)
+					setIsLoaded(true)
 				}
 			)
 

@@ -39,6 +39,7 @@ export default function ParamsContainer ({ filters }) {
                                 return filter.options.filter(e => values.includes(e.id)).map(e => (
                                     <div key={e.id} className="param-block" onClick={_ => {
                                         parameters.set(filter.name, values.filter(value => value !== e.id))
+                                        parameters.set('page',  0)
 
                                         let params = Array.from(parameters)
                                             .filter(e => e[1].length > 0)
@@ -52,6 +53,7 @@ export default function ParamsContainer ({ filters }) {
                                 return <div key={filter.name} className="param-block" onClick={_ => {
 
                                     parameters.set(filter.name, '')
+                                    parameters.set('page',  0)
 
                                     let params = Array.from(parameters)
                                         .filter(e => e[1].length > 0)
@@ -79,6 +81,7 @@ export default function ParamsContainer ({ filters }) {
                 onChange={e => {
 
                     parameters.set('orderBy', `${e.value}`)
+                    parameters.set('page',  0)
 
                     let params = Array.from(parameters)
                         .filter(e => e[1].length > 0)
