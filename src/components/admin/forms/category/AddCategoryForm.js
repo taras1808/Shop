@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
+import SelectImageBlock from '../block/images/SelectImageBlock'
+import { useHistory } from 'react-router-dom'
 
 
 export default function AddCategoryForm() {
+
+    const history = useHistory()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -37,62 +41,32 @@ export default function AddCategoryForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+                history.push(`/admin/categories/${result.id}/`)
+            },
             (error) => alert(error)
         )
     }
 
     return (
         <div className="admin-panel-form">
-            <h2>New category</h2>
+            <h2 className="admin-panel-title">New category</h2>
 
-            <p>Name</p>
+            <p className="admin-panel">Name</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
 
-            <p>Root category</p>
+            <p className="admin-panel">Root category</p>
             <Select styles={SelectStyles} 
                 isClearable
                 options={optionsCategories}
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e)} />
 
+            <SelectImageBlock {...{image, setImage}} />
+
             <div className="submit" onClick={onSubmit}>Save category</div>
-
-            <p>Image</p>
-
-            <label className="select-image">
-                Select image...
-                <input type="file"
-                    accept="image/png, image/jpeg" 
-                    onChange={e => {
-                        setImage(e.target.files[0])
-                        e.target.value = ''
-                    }} />
-            </label>
-
-            {
-                image ? (
-                    <div className="images-section">
-                        <div className="image-section">
-
-                            <p>Name:
-                                <span className="close" onClick={() => {
-                                    setImage(null)
-                                }}>Remove</span>
-                            </p>
-                            <span>{image.name} </span>
-
-                            <p>Size:</p>
-                            <span>{(image.size / 1024).toFixed(2)} KB</span>
-
-                            <div className="image-block">
-                                <img src={URL.createObjectURL(image) } alt=""/>
-                            </div>
-                        </div>
-                    </div>
-                ) : null
-            }
 
         </div>
     );

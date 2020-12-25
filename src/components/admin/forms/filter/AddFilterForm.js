@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 
@@ -43,15 +43,15 @@ export default function AddFilterForm() {
 
     return (
         <div className="admin-panel-form">
-            <h2>New filter</h2>
+            <h2 className="admin-panel-title">New filter</h2>
 
-            <p>Nazwa</p>
+            <p className="admin-panel">Nazwa</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
-            <p>URL</p>
+            <p className="admin-panel">URL</p>
             <input value={url} type="text" onChange={e => setURL(e.target.value.toLowerCase())} />
 
-            <p>Kategorii:</p>
+            <p className="admin-panel">Kategorii:</p>
             <Select styles={SelectStyles}
                 isClearable
                 isMulti

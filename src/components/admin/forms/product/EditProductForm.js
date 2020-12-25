@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import '../ProductForm.css'
+import '../AdminPanelForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { Link } from 'react-router-dom'
+import SelectImagesBlock from '../block/images/SelectImagesBlock'
+import OldImagesBlock from '../block/images/OldImagesBlock'
 
 
 export default function EditProductForm() {
@@ -68,7 +70,7 @@ export default function EditProductForm() {
         fetch(`http://192.168.0.108:7777/api/filters/?categoryId=${selectedCategory.value}`)
             .then(res => res.json())
             .then(
-                (result) => setFilters(result),
+                (result) => setFilters(result.filter(e => e.type === 0)),
                 (error) => alert(error)
             )
 
@@ -127,16 +129,16 @@ export default function EditProductForm() {
     return (
         <div className="admin-panel-form">
 
-            <h2>Edit product</h2>
+            <h2 className="admin-panel-title">Edit product</h2>
 
-            <p>Select category</p>
+            <p className="admin-panel">Select category</p>
             <Select 
                 isClearable
                 styles={SelectStyles} 
                 value={category}
                 options={optionsCategories} onChange={e => setCategory(e)} />
 
-            <p>Select product</p>
+            <p className="admin-panel">Select product</p>
             <Select 
                 isClearable
                 styles={SelectStyles} 
@@ -160,30 +162,30 @@ export default function EditProductForm() {
             {
                 selectedProduct ? (
                     <>
-                        <Link target="_blank" to={`/product/${selectedProduct.id}/`}>Look at product</Link>
+                        <Link className="admin-panel-preview" target="_blank" to={`/product/${selectedProduct.id}/`}>Look at product</Link>
 
-                        <p>Nazwa</p>
+                        <p className="admin-panel">Nazwa</p>
                         <input className="input-field" 
                             type="text"
                             value={name}
                             onChange={e => setName(e.target.value)} />
 
-                        <p>Cena</p>
+                        <p className="admin-panel">Cena</p>
                         <input className="input-field" 
                             type="text"
                             value={price}
                             onChange={e => setPrice(e.target.value)} />
 
-                        <p>Old price</p>
+                        <p className="admin-panel">Old price</p>
                         <input className="input-field" 
                             type="text"
                             value={oldPrice}
                             onChange={e => setOldPrice(e.target.value)} />
 
-                        <p>Product information</p>
+                        <p className="admin-panel">Product information</p>
                         <textarea value={productInfo} onChange={e => setProductInfo(e.target.value)}/>
 
-                        <p>Kategoria:</p>
+                        <p className="admin-panel">Kategoria:</p>
                         <Select 
                             isClearable
                             styles={SelectStyles} 
@@ -196,7 +198,7 @@ export default function EditProductForm() {
                                     
                                 return (
                                     <div key={index}>
-                                        <p>{ filter.title }</p>
+                                        <p className="admin-panel">{ filter.title }</p>
                                         <Select styles={SelectStyles} 
                                             isClearable
                                             options={options}
@@ -212,66 +214,8 @@ export default function EditProductForm() {
 
                         <button className="submit" onClick={onEdit}>Save</button>
 
-                        <p>New Images</p>
-
-                        <label className="select-image">
-                            Select images...
-                            <input type="file"
-                                value={null}
-                                multiple 
-                                accept="image/png, image/jpeg" 
-                                onChange={e => {
-                                    const array = [...images]
-                                    Array.from(e.target.files).forEach(e => {
-                                        if (!images.map(e => e.name).includes(e.name)) {
-                                            array.push(e)
-                                        }
-                                    })
-                                    setImages(array)
-                                    e.target.value = ''
-                                }} />
-                        </label>
-
-                        <div className="images-section">
-                            {
-                                images.map((image, index) => (
-                                    <div key={index} className="image-section">
-                                        <p>Name: 
-                                            <span className="close" onClick={() => {
-                                                setImages(images.filter(e => e !== image))
-                                            }}>Remove</span>
-                                        </p>
-                                        <span>{ image.name }</span>
-                                        <p>Size: </p>
-                                        <span>{(image.size / 1024).toFixed(2)} KB</span>
-
-                                        <div className="image-block">
-                                            <img src={URL.createObjectURL(image) } alt=""/>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-
-
-                        <p>Old Images</p>
-                        <div className="images-section">
-                            {
-                                oldImages.map((image, index) => (
-                                    <div key={index} className="image-section">
-                                        <p>
-                                            <span className="close" onClick={() => {
-                                                setOldImages(oldImages.filter(e => e !== image))
-                                            }}>Remove</span>
-                                        </p>
-                                        
-                                        <div className="image-block">
-                                            <img src={image.image} alt=""/>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        <SelectImagesBlock {...{images, setImages}} />
+                        <OldImagesBlock {...{oldImages, setOldImages}} />
                         
                         <button className="submit delete" onClick={onDelete}>Delete</button>
 
