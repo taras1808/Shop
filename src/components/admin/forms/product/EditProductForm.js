@@ -178,7 +178,7 @@ export default function EditProductForm() {
                 options={optionsProducts}
                 value={optionsProducts.filter(e => e.id === parseInt(product))[0]}
                 onChange={e => {
-                    const url = build(params, 'product', e.id)
+                    const url = build(params, 'product', e ? e.id : '')
                     history.push(`/admin/products/${url}`)
                 }} />
 
