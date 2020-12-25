@@ -64,7 +64,7 @@ export default function SearchContainer () {
 		let query = [
 			'?q=' + (parameters.get('q') ? parameters.get('q') : ''), 
 			'orderBy=' + (parameters.get('orderBy') ? parameters.get('orderBy') : ''),
-			'page=' + (parameters.get('page') ? parameters.get('page') : '')
+			'page=' + (parameters.get('page') ? parseInt(parameters.get('page')) - 1 : '')
 		]
 
 		filters.forEach(filter => {

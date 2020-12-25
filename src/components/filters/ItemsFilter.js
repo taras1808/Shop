@@ -38,7 +38,7 @@ export default function ItemsFilter({filter}) {
                                     }
 
                                     parameters.set(filter.name, array)
-                                    parameters.set('page',  0)
+                                    parameters.set('page',  1)
 
                                     let params = Array.from(parameters)
                                         .filter(e => `${e[1]}`.length > 0)

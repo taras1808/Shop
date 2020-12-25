@@ -50,7 +50,7 @@ export default function RangeFilter({filter}) {
                                 <input type="text" value={value[1]} onChange={(e) => setValue([value[0], e.target.value])} />
                                 <button onClick={_ => {
                                     parameters.set(filter.name, value.join('-'))
-                                    parameters.set('page',  0)
+                                    parameters.set('page',  1)
 
                                     let params = Array.from(parameters)
                                         .filter(e => `${e[1]}`.length > 0)

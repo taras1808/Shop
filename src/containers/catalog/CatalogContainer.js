@@ -63,7 +63,7 @@ export default function CatalogContainer () {
 
 		let query = [
 			`?orderBy=${parameters.get('orderBy') ? parameters.get('orderBy') : ''}`, 
-			`page=${parameters.get('page') ? parameters.get('page') : ''}`
+			`page=${parameters.get('page') ? parseInt(parameters.get('page')) - 1 : ''}`
 		]
 
 		filters.forEach(filter => {
