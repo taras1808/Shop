@@ -8,9 +8,8 @@ import AddFilterForm from '../../components/admin/forms/filter/AddFilterForm'
 import EditFilterForm from '../../components/admin/forms/filter/EditFilterForm'
 import EditFiltersForm from '../../components/admin/forms/filter/EditFiltersForm'
 
-import AddOptionForm from '../../components/admin/forms/option/AddOptionForm'
-import EditOptionsForm from '../../components/admin/forms/option/EditOptionsForm'
-import EditOptionForm from '../../components/admin/forms/option/EditOptionForm'
+import AddOptionForm from '../../components/admin/forms/filter/option/AddOptionForm'
+import EditOptionForm from '../../components/admin/forms/filter/option/EditOptionForm'
 
 import AddCategoryForm from '../../components/admin/forms/category/AddCategoryForm'
 import EditCategoriesForm from '../../components/admin/forms/category/EditCategoriesForm'
@@ -26,11 +25,14 @@ export default function AdminContainer () {
 				<Route strict path={`${match.path}categories/*/`}>
 					<Link className="admin-panel-back" to="/admin/categories/">Back</Link>
 				</Route>
+				<Route strict path={`${match.path}filters/*/options/*/`}>
+					<Link className="admin-panel-back" to="../../">Back</Link>
+				</Route>
+				<Route strict path={`${match.path}filters/*/options/`}>
+					<Link className="admin-panel-back" to="../">Back</Link>
+				</Route>
 				<Route strict path={`${match.path}filters/*/`}>
 					<Link className="admin-panel-back" to="/admin/filters/">Back</Link>
-				</Route>
-				<Route strict path={`${match.path}options/*/`}>
-					<Link className="admin-panel-back" to="/admin/options/">Back</Link>
 				</Route>
 				<Route path={match.path}>
 					<Link className="admin-panel-back" to={match.path}>Back</Link>
@@ -65,19 +67,6 @@ export default function AdminContainer () {
 					</div>
 
 					<div className="admin-panel-controls">
-						<Link to={`${match.path}option/`}>
-							<div className="admin-panel-control">
-								<h2>New option</h2>
-							</div>
-						</Link>
-						<Link to={`${match.path}options/`}>
-							<div className="admin-panel-control">
-								<h2>Edit options</h2>
-							</div>
-						</Link>
-					</div>
-
-					<div className="admin-panel-controls">
 						<Link to={`${match.path}category/`}>
 							<div className="admin-panel-control">
 								<h2>New category</h2>
@@ -92,41 +81,38 @@ export default function AdminContainer () {
 				</Route>
 
 
-				<Route path={`${match.path}products/`}>
+				<Route strict path={`${match.path}products/:params?/`}>
 					<EditProductForm />
 				</Route>
-				<Route path={`${match.path}product/`}>
+				<Route strict path={`${match.path}product/`}>
 					<AddProductForm />
 				</Route>
+				
 
-				<Route path={`${match.path}filters/:filterId/`}>
+				<Route strict path={`${match.path}filters/:filterId/options/:optionId/`}>
+					<EditOptionForm />
+				</Route>
+				<Route strict path={`${match.path}filters/:filterId/options/`}>
+					<AddOptionForm />
+				</Route>
+				<Route strict path={`${match.path}filters/:filterId/`}>
 					<EditFilterForm />
 				</Route>
-				<Route path={`${match.path}filters/`}>
+				<Route strict path={`${match.path}filters/`}>
 					<EditFiltersForm />
 				</Route>
-				<Route path={`${match.path}filter/`}>
+				<Route strict path={`${match.path}filter/`}>
 					<AddFilterForm />
 				</Route>
 
-				<Route path={`${match.path}options/:optionId/`}>
-					<EditOptionForm />
-				</Route>
-				<Route path={`${match.path}options/`}>
-					<EditOptionsForm />
-				</Route>
-				<Route path={`${match.path}option/`}>
-					<AddOptionForm />
-				</Route>
 
-
-				<Route path={`${match.path}categories/:categoryId/`}>
+				<Route strict path={`${match.path}categories/:categoryId/`}>
 					<EditCategoryForm />
 				</Route>
-				<Route path={`${match.path}categories/`}>
+				<Route strict path={`${match.path}categories/`}>
 					<EditCategoriesForm />
 				</Route>
-				<Route path={`${match.path}category/`}>
+				<Route strict path={`${match.path}category/`}>
 					<AddCategoryForm />
 				</Route>
 			</Switch>

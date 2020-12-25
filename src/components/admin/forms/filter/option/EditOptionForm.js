@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../ProductForm.css';
-import Select from 'react-select'
-import { SelectStyles } from '../../../styles/CustomStyle'
+import '../../AdminPanelForm.css';
 import { useParams, useHistory } from 'react-router-dom'
 
 
@@ -9,11 +7,9 @@ export default function EditOptionForm() {
 
     const history = useHistory()
 
-    const { optionId } = useParams()
+    const { filterId, optionId } = useParams()
 
     const [selectedOption, setSelectedOption] = useState(null)
-
-    const [optionsFilters, setOptionsFilters] = useState([])
 
     const [optionValue, setOptionValue] = useState("")
     const [value, setValue] = useState("")
@@ -26,27 +22,22 @@ export default function EditOptionForm() {
                 (result) => {
                     setOptionValue(result.value)
                     setValue(result.value)
-                    setFilter(result.filter ? { value: result.filter.id, label: result.filter.title } : null)
+                    setFilter(result.filter)
                     setSelectedOption(result)
                 },
-                (error) => alert(error)
-            )
-
-        fetch('http://192.168.0.108:7777/api/filters')
-            .then(res => res.json())
-            .then(
-                (result) => setOptionsFilters(result.map(e => ({ value: e.id, label: e.title }))),
                 (error) => alert(error)
             )
     }, [optionId])
 
     const onEdit = () => {
 
+        if (parseInt(filterId) !== filter.value) return
+
         fetch(`http://192.168.0.108:7777/api/options/${selectedOption.id}/`, {
             method: 'PUT',
             body: JSON.stringify({
                 value,
-                filter: filter ? filter.value : null
+                filter: filter.value
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -71,7 +62,7 @@ export default function EditOptionForm() {
         .then(
             (result) => {
                 alert("OK")
-                history.push('/admin/options/')
+                history.push('../../')
             },
             (error) => alert(error)
         )
@@ -79,20 +70,16 @@ export default function EditOptionForm() {
 
     return (
         <div className="admin-panel-form">
-            <h2>Edit option - { optionValue }</h2>
+            <h2 className="admin-panel-title">Edit option - { optionValue }</h2>
 
             {
                 selectedOption ? (
                     <>
-                        <p>Value</p>
+                        <p className="admin-panel">Value</p>
                         <input value={value} type="text" onChange={e => setValue(e.target.value)} />
 
-                        <p>Filter:</p>
-                        <Select styles={SelectStyles}
-                            isClearable
-                            value={filter}
-                            options={optionsFilters} 
-                            onChange={e => setFilter(e)} />
+                        <p className="admin-panel">Filter:</p>
+                        <span>{ filter.title }</span>
 
                         <div className="submit" onClick={onEdit}>Save</div>
 

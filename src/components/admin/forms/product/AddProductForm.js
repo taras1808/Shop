@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { FilterType } from '../../../../containers/filters/FiltersContainer'
+import SelectImagesBlock from '../block/images/SelectImagesBlock'
+import { useHistory } from 'react-router-dom'
 
 
 export default function AddProductForm() {
+
+    const history = useHistory()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -63,32 +67,46 @@ export default function AddProductForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+
+                const parameters = new Map()
+
+                parameters.set('category', result.category_id)
+                parameters.set('product', result.id)
+
+                let params = Array.from(parameters)
+                    .filter(e => e && `${e[1]}`.length > 0)
+                    .map(e => e.join('='))
+                    .join(';')
+
+                history.push(`/admin/products/${params !== '' ? params + '/' : ''}`)
+            },
             (error) => alert(error)
         )
     }
 
     return (
         <div className="admin-panel-form">
-            <h2>New product</h2>
+            <h2 className="admin-panel-title">New product</h2>
 
-            <p>Kategoria:</p>
+            <p className="admin-panel">Kategoria:</p>
             <Select styles={SelectStyles}
                 isClearable
                 value={category}
                 options={optionsCategories} 
                 onChange={e => setCategory(e)} />
 
-            <p>Nazwa</p>
+            <p className="admin-panel">Nazwa</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
-            <p>Cena</p>
+            <p className="admin-panel">Cena</p>
             <input value={price} type="text" onChange={e => setPrice(e.target.value)} />
 
-            <p>Old price</p>
+            <p className="admin-panel">Old price</p>
             <input value={oldPrice} type="text" onChange={e => setOldPrice(e.target.value)} />
 
-            <p>Product information</p>
+            <p className="admin-panel">Product information</p>
             <textarea value={productInfo} onChange={e => setProductInfo(e.target.value)}/>
 
             {
@@ -97,7 +115,7 @@ export default function AddProductForm() {
 
                     return (
                         <div key={index}>
-                            <p>{ filter.title }</p>
+                            <p className="admin-panel">{ filter.title }</p>
                             <Select styles={SelectStyles} 
                                 isClearable
                                 options={options}
@@ -111,49 +129,10 @@ export default function AddProductForm() {
                 })
             }
 
+            <SelectImagesBlock {...{images, setImages}} />
+
             <div className="submit" onClick={onSubmit}>Save product</div>
 
-            <p>Image</p>
-
-            <label className="select-image">
-                Select image...
-                <input type="file"
-                    multiple 
-                    accept="image/png, image/jpeg" 
-                    onChange={e => {
-                        const array = [...images]
-                        Array.from(e.target.files).forEach(e => {
-                            if (!images.map(e => e.name).includes(e.name)) {
-                                array.push(e)
-                            }
-                        })
-                        setImages(array)
-                        e.target.value = ''
-                    }} />
-            </label>
-
-            <div className="images-section">
-                {
-                    images.map((image, index) => (
-                        <div key={index} className="image-section">
-
-                            <p>Name:
-                                <span className="close" onClick={() => {
-                                    setImages(images.filter(e => e !== image))
-                                }}>Remove</span>
-                            </p>
-                            <span>{image.name} </span>
-
-                            <p>Size:</p>
-                            <span>{(image.size / 1024).toFixed(2)} KB</span>
-
-                            <div className="image-block">
-                                <img src={URL.createObjectURL(image) } alt=""/>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
         </div>
     );
 }

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import '../ProductForm.css'
+import '../AdminPanelForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { useParams } from 'react-router-dom'
 import CategoriesTree from './tree/CategoriesTree'
 import FiltersTree from './tree/FiltersTree'
 import { Link, useHistory } from 'react-router-dom'
+import SelectImageBlock from '../block/images/SelectImageBlock'
+import OldImageBlock from '../block/images/OldImageBlock'
 
 
 export default function EditCategoryForm() {
@@ -86,7 +88,7 @@ export default function EditCategoryForm() {
         .then(
             (result) => {
                 alert('OK')
-                history.push('/admin/categories/')
+                history.push('../')
             },
             (error) => alert(error)
         )
@@ -94,26 +96,24 @@ export default function EditCategoryForm() {
 
     return (
         <div className="admin-panel-form">
-            <h2>Edit category - { categoryName }</h2>
+            <h2 className="admin-panel-title">Edit category - { categoryName }</h2>
 
             {
                 category ? (
-                    <Link target="_blank" to={`/${ category.childrens.length > 0 ? 'category' : 'catalog'}/${category.id}/`}>
+                    <Link className="admin-panel-preview" target="_blank" to={`/${ category.childrens.length > 0 ? 'category' : 'catalog'}/${category.id}/`}>
                         Look at category
                     </Link>
                 ) : null
             }
 
-            <p>Childrens</p>
             <CategoriesTree/>
 
-            <p>Filters</p>
             <FiltersTree />
 
-            <p>Name</p>
+            <p className="admin-panel">Name</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
-            <p>Root category</p>
+            <p className="admin-panel">Root category</p>
             <Select styles={SelectStyles} 
                 isClearable
                 options={optionsCategories}
@@ -122,61 +122,8 @@ export default function EditCategoryForm() {
 
             <div className="submit" onClick={onEdit}>Save</div>
 
-            <p>New Image</p>
-
-            <label className="select-image">
-                Select image...
-                <input type="file"
-                    accept="image/png, image/jpeg" 
-                    onChange={e => {
-                        setImage(e.target.files[0])
-                        e.target.value = ''
-                    }} />
-            </label>
-
-            {
-                image ? (
-                    <div className="images-section">
-                        <div className="image-section">
-
-                            <p>Name:
-                                <span className="close" onClick={() => {
-                                    setImage(null)
-                                }}>Remove</span>
-                            </p>
-                            <span>{image.name} </span>
-
-                            <p>Size:</p>
-                            <span>{(image.size / 1024).toFixed(2)} KB</span>
-
-                            <div className="image-block">
-                                <img src={URL.createObjectURL(image) } alt=""/>
-                            </div>
-                        </div>
-                    </div>
-                ) : null
-            }
-
-            <p>Old Image</p>
-
-            {
-                oldImage ? (
-                    <div className="images-section">
-                        <div className="image-section">
-
-                            <p>
-                                <span className="close" onClick={() => {
-                                    setOldImage(null)
-                                }}>Remove</span>
-                            </p>
-
-                            <div className="image-block">
-                                <img src={oldImage} alt=""/>
-                            </div>
-                        </div>
-                    </div>
-                ) : null
-            }
+            <SelectImageBlock {...{image, setImage}} />
+            <OldImageBlock {...{oldImage, setOldImage}} />
 
             <div className="submit delete" onClick={onDelete}>Delete</div>
 

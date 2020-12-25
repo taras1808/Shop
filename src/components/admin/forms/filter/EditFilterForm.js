@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import '../ProductForm.css'
+import '../AdminPanelForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { useParams, useHistory } from 'react-router-dom'
+import OptionsTree from './tree/OptionsTree'
 
 
 export default function EditFilterForm() {
@@ -22,7 +23,7 @@ export default function EditFilterForm() {
 
     useEffect(() => {
 
-        fetch(`http://192.168.0.108:7777/api/filters/${filterId}`)
+        fetch(`http://192.168.0.108:7777/api/filters/${filterId}/`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -83,18 +84,18 @@ export default function EditFilterForm() {
 
     return (
         <div className="admin-panel-form">
-            <h2>Edit filter - { filterName }</h2>
+            <h2 className="admin-panel-title">Edit filter - { filterName }</h2>
 
             {
                 selectedFilter ? (
                     <>
-                        <p>Nazwa</p>
+                        <p className="admin-panel">Nazwa</p>
                         <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
-                        <p>URL</p>
+                        <p className="admin-panel">URL</p>
                         <input value={url} type="text" onChange={e => setURL(e.target.value)} />
 
-                        <p>Kategorii:</p>
+                        <p className="admin-panel">Kategorii:</p>
                         <Select styles={SelectStyles}
                             isClearable
                             isMulti
@@ -102,9 +103,16 @@ export default function EditFilterForm() {
                             options={optionsCategories} 
                             onChange={e => setCategories(e)} />
 
+
                         <div className="submit" onClick={onEdit}>Save</div>
 
                         <div className="submit delete" onClick={onDelete}>Delete</div>
+
+                        {
+                            selectedFilter.type === 0 ? <OptionsTree filterId={filterId} /> : null
+                        }
+                        
+
                     </>
                 ) : null
             }

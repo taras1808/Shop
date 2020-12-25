@@ -45,41 +45,49 @@ export default function FiltersTree() {
         setTreeFilters(arr)
     }
 
-    return treeFilters.length > 0 ? (
-        <>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div className="category-tree" ref={provided.innerRef}> 
-                            {
-                                treeFilters.map((e, index) => (
-                                    <Draggable 
-                                        index={index} 
-                                        key={e.id}
-                                        draggableId={`${e.id}`}>
+    return (
+        <div className="parent-block">
+            <p>Filters</p>
+            <div className="childrens-block">
+            { 
+                treeFilters.length > 0 ? (
+                    <>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                    <div className="category-tree" ref={provided.innerRef}> 
                                         {
-                                            (provided, snapshot) => (
-                                                <div className="dragable-block" ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}>
+                                            treeFilters.map((e, index) => (
+                                                <Draggable 
+                                                    index={index} 
+                                                    key={e.id}
+                                                    draggableId={`${e.id}`}>
+                                                    {
+                                                        (provided, snapshot) => (
+                                                            <div className="dragable-block" ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}>
 
-                                                    <Link { ...e.type !== 1 ? { to: `/admin/filters/${e.id}/` } : null }>
-                                                        {e.title}
-                                                    </Link>
+                                                                <Link to={`/admin/filters/${e.id}/`}>
+                                                                    {e.title}
+                                                                </Link>
 
-                                                </div>
-                                            )
+                                                            </div>
+                                                        )
+                                                    }
+                                                </Draggable>
+                                            ))
                                         }
-                                    </Draggable>
-                                ))
-                            }
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-
-            { treeFilters.length > 1 ? <div className="submit" onClick={onSubmit}>Save order</div> : null }
-        </>
-    ) : <span>None</span>
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                        { treeFilters.length > 1 ? <div className="submit" onClick={onSubmit}>Save order</div> : null }
+                    </>
+                ) : null
+            }
+            </div>
+        </div>
+    )
 }

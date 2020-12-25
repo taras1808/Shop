@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import '../ProductForm.css';
+import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
+import { useHistory } from 'react-router-dom'
 
 
 export default function AddFilterForm() {
+
+    const history = useHistory()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -36,22 +39,25 @@ export default function AddFilterForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+                history.push(`/admin/filters/${result.id}/`)
+            },
             (error) => alert(error)
         )
     }
 
     return (
         <div className="admin-panel-form">
-            <h2>New filter</h2>
+            <h2 className="admin-panel-title">New filter</h2>
 
-            <p>Nazwa</p>
+            <p className="admin-panel">Nazwa</p>
             <input value={name} type="text" onChange={e => setName(e.target.value)} />
 
-            <p>URL</p>
+            <p className="admin-panel">URL</p>
             <input value={url} type="text" onChange={e => setURL(e.target.value.toLowerCase())} />
 
-            <p>Kategorii:</p>
+            <p className="admin-panel">Kategorii:</p>
             <Select styles={SelectStyles}
                 isClearable
                 isMulti

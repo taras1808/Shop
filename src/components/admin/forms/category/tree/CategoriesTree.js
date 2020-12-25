@@ -61,48 +61,57 @@ export default function CategoriesTree() {
         </div>
     )
 
-    return treeCategories.length > 0 ? (
-        <>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div className="category-tree" ref={provided.innerRef}> 
-                            {
-                                treeCategories.map((e, index) => (
-                                    <Draggable 
-                                        index={index} 
-                                        key={e.id}
-                                        draggableId={`${e.id}`}>
+    return (
+        <div className="parent-block">
+            { categoryId ? <p>Childrens</p> : null }
+            <div className="childrens-block">
+            {
+                treeCategories.length > 0 ? (
+                    <>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                    <div className="category-tree" ref={provided.innerRef}> 
                                         {
-                                            (provided, snapshot) => (
-                                                <div className="dragable-block" ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}>
+                                            treeCategories.map((e, index) => (
+                                                <Draggable 
+                                                    index={index} 
+                                                    key={e.id}
+                                                    draggableId={`${e.id}`}>
+                                                    {
+                                                        (provided, snapshot) => (
+                                                            <div className="dragable-block" ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}>
 
-                                                    <Link to={`/admin/categories/${e.id}/`}>
-                                                        {e.name}
-                                                    </Link>
+                                                                <Link to={`/admin/categories/${e.id}/`}>
+                                                                    {e.name}
+                                                                </Link>
 
-                                                    { 
-                                                        e.childrens.length > 0 ? (
-                                                            <div className="childrens-block">
-                                                                { e.childrens.map(build) }
+                                                                { 
+                                                                    e.childrens.length > 0 ? (
+                                                                        <div className="childrens-block">
+                                                                            { e.childrens.map(build) }
+                                                                        </div>
+                                                                    ) : null 
+                                                                }
                                                             </div>
-                                                        ) : null 
+                                                        )
                                                     }
-                                                </div>
-                                            )
+                                                </Draggable>
+                                            ))
                                         }
-                                    </Draggable>
-                                ))
-                            }
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
 
-            { treeCategories.length > 1 ? <div className="submit" onClick={onSubmit}>Save order</div> : null }
-        </>
-    ) : <span>None</span>
+                        { treeCategories.length > 1 ? <div className="submit" onClick={onSubmit}>Save order</div> : null }
+                    </>
+                ) : null
+            }
+            </div>
+        </div>
+    )
 }

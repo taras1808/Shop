@@ -4,32 +4,30 @@
     margin-bottom: 100px;
 }
 
-.admin-panel-form > h2 {
+.admin-panel-title {
     padding: 15px 0;
 }
 
-.admin-panel-form > a {
-    display: block;
+.admin-panel-preview {
+    display: inline-block;
     margin: 20px 0;
     text-decoration: none;
     color: #4f78ff;
 }
 
-.admin-panel-form > a:hover{
+.admin-panel-preview:hover{
     color: #3e66e9;
     text-decoration: underline;
 }
 
-.admin-panel-form p {
+p.admin-panel {
     font-weight: bold;
-    padding: 15px 0 10px;
-    line-height: 20px;
+    padding: 10px 0;
 }
 
-.admin-panel-form span.close {
-    float: right;
-    cursor: pointer;
-    color: red;
+.admin-panel-form > textarea {
+    height: 200px;
+    resize: none;
 }
 
 .admin-panel-form > input[type="text"], 
@@ -54,7 +52,7 @@
 }
 
 .admin-panel-form .submit {
-    margin: 50px 0;
+    margin: 25px 0;
     border-color: rgb(146, 212, 146);
     background-color: rgb(238, 255, 238);
     color: green;
@@ -80,11 +78,6 @@
 
 .admin-panel-form .submit.delete:active{
     background-color: rgb(255, 206, 206);
-}
-
-.admin-panel-form > textarea {
-    height: 200px;
-    resize: none;
 }
 
 .admin-panel-form > label.select-image:hover {
@@ -118,6 +111,12 @@
 
 .admin-panel-form > .images-section > .image-section > span {
     display: block;
+}
+
+.admin-panel-form > .images-section > .image-section > p > span.close {
+    float: right;
+    cursor: pointer;
+    color: red;
 }
 
 .admin-panel-form > .images-section > .image-section > .image-block {

@@ -1,9 +1,9 @@
-.block-options-tree {
+.block-tree {
     display: flex;
     flex-wrap: wrap;
 }
 
-.block-options-tree .parent-block {
+.block-tree .parent-block {
     width: 100%;
     border: 1px solid #DDD;
     border-radius: 10px;
@@ -13,8 +13,9 @@
     overflow: hidden;
 }
 
-.parent-block > h2 {
+.parent-block > p {
     margin: 10px;
+    font-weight: bold;
 }
 
 .options-tree {
@@ -27,19 +28,25 @@
     margin: 10px;
 }
 
-.block-options-tree a {
+.block-tree a, .block-tree .option {
     text-decoration: none;
     color: #000;
     display: block;
     margin: 10px;
     padding: 10px;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    transition: background-color .1s;
+    margin-bottom: 10px;
+    background-color: #FFF;
+    overflow: hidden;
 }
 
-.block-options-tree a:hover {
+.block-tree a:hover {
     background-color: #EEE;
 }
 
-.block-options-tree a:active {
+.block-tree a:active {
     background-color: #DDD;
 }
 
@@ -47,15 +54,6 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-}
-
-.dragable-block {
-    border: 1px solid #DDD;
-    border-radius: 10px;
-    transition: background-color .1s;
-    margin-bottom: 10px;
-    background-color: #FFF;
-    overflow: hidden;
 }
 
 .childrens-block {

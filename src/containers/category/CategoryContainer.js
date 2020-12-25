@@ -41,7 +41,6 @@ export default function CategoryContainer () {
             </div>
         ))
 	} else {
-		console.log(item)
 		content = item.childrens.map((item, index) => (
 			(item.childrens ? item.childrens.length > 0 : false) ? (
 				<div key={index} className="category-block">
