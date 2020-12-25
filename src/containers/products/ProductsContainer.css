@@ -1,5 +1,12 @@
+#products-container-block {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
 .products-container {
-    width: 900px;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
