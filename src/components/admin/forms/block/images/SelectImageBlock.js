@@ -1,7 +1,7 @@
 import '../../AdminPanelForm.css'
 
 
-export default ({image, setImage}) => {
+export default function SelectImageBlock({image, setImage}) {
     return (
         <>
             <p className="admin-panel">Image</p>

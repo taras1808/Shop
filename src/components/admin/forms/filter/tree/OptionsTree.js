@@ -16,7 +16,7 @@ export default function OptionsTree({filterId}) {
                 },
                 (error) => alert(error)
             )
-    }, [])
+    }, [filterId])
 
     return (
         <div className="block-tree">

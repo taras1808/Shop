@@ -81,38 +81,38 @@ export default function AdminContainer () {
 				</Route>
 
 
-				<Route path={`${match.path}products/`}>
+				<Route strict path={`${match.path}products/:params?/`}>
 					<EditProductForm />
 				</Route>
-				<Route path={`${match.path}product/`}>
+				<Route strict path={`${match.path}product/`}>
 					<AddProductForm />
 				</Route>
 				
 
-				<Route path={`${match.path}filters/:filterId/options/:optionId/`}>
+				<Route strict path={`${match.path}filters/:filterId/options/:optionId/`}>
 					<EditOptionForm />
 				</Route>
-				<Route path={`${match.path}filters/:filterId/options/`}>
+				<Route strict path={`${match.path}filters/:filterId/options/`}>
 					<AddOptionForm />
 				</Route>
-				<Route path={`${match.path}filters/:filterId/`}>
+				<Route strict path={`${match.path}filters/:filterId/`}>
 					<EditFilterForm />
 				</Route>
-				<Route path={`${match.path}filters/`}>
+				<Route strict path={`${match.path}filters/`}>
 					<EditFiltersForm />
 				</Route>
-				<Route path={`${match.path}filter/`}>
+				<Route strict path={`${match.path}filter/`}>
 					<AddFilterForm />
 				</Route>
 
 
-				<Route path={`${match.path}categories/:categoryId/`}>
+				<Route strict path={`${match.path}categories/:categoryId/`}>
 					<EditCategoryForm />
 				</Route>
-				<Route path={`${match.path}categories/`}>
+				<Route strict path={`${match.path}categories/`}>
 					<EditCategoriesForm />
 				</Route>
-				<Route path={`${match.path}category/`}>
+				<Route strict path={`${match.path}category/`}>
 					<AddCategoryForm />
 				</Route>
 			</Switch>

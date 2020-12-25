@@ -1,7 +1,7 @@
 import '../../AdminPanelForm.css'
 
 
-export default ({oldImage, setOldImage}) => {
+export default function OldImageBlock({oldImage, setOldImage}) {
     return (
         <>
             <p className="admin-panel">Old Image</p>

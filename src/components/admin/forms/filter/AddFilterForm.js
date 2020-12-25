@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
+import { useHistory } from 'react-router-dom'
 
 
 export default function AddFilterForm() {
+
+    const history = useHistory()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -36,7 +39,10 @@ export default function AddFilterForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+                history.push(`/admin/filters/${result.id}/`)
+            },
             (error) => alert(error)
         )
     }

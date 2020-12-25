@@ -68,7 +68,7 @@ export default function FiltersTree() {
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}>
 
-                                                                <Link { ...e.type !== 1 ? { to: `/admin/filters/${e.id}/` } : null }>
+                                                                <Link to={`/admin/filters/${e.id}/`}>
                                                                     {e.title}
                                                                 </Link>
 

@@ -9,7 +9,7 @@
 }
 
 .admin-panel-preview {
-    display: block;
+    display: inline-block;
     margin: 20px 0;
     text-decoration: none;
     color: #4f78ff;

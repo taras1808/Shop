@@ -2,19 +2,28 @@ import { useState, useEffect } from 'react'
 import '../AdminPanelForm.css'
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
-import { Link } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import SelectImagesBlock from '../block/images/SelectImagesBlock'
 import OldImagesBlock from '../block/images/OldImagesBlock'
+import { build } from '../../../../utils/ParamsUtils'
 
 
 export default function EditProductForm() {
 
-    const [category, setCategory] = useState(null)
+    const history = useHistory()
+
+    const { params } = useParams()
+
+    const parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
+
+    const category = parameters.get('category') ?? null
+    const product = parameters.get('product') ?? null
+
+	const [state, setState] = useState(params)
 
     const [optionsProducts, setOptionsProducts] = useState([])
     const [optionsCategories, setOptionsCategories] = useState([])
 
-    const [selectedProduct, setSelectedProduct] = useState(null)
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     const [name, setName] = useState("")
@@ -29,6 +38,13 @@ export default function EditProductForm() {
     const [productOptions, setProductOptions] = useState(new Map())
 
     useEffect(() => {
+		if (state !== params) {
+			setState(params)
+		}
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params])
+
+    useEffect(() => {
         fetch('http://192.168.0.108:7777/api/categories/')
             .then(res => res.json())
             .then(
@@ -40,7 +56,7 @@ export default function EditProductForm() {
     }, [])
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/products/${ category ? `?categoryId=${category.value}` : ''}`)
+        fetch(`http://192.168.0.108:7777/api/products/${ category ? `?categoryId=${category}` : ''}`)
             .then(res => res.json())
             .then(
                 (result) => setOptionsProducts(
@@ -51,8 +67,22 @@ export default function EditProductForm() {
     }, [category])
 
     useEffect(() => {
-        if (!selectedProduct) return
-        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/options/`)
+        const e = optionsProducts.filter(e => e.id === parseInt((product)))[0]
+        if (e) {
+            setName(e.label)
+            setPrice(e.price)
+            setProductInfo(e.info ?? '')
+            setOldPrice(e.old_price ?? '')
+            setOldImages(e.images)
+            setSelectedCategory(
+                optionsCategories.filter(item => item.value === e.category_id)[0] ?? null
+            )
+        }
+        setImages([])
+
+        if (!product) return
+        
+        fetch(`http://192.168.0.108:7777/api/products/${product}/options/`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -63,7 +93,7 @@ export default function EditProductForm() {
                 (error) => alert(error)
             )
 
-    }, [selectedProduct])
+    }, [product, optionsProducts, optionsCategories])
 
     useEffect(() => {
         if (!selectedCategory) return
@@ -88,7 +118,7 @@ export default function EditProductForm() {
         formData.append('name', name)
         if (productInfo !== '') formData.append('info', productInfo)
 
-        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/`, {
+        fetch(`http://192.168.0.108:7777/api/products/${product}/`, {
             method: 'PUT',
             body: formData
         })
@@ -100,8 +130,7 @@ export default function EditProductForm() {
                     const updated = {...result, value: result.id, label: result.name }
                     setImages([])
                     setOldImages(result.images)
-                    setSelectedProduct(updated)
-                    if (updated.id === category.value) {
+                    if (updated.id === category) {
                         setOptionsProducts([...arr, updated])
                     }
                 },
@@ -110,7 +139,7 @@ export default function EditProductForm() {
     }
 
     const onDelete = () => {
-        fetch(`http://192.168.0.108:7777/api/products/${selectedProduct.id}/`, 
+        fetch(`http://192.168.0.108:7777/api/products/${product}/`, 
             { 
                 method: 'DELETE' 
             })
@@ -118,9 +147,10 @@ export default function EditProductForm() {
             .then(
                 result => {
                     alert("OK")
-                    const arr = optionsProducts.filter(e => e.value !== selectedProduct.id)
+                    const arr = optionsProducts.filter(e => e.value !== parseInt(product))
                     setOptionsProducts(arr)
-                    setSelectedProduct(null)
+                    const url = build(params, 'product', null)
+                    history.push(`/admin/products/${url}`)
                 },
                 error => alert(error)
             )
@@ -135,34 +165,27 @@ export default function EditProductForm() {
             <Select 
                 isClearable
                 styles={SelectStyles} 
-                value={category}
-                options={optionsCategories} onChange={e => setCategory(e)} />
+                value={optionsCategories.filter(e => e.value === parseInt(category))[0]}
+                options={optionsCategories} onChange={e => {
+                    const url = build(params, 'category', e ? e.value : '')
+                    history.push(`/admin/products/${url}`)
+                }} />
 
             <p className="admin-panel">Select product</p>
             <Select 
                 isClearable
                 styles={SelectStyles} 
                 options={optionsProducts}
-                value={selectedProduct}
+                value={optionsProducts.filter(e => e.id === parseInt(product))[0]}
                 onChange={e => {
-                    if (e) {
-                        setName(e.label)
-                        setPrice(e.price)
-                        setProductInfo(e.info ?? '')
-                        setOldPrice(e.old_price ?? '')
-                        setOldImages(e.images)
-                        setSelectedCategory(
-                            optionsCategories.filter(item => item.value === e.category_id)[0] ?? null
-                        )
-                    }
-                    setImages([])
-                    setSelectedProduct(e)
+                    const url = build(params, 'product', e.id)
+                    history.push(`/admin/products/${url}`)
                 }} />
 
             {
-                selectedProduct ? (
+                product ? (
                     <>
-                        <Link className="admin-panel-preview" target="_blank" to={`/product/${selectedProduct.id}/`}>Look at product</Link>
+                        <Link className="admin-panel-preview" target="_blank" to={`/product/${product}/`}>Look at product</Link>
 
                         <p className="admin-panel">Nazwa</p>
                         <input className="input-field" 

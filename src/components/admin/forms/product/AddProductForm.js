@@ -4,9 +4,12 @@ import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { FilterType } from '../../../../containers/filters/FiltersContainer'
 import SelectImagesBlock from '../block/images/SelectImagesBlock'
+import { useHistory } from 'react-router-dom'
 
 
 export default function AddProductForm() {
+
+    const history = useHistory()
 
     const [optionsCategories, setOptionsCategories] = useState([])
 
@@ -64,7 +67,21 @@ export default function AddProductForm() {
         })
         .then(result => result.json())
         .then(
-            (result) => alert("OK"),
+            (result) => {
+                alert("OK")
+
+                const parameters = new Map()
+
+                parameters.set('category', result.category_id)
+                parameters.set('product', result.id)
+
+                let params = Array.from(parameters)
+                    .filter(e => e && `${e[1]}`.length > 0)
+                    .map(e => e.join('='))
+                    .join(';')
+
+                history.push(`/admin/products/${params !== '' ? params + '/' : ''}`)
+            },
             (error) => alert(error)
         )
     }

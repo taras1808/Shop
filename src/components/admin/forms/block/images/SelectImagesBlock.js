@@ -1,7 +1,7 @@
 import '../../AdminPanelForm.css'
 
 
-export default ({images, setImages}) => {
+export default function SelectImagesBlock({images, setImages}) {
     return (
         <>
             <p className="admin-panel">New Images</p>
@@ -9,7 +9,6 @@ export default ({images, setImages}) => {
             <label className="select-image">
                 Select images...
                 <input type="file"
-                    value={null}
                     multiple 
                     accept="image/png, image/jpeg" 
                     onChange={e => {
