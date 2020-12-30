@@ -100,7 +100,7 @@ export default function EditCategoryForm() {
 
             {
                 category ? (
-                    <Link className="admin-panel-preview" target="_blank" to={`/${ category.childrens.length > 0 ? 'category' : 'catalog'}/${category.id}/`}>
+                    <Link className="admin-panel-preview" to={`/${ category.childrens.length > 0 ? 'category' : 'catalog'}/${category.id}/`}>
                         Look at category
                     </Link>
                 ) : null

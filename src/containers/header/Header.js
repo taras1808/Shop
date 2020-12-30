@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import './Header.css';
 import { Link, useRouteMatch, useHistory } from "react-router-dom"
+import { authenticationService } from '../../_services/authentication.service';
+import { Role } from '../../_utils/role';
+
 
 export default function Header() {
 
-    const history = useHistory();
+    const currentUser = authenticationService.currentUserValue;
+
+    const history = useHistory()
 
     const match = useRouteMatch('/search/:parameters?/')
 
@@ -33,8 +38,10 @@ export default function Header() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        if (value)
-            history.push(`/search/q=${value.trim()}/`)
+        if (!value) return
+        const query = value.trim().replace(/[%/#=]/g, '')
+        if (query !== '')
+            history.push(`/search/q=${query}/`)
     }
 
     return (
@@ -52,7 +59,22 @@ export default function Header() {
                     <button id="search-button">Search</button>
                 </form>
 
-                <Link to="/admin/" id="admin">Admin</Link>
+                {
+                    currentUser ? <>
+                        {
+                            currentUser.role === Role.Admin ?
+                                <Link to="/admin/" id="login">Admin panel</Link>
+                            : null
+                        }
+                        <p id="login" 
+                            onClick={() => {
+                                authenticationService.logout()
+                                history.push('/')
+                            }} >Logout</p> 
+                    </> : <Link to="/login" id="login">Login</Link>
+                }
+                
+                
             </div>
         </header>
     )

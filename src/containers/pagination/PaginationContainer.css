@@ -62,6 +62,7 @@
     border-radius: 10px;
     border: 1px solid #DDD;
     cursor: pointer;
+    color: #000;
 }
 
 .products-container-navigation-content-item.active {

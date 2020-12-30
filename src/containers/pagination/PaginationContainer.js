@@ -1,5 +1,6 @@
 import './PaginationContainer.css'
-import { useParams, useHistory } from'react-router-dom'
+import { useParams, useHistory, Link } from 'react-router-dom'
+import { build } from '../../_utils/params-utils'
 
 const limit = 6
 
@@ -29,8 +30,8 @@ export default function PaginationContainer ({ total }) {
 		}
 	}
 
-	if (page > 3) arr.splice(1, 1, "...")
-	if (page < (pagesCount - 4)) arr.splice(arr.length - 2, 1, "...")
+	if (page > 3 && pagesCount > 7) arr.splice(1, 1, "...")
+	if (page < (pagesCount - 4) && pagesCount > 7) arr.splice(arr.length - 2, 1, "...")
 
 
 	return (
@@ -39,35 +40,16 @@ export default function PaginationContainer ({ total }) {
 					onClick={_ => {
 						if (page <= 1) return
 
-						parameters.set('page', page - 1)
-
-						let params = Array.from(parameters)
-							.filter(e => `${e[1]}`.length > 0)
-							.map(e => e.join('='))
-							.join(';')
-
-						history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+						const url = build(params, 'page', page - 1)
+						history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${url}`)
 					}}>
 					<span className="products-container-navigation-arrow prev"></span>
 				</div>
 				<div className="products-container-navigation-content">
 					{
 						arr.map((i, index) => (
-							<div key={index}
-								className={`products-container-navigation-content-item  ${page === i ? 'active' : ''}`}
-								onClick={_ => {
-									if (i === '...') 
-										parameters.set('page', arr[index + 1] > page ? arr[index - 1] : arr[index + 1] - 2)
-									else
-										parameters.set('page', i)
-
-									let params = Array.from(parameters)
-										.filter(e => `${e[1]}`.length > 0)
-										.map(e => e.join('='))
-										.join(';')
-
-									history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
-								}}>{i}</div>
+							<Link to={`/${categoryId ? `catalog/${categoryId}` : 'search'}/${build(params, 'page', i === '...' ? arr[index + 1] > page ? arr[index - 1] : arr[index + 1] - 2 : i)}`} key={index}
+								className={`products-container-navigation-content-item  ${page === i ? 'active' : ''}`}>{i}</Link>
 						))
 					}
 				</div>
@@ -75,14 +57,8 @@ export default function PaginationContainer ({ total }) {
 					onClick={_ => {
 						if (page >= pagesCount) return
 
-						parameters.set('page', page + 1)
-
-						let params = Array.from(parameters)
-							.filter(e => `${e[1]}`.length > 0)
-							.map(e => e.join('='))
-							.join(';')
-
-						history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+						const url = build(params, 'page', page + 1)
+						history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${url}`)
 					}}>
 					<span className="products-container-navigation-arrow next"></span>
 				</div>

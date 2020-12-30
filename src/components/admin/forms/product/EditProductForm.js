@@ -5,7 +5,7 @@ import { SelectStyles } from '../../../styles/CustomStyle'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import SelectImagesBlock from '../block/images/SelectImagesBlock'
 import OldImagesBlock from '../block/images/OldImagesBlock'
-import { build } from '../../../../utils/ParamsUtils'
+import { build } from '../../../../_utils/params-utils'
 
 
 export default function EditProductForm() {
@@ -185,7 +185,7 @@ export default function EditProductForm() {
             {
                 product ? (
                     <>
-                        <Link className="admin-panel-preview" target="_blank" to={`/product/${product}/`}>Look at product</Link>
+                        <Link className="admin-panel-preview" to={`/product/${product}/`}>Look at product</Link>
 
                         <p className="admin-panel">Nazwa</p>
                         <input className="input-field" 
