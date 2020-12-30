@@ -30,19 +30,28 @@ div.arrow-block > span.arrow {
     display: inline-block;
 }
 
-#navbar-list > li > a {
+#navbar-list > li > a,
+#title-block > .admin-control {
     text-decoration: none;
     color: #4f78ff;
     transition: color .1s;
 }
 
-#navbar-list > li > a:hover {
+#navbar-list > li > a:hover,
+#title-block > .admin-control:hover {
     color: #3e66e9;
     text-decoration: underline;
 }
 
-#navbar > h1 {
+#title-block {
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
+}
+
+#title-block > .admin-control {
+    display: flex;
+    align-items: center;
 }
 
 @media all and (max-width: 800px) {

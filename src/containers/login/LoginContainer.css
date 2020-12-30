@@ -1,0 +1,45 @@
+#user-container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+}
+
+#authorization-form {
+    width: 500px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#authorization-form > label {
+    margin: 25px 0 5px;
+}
+
+#authorization-form > input,
+#authorization-form > .login {
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #FEFEFE;
+}
+
+#authorization-form > .login {
+    appearance: none;
+    background-color: #EEE;
+    color: #000;
+    margin-top: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#authorization-form > .login:hover {
+    background-color: #DDD;
+}
+
+#authorization-form > .login:active {
+    background-color: #CCC;
+}

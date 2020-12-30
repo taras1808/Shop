@@ -1,8 +1,13 @@
 import { React, useState, useEffect } from 'react'
 import './NavBar.css'
 import { Link, useRouteMatch } from 'react-router-dom'
+import { authenticationService } from '../../_services/authentication.service'
+import { Role } from '../../_utils/role'
 
-function NavBar () {
+
+export default function NavBar () {
+
+    const currentUser = authenticationService.currentUserValue
 
     const match = useRouteMatch('/(search|category|catalog|product)/:itemId?/')
 
@@ -55,8 +60,6 @@ function NavBar () {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [match.params[0], match.params.itemId])
 
-    
-
     return (
         <div id="navbar">
             <ul id="navbar-list">
@@ -93,16 +96,28 @@ function NavBar () {
                 }
             </ul>
 
-            {
-                match.params[0] !== 'search' ? (
-                    <h1> { item.length > 0 ? item[item.length - 1].name : null } </h1>
-                ) : (
-                    <h1> { '«' + parameters.get('q') + '»' } </h1>
-                )
-            }
+            <div id="title-block">
+                <h1>
+                    { 
+                        match.params[0] !== 'search' ? 
+                            item.length > 0 && item[item.length - 1].name 
+                            : `«${ parameters.get('q') }»` 
+                    }
+                </h1>
 
+                {
+                    currentUser && currentUser.role === Role.Admin &&
+                    match.params[0] === 'product' && item.length > 0 &&  
+                    <Link className="admin-control" to={`/admin/products/category=${item[item.length - 1].category_id};product=${item[item.length - 1].id}/`}>Edit</Link>
+                }
+
+                { 
+                    currentUser && currentUser.role === Role.Admin &&
+                    (match.params[0] === 'category' || match.params[0] === 'catalog' ) &&  item.length > 0 &&  
+                    <Link className="admin-control" to={`/admin/categories/${item[item.length - 1].id}/`}>Edit</Link>
+                }
+
+            </div>
         </div>
     );
 }
-
-export default NavBar;

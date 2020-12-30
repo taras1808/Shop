@@ -7,7 +7,9 @@ import AdminContainer from '../admin/AdminContainer'
 import SearchContainer from '../search/SearchContainer'
 import CatalogContainer from '../catalog/CatalogContainer'
 import CategoryContainer from '../category/CategoryContainer'
-
+import LoginContainer from '../login/LoginContainer'
+import { PrivateRoute } from '../../components/PrivateRoute'
+import { Role } from '../../_utils/role'
 
 export default function ContentContainer () {
 	return (
@@ -19,9 +21,7 @@ export default function ContentContainer () {
 				</Route>
 			</Switch>
 			<Switch>
-				<Route path="/admin/">
-					<AdminContainer />
-				</Route>
+				<PrivateRoute path="/admin/" roles={[Role.Admin]} component={AdminContainer} />
 				<Route path="/search/:params?/">
 					<SearchContainer/>
 				</Route>
@@ -34,6 +34,7 @@ export default function ContentContainer () {
 				<Route path="/category/:categoryId/">
 					<CategoryContainer />
 				</Route>
+				<Route path="/login" component={LoginContainer} />
 				<Route path="/">
 					<CategoriesContainer />
 				</Route>

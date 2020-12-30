@@ -8,6 +8,7 @@ import Product from '../../components/product/Product'
 export default function ProductContainer () {
 
     let { productId } = useParams();
+    
     const [product, setProduct] = useState({})
 
     useEffect(() => {
@@ -72,8 +73,8 @@ export default function ProductContainer () {
                 product.options ? (
                     <ul className="product-params-block">
                         {
-                            product.options.map(e => (
-                                <li>
+                            product.options.map((e, index) => (
+                                <li key={index}>
                                     <div><span>{ e.name }</span></div>
                                     <div><span>{ e.value }</span></div>
                                 </li>

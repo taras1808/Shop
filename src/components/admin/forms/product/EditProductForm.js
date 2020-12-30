@@ -5,7 +5,7 @@ import { SelectStyles } from '../../../styles/CustomStyle'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import SelectImagesBlock from '../block/images/SelectImagesBlock'
 import OldImagesBlock from '../block/images/OldImagesBlock'
-import { build } from '../../../../utils/ParamsUtils'
+import { build } from '../../../../_utils/params-utils'
 
 
 export default function EditProductForm() {
@@ -178,14 +178,14 @@ export default function EditProductForm() {
                 options={optionsProducts}
                 value={optionsProducts.filter(e => e.id === parseInt(product))[0]}
                 onChange={e => {
-                    const url = build(params, 'product', e.id)
+                    const url = build(params, 'product', e ? e.id : '')
                     history.push(`/admin/products/${url}`)
                 }} />
 
             {
                 product ? (
                     <>
-                        <Link className="admin-panel-preview" target="_blank" to={`/product/${product}/`}>Look at product</Link>
+                        <Link className="admin-panel-preview" to={`/product/${product}/`}>Look at product</Link>
 
                         <p className="admin-panel">Nazwa</p>
                         <input className="input-field" 
