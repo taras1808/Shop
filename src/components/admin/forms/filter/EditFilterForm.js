@@ -4,6 +4,8 @@ import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { useParams, useHistory } from 'react-router-dom'
 import OptionsTree from './tree/OptionsTree'
+import { categoriesService } from '../../../../_services/categories.service'
+import { filtersService } from '../../../../_services/filters.service'
 
 
 export default function EditFilterForm() {
@@ -22,9 +24,7 @@ export default function EditFilterForm() {
     const [selectedFilter, setSelectedFilter] = useState(null)
 
     useEffect(() => {
-
-        fetch(`http://192.168.0.108:7777/api/filters/${filterId}/`)
-            .then(res => res.json())
+        filtersService.getFilter(filterId)
             .then(
                 (result) => {
                     setFilterName(result.title)
@@ -36,8 +36,7 @@ export default function EditFilterForm() {
                 (error) => alert(error)
             )
 
-        fetch('http://192.168.0.108:7777/api/categories/')
-            .then(res => res.json())
+        categoriesService.getCategories()
             .then(
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
                 (error) => alert(error)
@@ -45,41 +44,25 @@ export default function EditFilterForm() {
     }, [filterId])
 
     const onEdit = () => {
-
-        fetch(`http://192.168.0.108:7777/api/filters/${selectedFilter.id}/`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                title: name,
-                name: url,
-                categories: categories ? categories.map(e => e.value) : []
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                setFilterName(result.title)
-            },
-            (error) => alert(error)
-        )
+        filtersService.updateFilter(selectedFilter, name, url, categories)
+            .then(
+                (result) => {
+                    alert("OK")
+                    setFilterName(result.title)
+                },
+                (error) => alert(error)
+            )
     }
 
     const onDelete = () => {
-
-        fetch('http://192.168.0.108:7777/api/filters/' + selectedFilter.id + '/', {
-            method: 'DELETE'
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                history.push('/admin/filters/')
-            },
-            (error) => alert(error)
-        )
+        filtersService.deleteFilter(selectedFilter)
+            .then(
+                (result) => {
+                    alert("OK")
+                    history.push('/admin/filters/')
+                },
+                (error) => alert(error)
+            )
     }
 
     return (
@@ -87,7 +70,7 @@ export default function EditFilterForm() {
             <h2 className="admin-panel-title">Edit filter - { filterName }</h2>
 
             {
-                selectedFilter ? (
+                selectedFilter &&
                     <>
                         <p className="admin-panel">Nazwa</p>
                         <input value={name} type="text" onChange={e => setName(e.target.value)} />
@@ -109,14 +92,10 @@ export default function EditFilterForm() {
                         <div className="submit delete" onClick={onDelete}>Delete</div>
 
                         {
-                            selectedFilter.type === 0 ? <OptionsTree filterId={filterId} /> : null
+                            selectedFilter.type === 0 && <OptionsTree filterId={filterId} />
                         }
-                        
-
                     </>
-                ) : null
             }
-
         </div>
     );
 }

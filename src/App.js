@@ -1,11 +1,11 @@
 import { React } from 'react';
 import './App.css';
-import ContentContainer from './containers/content/ContentContainer.js';
-import Header from './containers/header/Header.js';
+import ContentContainer from './components/content/ContentContainer.js';
+import Header from './components/header/Header.js';
 import { BrowserRouter as Router} from "react-router-dom"
 
 
-function App() {
+export default function App() {
 
 	return (
 		<Router >
@@ -15,5 +15,3 @@ function App() {
 	)
 	
 }
-
-export default App;

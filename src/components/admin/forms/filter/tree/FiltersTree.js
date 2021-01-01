@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './FiltersTree.css'
 import { Link } from 'react-router-dom'
+import { filtersService } from '../../../../../_services/filters.service'
 
 
 export default function FiltersTree() {
@@ -8,8 +9,7 @@ export default function FiltersTree() {
     const [treeOptions, setTreeOptions] = useState([])
 
     useEffect(() => {
-        fetch('http://192.168.0.108:7777/api/filters/')
-            .then(res => res.json())
+        filtersService.getFilters()
             .then(
                 (result) => {
                     const map = new Map()

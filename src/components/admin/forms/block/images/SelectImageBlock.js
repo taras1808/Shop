@@ -17,7 +17,7 @@ export default function SelectImageBlock({image, setImage}) {
             </label>
 
             {
-                image ? (
+                image &&
                     <div className="images-section">
                         <div className="image-section">
 
@@ -36,7 +36,6 @@ export default function SelectImageBlock({image, setImage}) {
                             </div>
                         </div>
                     </div>
-                ) : null
             }
         </>
     );

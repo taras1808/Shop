@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './CategoriesTree.css'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { useParams, Link } from 'react-router-dom'
+import { categoriesService } from '../../../../../_services/categories.service'
 
 
 export default function FiltersTree() {
@@ -11,8 +12,7 @@ export default function FiltersTree() {
     const [treeFilters, setTreeFilters] = useState([])
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/fitlers`)
-            .then(res => res.json())
+        categoriesService.getFilters(categoryId)
             .then(
                 (result) => setTreeFilters(result),
                 (error) => alert(error)
@@ -20,21 +20,11 @@ export default function FiltersTree() {
     }, [categoryId])
 
     const onSubmit = () => {
-
-        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/fitlers`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                filters: treeFilters.map(e => e.id)
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => alert("OK"),
-            (error) => alert(error)
-        )
+        categoriesService.getFiltersOrder(categoryId, treeFilters)
+            .then(
+                (result) => alert("OK"),
+                (error) => alert(error)
+            )
     }
 
     const onDragEnd = result => {

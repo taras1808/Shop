@@ -3,6 +3,8 @@ import '../AdminPanelForm.css';
 import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import { useHistory } from 'react-router-dom'
+import { categoriesService } from '../../../../_services/categories.service'
+import { filtersService } from '../../../../_services/filters.service'
 
 
 export default function AddFilterForm() {
@@ -16,8 +18,7 @@ export default function AddFilterForm() {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/categories")
-            .then(res => res.json())
+        categoriesService.getCategories()
             .then(
                 (result) => setOptionsCategories(result.map(e => ({ ...e, value: e.id, label: e.name }))),
                 (error) => {}
@@ -25,26 +26,14 @@ export default function AddFilterForm() {
     }, [])
 
     const onSubmit = () => {
-
-        fetch("http://192.168.0.108:7777/api/filters", {
-            method: 'POST',
-            body: JSON.stringify({
-                title: name,
-                name: url,
-                categories: categories ? categories.map(e => e.id) : []
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                history.push(`/admin/filters/${result.id}/`)
-            },
-            (error) => alert(error)
-        )
+        filtersService.createFilter(name, url, categories)
+            .then(
+                (result) => {
+                    alert("OK")
+                    history.push(`/admin/filters/${result.id}/`)
+                },
+                (error) => alert(error)
+            )
     }
 
     return (
