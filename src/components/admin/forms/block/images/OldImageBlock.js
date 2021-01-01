@@ -5,8 +5,8 @@ export default function OldImageBlock({oldImage, setOldImage}) {
     return (
         <>
             <p className="admin-panel">Old Image</p>
-            {
-                oldImage ? (
+            {   
+                oldImage &&
                     <div className="images-section">
                         <div className="image-section">
                             <p className="admin-panel">
@@ -20,7 +20,6 @@ export default function OldImageBlock({oldImage, setOldImage}) {
                             </div>
                         </div>
                     </div>
-                ) : null
             }
         </>
     );

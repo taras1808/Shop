@@ -8,6 +8,7 @@ import FiltersTree from './tree/FiltersTree'
 import { Link, useHistory } from 'react-router-dom'
 import SelectImageBlock from '../block/images/SelectImageBlock'
 import OldImageBlock from '../block/images/OldImageBlock'
+import { categoriesService } from '../../../../_services/categories.service'
 
 
 export default function EditCategoryForm() {
@@ -26,9 +27,7 @@ export default function EditCategoryForm() {
     const [oldImage, setOldImage] = useState(null)
 
     useEffect(() => {
-
-        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/`)
-            .then(res => res.json())
+        categoriesService.getCategory(categoryId)
             .then(
                 (result) => {
                     setCategoryName(result.name)
@@ -43,8 +42,7 @@ export default function EditCategoryForm() {
 
     useEffect(() => {
         if (!category) return
-        fetch(`http://192.168.0.108:7777/api/categories/${category.id}/roots`)
-            .then(res => res.json())
+        categoriesService.getCategoryRoots(category)
             .then(
                 (result) => {
                     const categories = result.map(e => ({ value: e.id, label: e.name }))
@@ -56,42 +54,32 @@ export default function EditCategoryForm() {
     }, [category])
 
     const onEdit = () => {
-
         const formData = new FormData()
         if (image) formData.append('file', image)
         if (oldImage) formData.append('image', oldImage)
         formData.append('name', name)
         if (selectedCategory) formData.append('parent', selectedCategory.value)
-
-        fetch('http://192.168.0.108:7777/api/categories/' + categoryId + '/', {
-            method: 'PUT',
-            body: formData
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                setImage(null)
-                setCategoryName(name)
-                setOldImage(result.image)
-            },
-            (error) => alert(error)
-        )
+        categoriesService.updateCategory(categoryId, formData)
+            .then(
+                (result) => {
+                    alert("OK")
+                    setImage(null)
+                    setCategoryName(name)
+                    setOldImage(result.image)
+                },
+                (error) => alert(error)
+            )
     }
 
     const onDelete = () => {
-
-        fetch(`http://192.168.0.108:7777/api/categories/${categoryId}/`, {
-            method: 'DELETE'
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert('OK')
-                history.push('../')
-            },
-            (error) => alert(error)
-        )
+        categoriesService.deleteCategory(categoryId)
+            .then(
+                (result) => {
+                    alert('OK')
+                    history.push('../')
+                },
+                (error) => alert(error)
+            )
     }
 
     return (

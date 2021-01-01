@@ -1,0 +1,70 @@
+
+
+
+#params-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+#params-block {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.param-block {
+    color: #000;
+    padding: 10px 35px 10px 15px;
+    border-radius: 25px;
+    margin: 5px;
+    line-height: 18px;
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    cursor: pointer;
+    transition: background-color .1s;
+    position: relative;
+}
+
+.param-block:hover {
+    background-color: #F7F7F7;
+}
+
+.param-block:active {
+    background-color: #EEE;
+}
+
+.param-block:after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background-color: #FFF;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml;utf8,<svg style='padding: 2' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path d='m4.29289 5.70711c-.39052-.39053-.39052-1.02369 0-1.41422.39053-.39052 1.02369-.39052 1.41422 0l6.29289 6.29291 6.2929-6.29291c.3905-.39052 1.0237-.39052 1.4142 0 .3905.39053.3905 1.02369 0 1.41422l-6.2929 6.29289 6.2929 6.2929c.3905.3905.3905 1.0237 0 1.4142s-1.0237.3905-1.4142 0l-6.2929-6.2929-6.29289 6.2929c-.39053.3905-1.02369.3905-1.41422 0-.39052-.3905-.39052-1.0237 0-1.4142l6.29291-6.2929z' fill='rgb(255, 99, 71)'></path></svg>");
+}
+
+.param-block:hover:after {
+    opacity: 1;
+}
+
+#sort {
+    width: 300px;
+    flex-shrink: 0;
+    margin: 6px 0;
+}
+
+@media all and (max-width: 800px) {
+
+    #params-container {
+        display: block;
+    }
+
+    #sort {
+        width: 100%;
+    }
+}

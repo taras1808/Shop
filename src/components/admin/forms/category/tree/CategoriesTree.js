@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './CategoriesTree.css'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { useParams, Link } from 'react-router-dom'
+import { categoriesService } from '../../../../../_services/categories.service'
 
 
 export default function CategoriesTree() {
@@ -11,8 +12,7 @@ export default function CategoriesTree() {
     const [treeCategories, setTreeCategories] = useState([])
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/categories/roots${categoryId ? `?categoryId=${categoryId}` : ''}`)
-            .then(res => res.json())
+        categoriesService.getRoots(categoryId)
             .then(
                 (result) => setTreeCategories(result),
                 (error) => alert(error)
@@ -20,21 +20,11 @@ export default function CategoriesTree() {
     }, [categoryId])
 
     const onSubmit = () => {
-
-        fetch('http://192.168.0.108:7777/api/categories/', {
-            method: 'PUT',
-            body: JSON.stringify({
-                categories: treeCategories.map(e => e.id)
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => alert("OK"),
-            (error) => alert(error)
-        )
+        categoriesService.saveOrder(treeCategories)
+            .then(
+                (result) => alert("OK"),
+                (error) => alert(error)
+            )
     }
 
     const onDragEnd = result => {
@@ -52,11 +42,10 @@ export default function CategoriesTree() {
             </Link>
 
             { 
-                children.childrens.length > 0 ? (
+                children.childrens.length > 0 &&
                     <div className="childrens-block">
                         { children.childrens.map(build) }
                     </div>
-                ) : null 
             }
         </div>
     )
@@ -66,7 +55,7 @@ export default function CategoriesTree() {
             { categoryId ? <p>Childrens</p> : null }
             <div className="childrens-block">
             {
-                treeCategories.length > 0 ? (
+                treeCategories.length > 0 &&
                     <>
                         <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="droppable">
@@ -89,11 +78,10 @@ export default function CategoriesTree() {
                                                                 </Link>
 
                                                                 { 
-                                                                    e.childrens.length > 0 ? (
+                                                                    e.childrens.length > 0 &&
                                                                         <div className="childrens-block">
                                                                             { e.childrens.map(build) }
                                                                         </div>
-                                                                    ) : null 
                                                                 }
                                                             </div>
                                                         )
@@ -107,9 +95,8 @@ export default function CategoriesTree() {
                             </Droppable>
                         </DragDropContext>
 
-                        { treeCategories.length > 1 ? <div className="submit" onClick={onSubmit}>Save order</div> : null }
+                        { treeCategories.length > 1 && <div className="submit" onClick={onSubmit}>Save order</div> }
                     </>
-                ) : null
             }
             </div>
         </div>

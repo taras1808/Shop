@@ -6,6 +6,9 @@ import { Link, useParams, useHistory } from 'react-router-dom'
 import SelectImagesBlock from '../block/images/SelectImagesBlock'
 import OldImagesBlock from '../block/images/OldImagesBlock'
 import { build } from '../../../../_utils/params-utils'
+import { categoriesService } from '../../../../_services/categories.service'
+import { productsService } from '../../../../_services/products.service'
+import { filtersService } from '../../../../_services/filters.service'
 
 
 export default function EditProductForm() {
@@ -45,8 +48,7 @@ export default function EditProductForm() {
 	}, [params])
 
     useEffect(() => {
-        fetch('http://192.168.0.108:7777/api/categories/')
-            .then(res => res.json())
+        categoriesService.getCategories()
             .then(
                 (result) => setOptionsCategories(
                     result.map(e => ({ value: e.id, label: e.name }))
@@ -56,8 +58,7 @@ export default function EditProductForm() {
     }, [])
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/products/${ category ? `?categoryId=${category}` : ''}`)
-            .then(res => res.json())
+        productsService.getProducts(category)
             .then(
                 (result) => setOptionsProducts(
                     result.map(e => ({...e, value: e.id, label: e.name }))
@@ -82,8 +83,7 @@ export default function EditProductForm() {
 
         if (!product) return
         
-        fetch(`http://192.168.0.108:7777/api/products/${product}/options/`)
-            .then(res => res.json())
+        productsService.getProductOptions(product)
             .then(
                 (result) => {
                     const options = new Map()
@@ -97,8 +97,7 @@ export default function EditProductForm() {
 
     useEffect(() => {
         if (!selectedCategory) return
-        fetch(`http://192.168.0.108:7777/api/filters/?categoryId=${selectedCategory.value}`)
-            .then(res => res.json())
+        filtersService.getFilterForCategory(selectedCategory)
             .then(
                 (result) => setFilters(result.filter(e => e.type === 0)),
                 (error) => alert(error)
@@ -118,11 +117,7 @@ export default function EditProductForm() {
         formData.append('name', name)
         if (productInfo !== '') formData.append('info', productInfo)
 
-        fetch(`http://192.168.0.108:7777/api/products/${product}/`, {
-            method: 'PUT',
-            body: formData
-        })
-            .then(result => result.json())
+        productsService.updateProduct(product, formData)
             .then(
                 (result) => {
                     alert("OK")
@@ -139,11 +134,7 @@ export default function EditProductForm() {
     }
 
     const onDelete = () => {
-        fetch(`http://192.168.0.108:7777/api/products/${product}/`, 
-            { 
-                method: 'DELETE' 
-            })
-            .then(result => result.json())
+        productsService.deleteProduct(product)
             .then(
                 result => {
                     alert("OK")

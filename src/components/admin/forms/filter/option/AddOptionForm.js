@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../../AdminPanelForm.css';
 import { useParams, useHistory } from 'react-router-dom'
+import { optionsService } from '../../../../../_services/options.service'
 
 
 export default function AddProductForm() {
@@ -12,25 +13,14 @@ export default function AddProductForm() {
     const [value, setValue] = useState("")
 
     const onSubmit = () => {
-
-        fetch("http://192.168.0.108:7777/api/options", {
-            method: 'POST',
-            body: JSON.stringify({
-                value,
-                filter: filterId
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                history.push(`${result.id}/`)
-            },
-            (error) => alert(error)
-        )
+        optionsService.createOption(value,  filterId)
+            .then(
+                (result) => {
+                    alert("OK")
+                    history.push(`${result.id}/`)
+                },
+                (error) => alert(error)
+            )
     }
 
     return (

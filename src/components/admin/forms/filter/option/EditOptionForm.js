@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../AdminPanelForm.css';
 import { useParams, useHistory } from 'react-router-dom'
+import { optionsService } from '../../../../../_services/options.service'
 
 
 export default function EditOptionForm() {
@@ -16,8 +17,7 @@ export default function EditOptionForm() {
     const [filter, setFilter] = useState(null)
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/options/${optionId}/`)
-            .then(res => res.json())
+        optionsService.getOption(optionId)
             .then(
                 (result) => {
                     setOptionValue(result.value)
@@ -30,42 +30,26 @@ export default function EditOptionForm() {
     }, [optionId])
 
     const onEdit = () => {
-
         if (parseInt(filterId) !== filter.value) return
-
-        fetch(`http://192.168.0.108:7777/api/options/${selectedOption.id}/`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                value,
-                filter: filter.value
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                setOptionValue(result.value)
-            },
-            (error) => alert(error)
-        )
+        optionsService.updateOption(selectedOption, value, filter)
+            .then(
+                (result) => {
+                    alert("OK")
+                    setOptionValue(result.value)
+                },
+                (error) => alert(error)
+            )
     }
 
     const onDelete = () => {
-
-        fetch(`http://192.168.0.108:7777/api/options/${selectedOption.id}/`, {
-            method: 'DELETE'
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                history.push('../../')
-            },
-            (error) => alert(error)
-        )
+        optionsService.deleteOption(selectedOption)
+            .then(
+                (result) => {
+                    alert("OK")
+                    history.push('../../')
+                },
+                (error) => alert(error)
+            )
     }
 
     return (

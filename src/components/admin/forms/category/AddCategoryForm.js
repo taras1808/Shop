@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { SelectStyles } from '../../../styles/CustomStyle'
 import SelectImageBlock from '../block/images/SelectImageBlock'
 import { useHistory } from 'react-router-dom'
+import { categoriesService } from '../../../../_services/categories.service'
 
 
 export default function AddCategoryForm() {
@@ -18,8 +19,7 @@ export default function AddCategoryForm() {
     const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
-        fetch("http://192.168.0.108:7777/api/categories")
-            .then(res => res.json())
+        categoriesService.getCategories()
             .then(
                 (result) => setOptionsCategories(
                     result.map(e => ({ ...e, value: e.id, label: e.name }))
@@ -35,18 +35,14 @@ export default function AddCategoryForm() {
         formData.append('name', name)
         if (selectedCategory) formData.append('parent', selectedCategory.id)
 
-        fetch("http://192.168.0.108:7777/api/categories", {
-            method: 'POST',
-            body: formData
-        })
-        .then(result => result.json())
-        .then(
-            (result) => {
-                alert("OK")
-                history.push(`/admin/categories/${result.id}/`)
-            },
-            (error) => alert(error)
-        )
+        categoriesService.saveCategory(formData)
+            .then(
+                (result) => {
+                    alert("OK")
+                    history.push(`/admin/categories/${result.id}/`)
+                },
+                (error) => alert(error)
+            )
     }
 
     return (

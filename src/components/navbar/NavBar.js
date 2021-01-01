@@ -3,6 +3,10 @@ import './NavBar.css'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { authenticationService } from '../../_services/authentication.service'
 import { Role } from '../../_utils/role'
+import { categoriesService } from '../../_services/categories.service'
+import { productsService } from '../../_services/products.service'
+import { accountService } from '../../_services/account.service'
+import { authHeader } from '../../_utils/auth-header'
 
 
 export default function NavBar () {
@@ -23,8 +27,7 @@ export default function NavBar () {
         }
         
         if (match.params[0] !== 'product') {
-            fetch("http://192.168.0.108:7777/api/categories/" +  match.params.itemId)
-                .then(res => res.json())
+            categoriesService.getCategory(match.params.itemId)
                 .then(
                     (result) => { 
                         const arr = []
@@ -40,8 +43,7 @@ export default function NavBar () {
                     (error) => { setItem([]) }
                 )
         } else {
-            fetch("http://192.168.0.108:7777/api/products/" +  match.params.itemId)
-                .then(res => res.json())
+            productsService.getProduct(match.params.itemId, { headers: authHeader() })
                 .then(
                     (result) => { 
                         const arr = [result]
@@ -109,6 +111,35 @@ export default function NavBar () {
                     currentUser && currentUser.role === Role.Admin &&
                     match.params[0] === 'product' && item.length > 0 &&  
                     <Link className="admin-control" to={`/admin/products/category=${item[item.length - 1].category_id};product=${item[item.length - 1].id}/`}>Edit</Link>
+                }
+
+                {
+                    currentUser && currentUser.role === Role.User &&
+                    match.params[0] === 'product' && item.length > 0 &&  
+                    <div className="profile-controls" style={{ backgroundImage: item[item.length - 1].favourite ? 'url("/favourite.svg")' : 'url("/not-favourite.svg")'}} onClick={_ => {
+
+                        if (!item[item.length - 1].favourite) {
+                            accountService.addFavourite(currentUser, item)
+                                .then(
+                                    result => {
+                                        item[item.length - 1].favourite = true
+                                        setItem([...item])
+                                    },
+                                    error => alert(error)
+                                )
+                        } else {
+                            accountService.removeFavourite(currentUser, item)
+                                .then(
+                                    result => {
+                                        item[item.length - 1].favourite = false
+                                        setItem([...item])
+                                    },
+                                    error => alert(error)
+                                )
+                        }
+                        
+
+                    }}></div>
                 }
 
                 { 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './FiltersTree.css'
 import { Link } from 'react-router-dom'
+import { filtersService } from '../../../../../_services/filters.service'
 
 
 export default function OptionsTree({filterId}) {
@@ -8,8 +9,7 @@ export default function OptionsTree({filterId}) {
     const [treeOptions, setTreeOptions] = useState([])
 
     useEffect(() => {
-        fetch(`http://192.168.0.108:7777/api/filters/${filterId}/options/`)
-            .then(res => res.json())
+        filtersService.getFilterOptions(filterId)
             .then(
                 (result) => {
                     setTreeOptions(result)
