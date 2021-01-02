@@ -1,5 +1,4 @@
 import './ContentContainer.css'
-import NavBar from '../navbar/NavBar'
 import ProductContainer from '../product/ProductContainer.js'
 import { Switch, Route } from 'react-router-dom'
 import CategoriesContainer from '../categories/CategoriesContainer'
@@ -15,12 +14,6 @@ import FavouriteContainer from '../favourite/FavouriteContainer';
 export default function ContentContainer () {
 	return (
 		<div className="container">
-			<Switch>
-				<Route path="/admin/"></Route>
-				<Route path="/(catalog|category|search|product)/">
-					<NavBar />
-				</Route>
-			</Switch>
 			<Switch>
 				<PrivateRoute strict path="/admin/" roles={[Role.Admin]} component={AdminContainer} />
 				<Route path="/search/:params?/">

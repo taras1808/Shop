@@ -5,6 +5,7 @@ import FiltersContainer from '../filters/FiltersContainer.js'
 import ParamsContainer from '../params/ParamsContainer.js'
 import { useParams } from 'react-router-dom'
 import { categoriesService } from '../../_services/categories.service'
+import NavBar, { NavType } from '../navbar/NavBar'
 
 
 export default function CatalogContainer () {
@@ -13,6 +14,8 @@ export default function CatalogContainer () {
 
 	const [state, setState] = useState(params)
 	const [filters, setFilters] = useState(null)
+
+	const [category, setCategory] = useState(null)
 
     const [error, setError] = useState(null)
 	const [isLoaded, setIsLoaded] = useState(false)
@@ -29,6 +32,17 @@ export default function CatalogContainer () {
 		}
         // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params])
+
+	useEffect(() => {
+		categoriesService.getCategory(categoryId)
+			.then(
+				(result) => {
+					setCategory(result)
+				}, 
+				(error) => alert(error)
+			)
+
+	}, [categoryId])
 
 	useEffect(() => {
 		setIsLoaded(false)
@@ -95,6 +109,7 @@ export default function CatalogContainer () {
     
 	return (
 		<>
+			<NavBar item={category} type={NavType.CATALOG}/>
 			<ParamsContainer filters={filters} />
 			<div className="flex">
 				<FiltersContainer isLoading={!isLoaded} filters={filters} />

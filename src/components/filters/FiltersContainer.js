@@ -11,7 +11,7 @@ export const FilterType = Object.freeze({
 export default function FiltersContainer ({isLoading, filters}) {
 
     return (
-        <div id="filters-block" className={isLoading && "preload"}>
+        <div id="filters-block" className={isLoading ? "preload" : null}>
 			{
 				filters && filters.map((filter, index) => {
 					switch (filter.type) {

@@ -3,6 +3,7 @@ import './CategoryContainer.css'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
 import { categoriesService } from '../../_services/categories.service'
+import NavBar, { NavType } from '../navbar/NavBar'
 
 
 export default function CategoryContainer () {
@@ -18,7 +19,6 @@ export default function CategoryContainer () {
 		categoriesService.getCategory(categoryId)
 			.then(
 				(result) => {
-					console.log(result)
 					setItem(result);
 					setIsLoaded(true);
 					setError();
@@ -69,8 +69,11 @@ export default function CategoryContainer () {
 	}
     
 	return (
-		<div className="categories">
-            { content }
-        </div>
+		<>
+			<NavBar item={item} type={NavType.CATEGORY}/>
+			<div className="categories">
+				{ content }
+			</div>
+		</>
 	)
 }

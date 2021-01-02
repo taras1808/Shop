@@ -25,7 +25,7 @@ export default function ItemsFilter({filter}) {
                     { 
                         filter.options.map((item, index) => (
                             <Link {...buildLink(params, categoryId, filter, item)} key={index}>
-                                <li className={item.products_quantity === '0' && !array.includes(item.id) && "disabled"}>
+                                <li className={item.products_quantity === '0' && !array.includes(item.id) ? "disabled" : null}>
                                     <span className={array.includes(item.id) ? "checked" : null}></span>
                                     <p>{ item.value } <span>({ item.products_quantity })</span></p>
                                 </li>

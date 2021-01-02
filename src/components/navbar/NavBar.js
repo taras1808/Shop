@@ -1,82 +1,137 @@
 import { React, useState, useEffect } from 'react'
 import './NavBar.css'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { authenticationService } from '../../_services/authentication.service'
 import { Role } from '../../_utils/role'
-import { categoriesService } from '../../_services/categories.service'
-import { productsService } from '../../_services/products.service'
 import { accountService } from '../../_services/account.service'
-import { authHeader } from '../../_utils/auth-header'
 
 
-export default function NavBar () {
+export const NavType = {
+    SEARCH: 0,
+    PRODUCT: 1,
+    CATALOG: 2,
+    CATEGORY: 3,
+    FAVOURITE: 4
+}
+
+export default function NavBar({ item, type }) {
 
     const currentUser = authenticationService.currentUserValue
 
-    const match = useRouteMatch('/(search|category|catalog|product)/:itemId?/')
+    const { params  } = useParams()
 
-    const parameters = match.params.itemId ? new Map(match.params.itemId.split(';').map(e => e.split('='))) : new Map()
+    const parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
 
-    const [item, setItem] = useState([])
+    const [items, setItems] = useState([])
 
-    useEffect(() => {
+    let title = null
+    let content = null
 
-        if (!match.params.itemId || match.params[0] === 'search') {
-            setItem([])
-            return
-        }
-        
-        if (match.params[0] !== 'product') {
-            categoriesService.getCategory(match.params.itemId)
+    switch (type) {
+        case NavType.FAVOURITE:
+            title = 'Favourite things'
+            break
+        case NavType.SEARCH:
+            title = `«${ parameters.get('q') }»`
+            break
+        default:
+            title = items.length > 0 && items[items.length - 1].name
+            break
+    }
+
+    const toggleFavourite = () => {
+        if (!items[items.length - 1].favourite) {
+            accountService.addFavourite(currentUser, items)
                 .then(
-                    (result) => { 
-                        const arr = []
-                        const getParent = (node) => {
-                            arr.push(node)
-                            if (node.parent) {
-                                getParent(node.parent)
-                            }
-                        }
-                        getParent(result)
-                        setItem(arr.reverse()) 
+                    result => {
+                        items[items.length - 1].favourite = true
+                        setItems([...items])
                     },
-                    (error) => { setItem([]) }
+                    error => alert(error)
                 )
         } else {
-            productsService.getProduct(match.params.itemId, { headers: authHeader() })
+            accountService.removeFavourite(currentUser, items)
                 .then(
-                    (result) => { 
-                        const arr = [result]
-                        const getParent = (node) => {
-                            arr.push(node)
-                            if (node.parent) {
-                                getParent(node.parent)
-                            }
-                        }
-                        getParent(result.category)
-                        setItem(arr.reverse()) 
+                    result => {
+                        items[items.length - 1].favourite = false
+                        setItems([...items])
                     },
-                    (error) => { setItem([]) }
+                    error => alert(error)
                 )
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [match.params[0], match.params.itemId])
+    } 
+
+    if (currentUser && items.length > 0) {
+        switch (type) {
+            case NavType.PRODUCT:
+                if (currentUser.role === Role.User) {
+                    content = (
+                        <div className="profile-controls" 
+                            style={{ 
+                                backgroundImage: items[items.length - 1].favourite ? 
+                                    'url("/favourite.svg")' : 'url("/not-favourite.svg")'
+                            }} 
+                            onClick={toggleFavourite}></div>
+                    )
+                } else if (currentUser.role === Role.Admin) {
+                    const item = items[items.length - 1]
+                    const url = `/admin/products/category=${item.category_id};product=${item.id}/`
+                    content = (
+                        <Link className="admin-control" to={url}>Edit</Link>
+                    )
+                }
+                break
+            case NavType.CATEGORY:
+            case NavType.CATALOG:
+                if (currentUser.role === Role.Admin) {
+                    <Link className="admin-control" to={`/admin/categories/${items[items.length - 1].id}/`}>Edit</Link>
+                }
+                break
+            default:
+                break
+        }
+    }
+
+    useEffect(() => {
+        if (!item) return
+        const arr = []
+        const getParent = (node) => {
+            arr.push(node)
+            if (node.parent) {
+                getParent(node.parent)
+            }
+        }
+        switch (type) {
+            case NavType.PRODUCT:
+                arr.push(item)
+                getParent(item.category)
+                setItems(arr.reverse()) 
+                break
+            case NavType.CATALOG:
+            case NavType.CATEGORY:
+                getParent(item)
+                setItems(arr.reverse()) 
+                break
+            default:
+                break
+        }
+    }, [item, type])
 
     return (
         <div id="navbar">
             <ul id="navbar-list">
                 <li><Link to="/">Home page</Link></li>
                 {
-                    item.map((e, index) => {
+                    items.map((e, index) => {
                         if (!e) return null
 
                         let url = `${e.id}/`
 
                         let content = e.name
 
-                        if (index !== item.length - 1) {
+                        if (index !== items.length - 1) {
 
-                            if (index === item.length - 2 && match.params[0] === 'product')
+                            if (index === items.length - 2 && type === NavType.PRODUCT)
                                 content = <Link to={`/catalog/${url}`}>{content}</Link>
                             else
                                 content = <Link to={`/category/${url}`}>{content}</Link>
@@ -99,54 +154,9 @@ export default function NavBar () {
             </ul>
 
             <div id="title-block">
-                <h1>
-                    { 
-                        match.params[0] !== 'search' ? 
-                            item.length > 0 && item[item.length - 1].name 
-                            : `«${ parameters.get('q') }»` 
-                    }
-                </h1>
+                <h1> { title } </h1>
 
-                {
-                    currentUser && currentUser.role === Role.Admin &&
-                    match.params[0] === 'product' && item.length > 0 &&  
-                    <Link className="admin-control" to={`/admin/products/category=${item[item.length - 1].category_id};product=${item[item.length - 1].id}/`}>Edit</Link>
-                }
-
-                {
-                    currentUser && currentUser.role === Role.User &&
-                    match.params[0] === 'product' && item.length > 0 &&  
-                    <div className="profile-controls" style={{ backgroundImage: item[item.length - 1].favourite ? 'url("/favourite.svg")' : 'url("/not-favourite.svg")'}} onClick={_ => {
-
-                        if (!item[item.length - 1].favourite) {
-                            accountService.addFavourite(currentUser, item)
-                                .then(
-                                    result => {
-                                        item[item.length - 1].favourite = true
-                                        setItem([...item])
-                                    },
-                                    error => alert(error)
-                                )
-                        } else {
-                            accountService.removeFavourite(currentUser, item)
-                                .then(
-                                    result => {
-                                        item[item.length - 1].favourite = false
-                                        setItem([...item])
-                                    },
-                                    error => alert(error)
-                                )
-                        }
-                        
-
-                    }}></div>
-                }
-
-                { 
-                    currentUser && currentUser.role === Role.Admin &&
-                    (match.params[0] === 'category' || match.params[0] === 'catalog' ) &&  item.length > 0 &&  
-                    <Link className="admin-control" to={`/admin/categories/${item[item.length - 1].id}/`}>Edit</Link>
-                }
+                { content }
 
             </div>
         </div>
