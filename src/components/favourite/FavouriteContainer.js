@@ -4,6 +4,7 @@ import { authenticationService } from '../../_services/authentication.service'
 import { accountService } from '../../_services/account.service'
 import ProductsContainer from '../products/ProductsContainer.js'
 import { useParams } from 'react-router-dom'
+import NavBar, { NavType } from '../navbar/NavBar'
 
 
 export default function FavouriteContainer() {
@@ -46,15 +47,19 @@ export default function FavouriteContainer() {
 					setIsLoaded(true)
 				}
 			)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state])
 
     return (
-        <div id="favourite-block">
-            <h1>Favourite things</h1>
-            <ProductsContainer 
+		<>
+			<NavBar type={NavType.FAVOURITE}/>
+			<div className="favourite">
+				<ProductsContainer 
 					items={items}
 					isLoaded={isLoaded}
 					error={error} />
-        </div>
+			</div>
+		</>
     )
 }

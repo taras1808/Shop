@@ -11,7 +11,7 @@ export function build(params, prop, value) {
 export function buildLink(params, categoryId, filter, item) {
     const parameters = params ? new Map(params.split(';').map(e => e.split('='))) : new Map()
     let array = parameters.get(filter.name) ? parameters.get(filter.name).split(',').map(e => parseInt(e)) : []
-    if (item.products_quantity === '0' && !array.includes(item.id)) return {}
+    if (item.products_quantity === '0' && !array.includes(item.id)) return { to: '#'}
     if (array.includes(item.id)) {
         array = array.filter(e => e !== item.id)
     } else {

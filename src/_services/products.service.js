@@ -17,7 +17,7 @@ function getProducts(category) {
 }
 
 function createProduct(formData) {
-    return fetch('${Config.HOST}/api/products', {
+    return fetch(`${Config.HOST}/api/products`, {
             method: 'POST',
             body: formData
         })

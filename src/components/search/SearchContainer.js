@@ -5,6 +5,7 @@ import ProductsContainer from '../products/ProductsContainer.js'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { searchService } from '../../_services/search.service'
+import NavBar, { NavType } from '../navbar/NavBar'
 
 
 export default function SearchContainer () {
@@ -91,6 +92,7 @@ export default function SearchContainer () {
 
 	return (
         <>
+			<NavBar type={NavType.SEARCH}/>
 			<ParamsContainer filters={filters} />
 			<div className="flex">
 				<FiltersContainer isLoading={!isLoaded} filters={filters} />
