@@ -75,7 +75,10 @@ export default function Header() {
                                     authenticationService.logout()
                                     history.push('/')
                                 }}></p> 
-                        </> : <Link to="/login/" className="profile-controls" style={{ backgroundImage: 'url("/profile.png")' }}></Link>
+                        </> : <>
+                            <Link to="/registration/" className="profile-controls" style={{ backgroundImage: 'url("/register.png")' }}></Link>
+                            <Link to="/login/" className="profile-controls" style={{ backgroundImage: 'url("/profile.png")' }}></Link>
+                        </> 
 
                     }
                 </div>
