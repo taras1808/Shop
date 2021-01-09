@@ -13,6 +13,15 @@
     align-content: flex-start;
 }
 
+.products-not-found {
+    font-size: 25px;
+    margin: 0 10px;
+    width: 100%;
+    padding: 150px 0;
+    text-align: center;
+    background-color: #F7F7F7;
+}
+
 @media all and (max-width: 800px) {
 
     .products-container {

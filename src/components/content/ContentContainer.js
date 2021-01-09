@@ -6,11 +6,11 @@ import AdminContainer from '../admin/AdminContainer'
 import SearchContainer from '../search/SearchContainer'
 import CatalogContainer from '../catalog/CatalogContainer'
 import CategoryContainer from '../category/CategoryContainer'
-import LoginContainer from '../login/LoginContainer'
+import AuthenticationContainer from '../account/authentication/AuthenticationContainer'
 import { PrivateRoute } from '../private-route/PrivateRoute'
 import { Role } from '../../_utils/role'
 import FavouriteContainer from '../favourite/FavouriteContainer'
-import RegistrationContainer from '../registration/RegistrationContainer'
+import RegistrationContainer from '../account/registration/RegistrationContainer'
 
 export default function ContentContainer () {
 	return (
@@ -30,7 +30,7 @@ export default function ContentContainer () {
 					<CategoryContainer />
 				</Route>
 				<PrivateRoute strict path="/favourite/:params?/" roles={[Role.User]} component={FavouriteContainer} />
-				<Route strict path="/login/" component={LoginContainer} />
+				<Route strict path="/authentication/" component={AuthenticationContainer} />
 				<Route strict path="/registration/" component={RegistrationContainer} />
 				<Route path="/">
 					<CategoriesContainer />

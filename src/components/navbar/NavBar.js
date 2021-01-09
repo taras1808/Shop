@@ -41,7 +41,7 @@ export default function NavBar({ item, type }) {
 
     const toggleFavourite = () => {
         if (!items[items.length - 1].favourite) {
-            accountService.addFavourite(currentUser, items)
+            accountService.addFavourite(items)
                 .then(
                     result => {
                         items[items.length - 1].favourite = true
@@ -50,7 +50,7 @@ export default function NavBar({ item, type }) {
                     error => alert(error)
                 )
         } else {
-            accountService.removeFavourite(currentUser, items)
+            accountService.removeFavourite(items)
                 .then(
                     result => {
                         items[items.length - 1].favourite = false
@@ -66,7 +66,7 @@ export default function NavBar({ item, type }) {
             case NavType.PRODUCT:
                 if (currentUser.role === Role.User) {
                     controls = (
-                        <div className="profile-controls" 
+                        <div className="profile-control" 
                             style={{ 
                                 backgroundImage: items[items.length - 1].favourite ? 
                                     'url("/favourite.svg")' : 'url("/not-favourite.svg")'

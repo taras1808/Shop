@@ -65,7 +65,8 @@
     display: flex;
 }
 
-.profile-controls {
+a.profile-controls,
+p.profile-controls {
     width: 30px;
     margin: 0 10px;
     background-size: contain;
@@ -76,8 +77,25 @@
     opacity: 0.888;
 }
 
-.profile-controls:hover {
+a.profile-controls:hover,
+p.profile-controls:hover {
     opacity: 0.777;
+}
+
+span.profile-controls {
+    align-self: center;
+    margin: 0 10px;
+    cursor: pointer;
+    color: #4f78ff;
+}
+
+span.profile-controls:hover {
+    color: #3e66e9;
+}
+
+.menu-link {
+    display: block;
+    color: #000;
 }
 
 @media all and (max-width: 800px) {

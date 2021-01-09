@@ -93,7 +93,7 @@ export default function SearchContainer () {
 	return (
         <>
 			<NavBar type={NavType.SEARCH}/>
-			<ParamsContainer filters={filters} />
+			<ParamsContainer count={items.total} filters={filters} />
 			<div className="flex">
 				<FiltersContainer isLoading={!isLoaded} filters={filters} />
 				<ProductsContainer 

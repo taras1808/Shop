@@ -2,9 +2,7 @@ import './PaginationContainer.css'
 import { useParams, useHistory, Link, useRouteMatch } from 'react-router-dom'
 import { build } from '../../_utils/params-utils'
 
-const limit = 6
-
-export default function PaginationContainer ({ total }) {
+export default function PaginationContainer ({ total, limit = 6 }) {
 
 	const history = useHistory()
 
@@ -21,10 +19,10 @@ export default function PaginationContainer ({ total }) {
 	const page = parseInt(parameters.get('page') ?? 1)
 
 	for (let i = 2; i <= pagesCount; i++) {
-		if ((i < 7 && page < 4) || (i > pagesCount - 6 && page > pagesCount - 5)) {
+		if ((i < 7 && page < 4) || (i > pagesCount - 6 && page > pagesCount - 4)) {
 			arr.push(i)
 		} else {
-			if (page - 1 <= i && page + 3 >= i) {
+			if (page - 2 <= i && page + 2 >= i) {
 				arr.push(i)
 			} else if (i === pagesCount)  {
 				arr.push(i)
@@ -32,11 +30,15 @@ export default function PaginationContainer ({ total }) {
 		}
 	}
 
-	if (page > 3 && pagesCount > 7) arr.splice(1, 1, "...")
-	if (page < (pagesCount - 4) && pagesCount > 7) arr.splice(arr.length - 2, 1, "...")
+	if (page > 4 && pagesCount > 7) arr.splice(1, 1, "...")
+	if (page < (pagesCount - 3) && pagesCount > 7) arr.splice(arr.length - 2, 1, "...")
 
+	if (pagesCount <= 1 && page > 1) {
+		const url = build(params, 'page', null)
+		history.push(`/${categoryId ? `catalog/${categoryId}` : match.params[0]}/${url}`)
+	}
 
-	return (
+	return pagesCount > 1 ? (
 			<div id="products-container-navigation">
 				<div className="products-container-navigation-arrow-block"
 					onClick={_ => {
@@ -50,7 +52,7 @@ export default function PaginationContainer ({ total }) {
 				<div className="products-container-navigation-content">
 					{
 						arr.map((i, index) => (
-							<Link to={`/${categoryId ? `catalog/${categoryId}` : match.params[0]}/${build(params, 'page', i === '...' ? arr[index + 1] > page ? arr[index - 1] : arr[index + 1] - 2 : i)}`} key={index}
+							<Link to={`/${categoryId ? `catalog/${categoryId}` : match.params[0]}/${build(params, 'page', i === '...' ? (arr[index + 1] > page ? arr[index - 1] + 1 : arr[index + 1] - 1) : i)}`} key={index}
 								className={`products-container-navigation-content-item  ${page === i ? 'active' : ''}`}>{i}</Link>
 						))
 					}
@@ -65,5 +67,5 @@ export default function PaginationContainer ({ total }) {
 					<span className="products-container-navigation-arrow next"></span>
 				</div>
 			</div>
-	)
+	) : null
 }

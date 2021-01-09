@@ -3,9 +3,22 @@
 
 #params-container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     padding: 10px;
+}
+
+.query-info {
+    display: flex;
+    align-items: flex-start;
+}
+
+#summary-block {
+    flex-shrink: 0;
+    min-width: 125px;
+    margin: 6px 10px 6px 0;
+    padding: 10px 0;
+    line-height: 18px;
 }
 
 #params-block {
@@ -55,7 +68,7 @@
 #sort {
     width: 300px;
     flex-shrink: 0;
-    margin: 6px 0;
+    padding: 6px 0;
 }
 
 @media all and (max-width: 800px) {
