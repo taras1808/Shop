@@ -1,5 +1,6 @@
 import { handleResponse } from '../_utils/handle-response'
 import Config from '../config.json'
+import { authHeader } from '../_utils/auth-header'
 
 
 export const productsService = {
@@ -19,7 +20,8 @@ function getProducts(category) {
 function createProduct(formData) {
     return fetch(`${Config.HOST}/api/products`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: authHeader()
         })
         .then(handleResponse)
 }
@@ -32,7 +34,8 @@ function getProduct(productId, opts) {
 function updateProduct(product, formData) {
     return fetch(`${Config.HOST}/api/products/${product}/`, {
             method: 'PUT',
-            body: formData
+            body: formData,
+            headers: authHeader()
         })
         .then(handleResponse)
 }
@@ -44,7 +47,8 @@ function getProductOptions(product) {
 
 function deleteProduct(product) {
     return fetch(`${Config.HOST}/api/products/${product}/`, { 
-            method: 'DELETE' 
+            method: 'DELETE',
+            headers: authHeader()
         })
         .then(handleResponse)
 }

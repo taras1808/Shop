@@ -15,7 +15,7 @@ const options = [
     { value: 5, label: 'Alphabetically, Z-A' }
 ]
 
-export default function ParamsContainer ({ filters }) {
+export default function ParamsContainer ({ filters, favourite, count }) {
 
     const history = useHistory()
 
@@ -25,29 +25,31 @@ export default function ParamsContainer ({ filters }) {
 
 	return (
 		<div id="params-container">
-            <div id="params-block">
+            <div className="query-info">
+                <div id="summary-block">Items count: { count }</div>
+                <div id="params-block">
+                    {
+                        filters && filters.map(filter => {
+                            let values = parameters.get(filter.name)
+                            if (!values) return null
 
-                {
-                    filters && filters.map(filter => {
-                        let values = parameters.get(filter.name)
-                        if (!values) return null
 
+                            switch (filter.type) {
+                                case FilterType.SELECT:
+                                    values = values.split(',').map(e => parseInt(e))
 
-                        switch (filter.type) {
-                            case FilterType.SELECT:
-                                values = values.split(',').map(e => parseInt(e))
-
-                                return filter.options.filter(e => values.includes(e.id)).map((e, index) => (
-                                    <Link key={e.id} className="param-block" {...buildLink(params, categoryId, filter, e)}>{ e.value }</Link>
-                                ))
-                            case FilterType.SLIDER:
-                                return <Link key={filter.name} className="param-block" {...buildLinkRange(params, categoryId, filter)}>{ values }</Link>
-                            default:
-                                return null
-                        }
-                        
-                    })
-                }
+                                    return filter.options.filter(e => values.includes(e.id)).map((e, index) => (
+                                        <Link key={e.id} className="param-block" {...buildLink(params, categoryId, filter, e)}>{ e.value }</Link>
+                                    ))
+                                case FilterType.SLIDER:
+                                    return <Link key={filter.name} className="param-block" {...buildLinkRange(params, categoryId, filter)}>{ values }</Link>
+                                default:
+                                    return null
+                            }
+                            
+                        })
+                    }
+                </div>
             </div>
 
             <Select id="sort"
@@ -65,7 +67,7 @@ export default function ParamsContainer ({ filters }) {
                         .map(e => e.join('='))
                         .join(';')
 
-                    history.push(`/${categoryId ? `catalog/${categoryId}` : 'search'}/${params !== '' ? params + '/' : ''}`)
+                    history.push(`/${categoryId ? `catalog/${categoryId}` : (favourite ? 'favourite' : 'search')}/${params !== '' ? params + '/' : ''}`)
                 }}
             />
 		</div>

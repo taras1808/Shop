@@ -1,5 +1,6 @@
 import { handleResponse } from '../_utils/handle-response'
 import Config from '../config.json'
+import { authHeader } from '../_utils/auth-header'
 
 
 export const categoriesService = {
@@ -26,7 +27,8 @@ function getCategories() {
 function saveCategory(formData) {
     return fetch(`${Config.HOST}/api/categories`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: authHeader()
         })
         .then(handleResponse)
 }
@@ -39,14 +41,16 @@ function getCategory(categoryId) {
 function updateCategory(categoryId, formData) {
     return fetch(`${Config.HOST}/api/categories/${categoryId}/`, {
             method: 'PUT',
-            body: formData
+            body: formData,
+            headers: authHeader()
         })
         .then(handleResponse)
 }
 
 function deleteCategory(categoryId) {
     return fetch(`${Config.HOST}/api/categories/${categoryId}/`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: authHeader()
         })
 }
 
@@ -67,7 +71,8 @@ function saveOrder(treeCategories) {
                 categories: treeCategories.map(e => e.id)
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)
@@ -90,7 +95,8 @@ function getFiltersOrder(categoryId, treeFilters) {
                 filters: treeFilters.map(e => e.id)
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)

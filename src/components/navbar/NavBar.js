@@ -25,7 +25,7 @@ export default function NavBar({ item, type }) {
     const [items, setItems] = useState([])
 
     let title = null
-    let content = null
+    let controls = null
 
     switch (type) {
         case NavType.FAVOURITE:
@@ -41,7 +41,7 @@ export default function NavBar({ item, type }) {
 
     const toggleFavourite = () => {
         if (!items[items.length - 1].favourite) {
-            accountService.addFavourite(currentUser, items)
+            accountService.addFavourite(items)
                 .then(
                     result => {
                         items[items.length - 1].favourite = true
@@ -50,7 +50,7 @@ export default function NavBar({ item, type }) {
                     error => alert(error)
                 )
         } else {
-            accountService.removeFavourite(currentUser, items)
+            accountService.removeFavourite(items)
                 .then(
                     result => {
                         items[items.length - 1].favourite = false
@@ -65,8 +65,8 @@ export default function NavBar({ item, type }) {
         switch (type) {
             case NavType.PRODUCT:
                 if (currentUser.role === Role.User) {
-                    content = (
-                        <div className="profile-controls" 
+                    controls = (
+                        <div className="profile-control" 
                             style={{ 
                                 backgroundImage: items[items.length - 1].favourite ? 
                                     'url("/favourite.svg")' : 'url("/not-favourite.svg")'
@@ -76,7 +76,7 @@ export default function NavBar({ item, type }) {
                 } else if (currentUser.role === Role.Admin) {
                     const item = items[items.length - 1]
                     const url = `/admin/products/category=${item.category_id};product=${item.id}/`
-                    content = (
+                    controls = (
                         <Link className="admin-control" to={url}>Edit</Link>
                     )
                 }
@@ -84,7 +84,9 @@ export default function NavBar({ item, type }) {
             case NavType.CATEGORY:
             case NavType.CATALOG:
                 if (currentUser.role === Role.Admin) {
-                    <Link className="admin-control" to={`/admin/categories/${items[items.length - 1].id}/`}>Edit</Link>
+                    controls = (
+                        <Link className="admin-control" to={`/admin/categories/${items[items.length - 1].id}/`}>Edit</Link>
+                    )
                 }
                 break
             default:
@@ -146,7 +148,7 @@ export default function NavBar({ item, type }) {
                                     <span className="arrow"></span>
                                 </div>
                                 
-                                {content}
+                                { content }
                             </li>
                         )
                     })
@@ -156,7 +158,7 @@ export default function NavBar({ item, type }) {
             <div id="title-block">
                 <h1> { title } </h1>
 
-                { content }
+                { controls }
 
             </div>
         </div>

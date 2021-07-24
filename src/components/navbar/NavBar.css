@@ -50,8 +50,26 @@ div.arrow-block > span.arrow {
 }
 
 #title-block > .admin-control {
+    flex-shrink: 0;
+    padding: 0 10px;
     display: flex;
     align-items: center;
+}
+
+#title-block > .profile-control {
+    flex-shrink: 0;
+    width: 30px;
+    margin: 0 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    filter: grayscale(100%);
+    opacity: 0.888;
+}
+
+#title-block > .profile-control:hover {
+    opacity: 0.777;
 }
 
 @media all and (max-width: 800px) {

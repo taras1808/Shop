@@ -1,5 +1,6 @@
 import { handleResponse } from '../_utils/handle-response'
 import Config from '../config.json'
+import { authHeader } from '../_utils/auth-header'
 
 
 export const filtersService = {
@@ -36,7 +37,8 @@ function createFilters(name, url, categories) {
                 categories: categories ? categories.map(e => e.id) : []
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)
@@ -56,7 +58,8 @@ function updateFilter(selectedFilter, name, url, categories) {
                 categories: categories ? categories.map(e => e.value) : []
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)
@@ -64,7 +67,8 @@ function updateFilter(selectedFilter, name, url, categories) {
 
 function deleteFilter(selectedFilter) {
     return fetch(`${Config.HOST}/api/filters/${selectedFilter.id}/`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: authHeader()
         })
         .then(handleResponse)
 }

@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react'
 import './FavouriteContainer.css'
-import { authenticationService } from '../../_services/authentication.service'
 import { accountService } from '../../_services/account.service'
 import ProductsContainer from '../products/ProductsContainer.js'
 import { useParams } from 'react-router-dom'
 import NavBar, { NavType } from '../navbar/NavBar'
+import ParamsContainer from '../params/ParamsContainer.js'
 
 
 export default function FavouriteContainer() {
 
-	const currentUser = authenticationService.currentUserValue
-	
 	const { params } = useParams()
 
 	const [state, setState] = useState(params)
@@ -32,10 +30,13 @@ export default function FavouriteContainer() {
 		const parameters = state ? new Map(state.split(';').map(e => e.split('='))) : new Map()
 
 		let query = [
-			`?page=${parameters.get('page') ? parseInt(parameters.get('page')) - 1 : ''}`
+			`?orderBy=${parameters.get('orderBy') ? parameters.get('orderBy') : ''}`,
+			`page=${parameters.get('page') ? parseInt(parameters.get('page')) - 1 : ''}`
 		]
 
-        accountService.getFavourite(currentUser, query)
+		query = query.join('&')
+
+        accountService.getFavourite(query)
 			.then(
 				(result) => {
 					setItems(result)
@@ -54,11 +55,13 @@ export default function FavouriteContainer() {
     return (
 		<>
 			<NavBar type={NavType.FAVOURITE}/>
+			<ParamsContainer count={items.total} favourite/>
 			<div className="favourite">
 				<ProductsContainer 
 					items={items}
 					isLoaded={isLoaded}
-					error={error} />
+					error={error}
+					limit={8} />
 			</div>
 		</>
     )

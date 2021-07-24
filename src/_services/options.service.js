@@ -1,5 +1,6 @@
 import { handleResponse } from '../_utils/handle-response'
 import Config from '../config.json'
+import { authHeader } from '../_utils/auth-header'
 
 
 export const optionsService = {
@@ -17,7 +18,8 @@ function createOption(value, filterId) {
                 filter: filterId
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)
@@ -36,7 +38,8 @@ function updateOption(selectedOption, value, filter) {
                 filter: filter.value
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authHeader()
             }
         })
         .then(handleResponse)
@@ -44,7 +47,8 @@ function updateOption(selectedOption, value, filter) {
 
 function deleteOption(selectedOption) {
     return fetch(`${Config.HOST}/api/options/${selectedOption.id}/`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: authHeader()
         })
         .then(handleResponse)
 }

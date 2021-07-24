@@ -110,7 +110,7 @@ export default function CatalogContainer () {
 	return (
 		<>
 			<NavBar item={category} type={NavType.CATALOG}/>
-			<ParamsContainer filters={filters} />
+			<ParamsContainer count={items.total} filters={filters} />
 			<div className="flex">
 				<FiltersContainer isLoading={!isLoaded} filters={filters} />
 				<ProductsContainer 
